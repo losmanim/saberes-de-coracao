@@ -1,0 +1,255 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Cherry+Bomb+One&family=Give+You+Glory&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Story+Script&display=swap');
+
+:root {
+    --titulo: "Bangers", sans-serif;
+    --titulos: "Cherry Bomb One", sans-serif;
+    --texto: "Give You Glory", cursive;
+    --textos: "Google Sans Code", monospace;
+    --font-extra: "Story Script", sans-serif;
+    --cor-fundo: #0d0d0d;
+    --cor-fundo-h: #1a1a2e;
+    --cor-destaque: #00fff5;
+    --cor-titulo: #00d4aa;
+    --cor-texto: #e0e0e0;
+    --cor-secundario: #ff6b6b;
+    --sombra-text: 0 0 10px #00fff5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: var(--texto);
+}
+
+header {
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    background-color: var(--cor-fundo-h);
+}
+
+header #titulo h1 {
+    font-family: var(--titulo);
+    font-size: 5rem;
+    text-shadow: var(--sombra-text);
+    letter-spacing: 5px;
+    color: var(--cor-destaque);
+}
+
+main {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(180deg, #0d0d0d 0%, #1a1a2e 50%, #0d0d0d 100%);
+    min-height: 80vh;
+}
+
+main section {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+main section h2 {
+    font-family: var(--titulos);
+    color: var(--cor-titulo);
+    margin: 1rem 0;
+}
+
+main section p {
+    line-height: 1.6;
+    margin: 0.5rem 0;
+    color: var(--cor-texto);
+    font-family: var(--textos);
+}
+
+main section ul {
+    list-style: none;
+    margin: 1rem 0;
+    padding-left: 1rem;
+}
+
+main section ul li {
+    margin: 0.5rem 0;
+}
+
+main section ul li strong {
+    color: var(--cor-destaque);
+    font-family: var(--font-extra);
+    font-size: 1.3rem;
+    letter-spacing: 1.1px;
+
+}
+
+#buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    justify-content: center;
+}
+
+#buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    border: 1px solid #00d4aa;
+    font-family: var(--font-extra);
+    font-weight: 900;
+    letter-spacing: 1.1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#buttons button:hover {
+    background-color: #00d4aa;
+    color: #0d0d0d;
+}
+
+#buttons button.ativo {
+    color: #0d0d0d;
+    border: 2px solid #00fff5;
+    background-color: #00d4aa;
+}
+
+#content-interativo {
+    background-color: #16162a;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    border: 1px solid #00d4aa;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--cor-fundo-h);
+}
+
+footer p {
+    font-family: var(--textos);
+    font-size: 0.8rem;
+    color: var(--cor-texto);
+}
+
+@media (max-width: 600px) {
+    header #titulo h1 {
+        font-size: 3rem;
+    }
+
+    #buttons {
+        flex-direction: column;
+    }
+
+    main section {
+        width: 95%;
+    }
+}
+
+#chakras {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d0d 100%);
+    border-radius: 1rem;
+    border: 1px solid #00d4aa;
+}
+
+#chakras h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#chakra-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+#chakra-buttons button {
+    padding: 0.6rem 1rem;
+    border: 1px solid #00d4aa;
+    border-radius: 2rem;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    font-family: var(--textos);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#chakra-buttons button:hover {
+    background: #00d4aa;
+    color: #0d0d0d;
+}
+
+#chakra-buttons button.ativo {
+    background: linear-gradient(135deg, #00d4aa, #00fff5);
+    color: #0d0d0d;
+    box-shadow: 0 0 15px rgba(0, 255, 245, 0.4);
+}
+
+#chakra-content {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0.5rem;
+    min-height: 200px;
+    border: 1px solid #00d4aa;
+}
+
+.chakra-detail h3 {
+    color: var(--cor-destaque);
+    font-family: var(--titulos);
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.chakra-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.chakra-info p {
+    color: var(--cor-texto);
+    font-family: var(--textos);
+}
+
+.chakra-info strong {
+    color: var(--cor-titulo);
+}
+
+.chakra-mantra, .chakra-exercicio {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    background: rgba(0, 212, 170, 0.1);
+    border-left: 3px solid #00fff5;
+}
+
+.chakra-mantra h4, .chakra-exercicio h4 {
+    color: var(--cor-destaque);
+    margin-bottom: 0.5rem;
+    font-family: var(--titulos);
+}
+
+.chakra-mantra p {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: #e0e0e0;
+}

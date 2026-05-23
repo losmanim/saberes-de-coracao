@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O que é Viver, sem filtros</title>
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <link rel="stylesheet" href="../componentes/css/interativo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-top d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(90deg, darkblue, orangered);">
+            <div class="icones">
+                <i class="fa-solid fa-fire text-warning fs-3"></i>
+                <i class="fa-solid fa-brain text-light fs-2"></i>
+            </div>
+            <div class="tema-botoes">
+                <button onclick="Interativo.tema.setDark()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+                <button onclick="Interativo.tema.setLight()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-sun-fill"></i>
+                </button>
+            </div>
+        </div>
+        <div id="titulo" class="text-center py-4">
+            <h1 class="text-light">Viver Sem Filtros</h1>
+            <p class="text-light">A Realidade Crua</p>
+        </div>
+    </header>
+    
+    <nav class="navbar navbar-expand-lg bg-body-secondary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Viver</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#o-que">O Que É</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#descoberta1884">1884</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#anatomia">Anatomia</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#quiz">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <main>
+        <!-- O Que é Viver Sem Filtros -->
+        <section id="o-que" data-animar="fade-in">
+            <div class="container">
+                <h2 class="text-center mb-4">O Que é Viver, Sem Filtros?</h2>
+                
+                <div class="tab-group">
+                    <button class="tab-button active" data-tab-group="viver" data-tab-target="impermanencia">
+                        Impermanência
+                    </button>
+                    <button class="tab-button" data-tab-group="viver" data-tab-target="sentir">
+                        Sentir Tudo
+                    </button>
+                    <button class="tab-button" data-tab-group="viver" data-tab-target="significado">
+                        Significado
+                    </button>
+                    <button class="tab-button" data-tab-group="viver" data-tab-target="responsabilidade">
+                        Responsabilidade
+                    </button>
+                </div>
+
+                <div class="tab-content" data-tab-content="viver" data-tab="impermanencia">
+                    <div class="card-interativo">
+                        <h3>Aceitar a Impermanência</h3>
+                        <p>Nada dura. Relacionamentos acabam, corpo falha, ideias mudam. A morte não é "se" vai acontecer, é "quando".</p>
+                        <p class="text-success"><strong>Isso não é depressivo; é libertador.</strong> Faz você parar de adiar o que importa.</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="viver" data-tab="sentir">
+                    <div class="card-interativo">
+                        <h3>Sentir Tudo Cru</h3>
+                        <p>Dor emocional, solidão, alegria boba, o vazio existencial às 3 da manhã.</p>
+                        <p>A maioria das pessoas foge disso com distrações (redes sociais, trabalho sem fim, religião como muleta, drogas, sexo sem conexão).</p>
+                        <p class="text-warning"><strong>Viver sem filtro é ficar presente nisso, sem anestesia.</strong></p>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="viver" data-tab="significado">
+                    <div class="card-interativo">
+                        <h3>Buscar Significado na Bagunça</h3>
+                        <p>O universo não veio com manual. Não tem um "propósito" pronto te esperando.</p>
+                        <p>Você constrói o seu através de escolhas:</p>
+                        <ul>
+                            <li>Amar alguém de verdade (com defeitos e tudo)</li>
+                            <li>Criar algo (arte, família, ideia, jardim)</li>
+                            <li>Entender como as coisas funcionam (ciência, filosofia)</li>
+                            <li>Ajudar os outros sem esperar aplauso</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="viver" data-tab="responsabilidade">
+                    <div class="card-interativo">
+                        <h3>Responsabilidade Radical</h3>
+                        <p>Sua vida é sua. Culpar "o sistema", "Deus", "os pais", "a sociedade" é confortável, mas infantil.</p>
+                        <p class="text-info"><strong>Adulto é olhar no espelho e decidir quem você vai ser hoje, mesmo sabendo que vai errar.</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Descoberta de 1884 -->
+        <section id="descoberta1884" data-animar="slide-up">
+            <div class="container">
+                <h2>A Descoberta de 1884</h2>
+                <p>A coisa mais próxima de uma "descoberta de 1884" que abalou instituições religiosas foi a publicação da <strong>Didache</strong> ("Doutrina dos Doze Apóstolos").</p>
+                
+                <div class="accordion-item open">
+                    <div class="accordion-header">O Que É a Didache?</div>
+                    <div class="accordion-content show">
+                        <p>Um manual antigo de ensinamentos éticos, rituais (batismo, eucaristia, oração), organização de comunidade e moralidade prática.</p>
+                        <p>Foi perdido por séculos e redescoberto em 1873 por Philotheos Bryennios em Constantinopla. Em março de 1884, venderam milhares de cópias no primeiro dia.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Por Que Abalou?</div>
+                    <div class="accordion-content">
+                        <p>Porque mostrava como era o cristianismo bem no começo:</p>
+                        <ul>
+                            <li>Ênfase forte em ética prática (os "Dois Caminhos")</li>
+                            <li>Estrutura comunitária mais simples</li>
+                            <li>Rituais mais "diretos" e menos ritualísticos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Anatomia da Resistência -->
+        <section id="anatomia" data-animar="zoom-in">
+            <div class="container">
+                <h2>Anatomia da Resistência</h2>
+                <p>Quando uma instituição persegue ideias em vez de debater com evidências, geralmente está protegendo <strong>poder, narrativa ou renda</strong>, não "a verdade pura".</p>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Textos Gnósticos</h4>
+                        <p>Diversidade nos primeiros séculos, papéis de mulheres diferentes</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Críticas Históricas</h4>
+                        <p>Bíblia, evolução, ciência</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Inquisição</h4>
+                        <p>Perseguição sistemática de ideias</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Censura Moderna</h4>
+                        <p>Instituições continuam resistindo a descobertas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section id="quiz" data-animar="fade-in">
+            <div class="container">
+                <h2 class="text-center mb-4">Teste Sua Compreensão</h2>
+                <div id="quiz-viver"></div>
+            </div>
+        </section>
+
+        <!-- Reflexão Final -->
+        <section id="reflexao" class="text-center" data-animar="fade-in">
+            <div class="container">
+                <blockquote class="blockquote">
+                    <p class="mb-0 fs-4">"Eu sei que sou poeira cósmica consciente por um breve momento, então vou queimar isso bem."</p>
+                </blockquote>
+                <hr>
+                <h3>Resumindo: Se Você Quer Viver de Verdade</h3>
+                <div class="row mt-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card-interativo">
+                            <i class="fa-solid fa-magnifying-glass fs-1 text-warning"></i>
+                            <p class="mt-2">Busque evidências, não conforto</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card-interativo">
+                            <i class="fa-solid fa-heart fs-1 text-danger"></i>
+                            <p class="mt-2">Ame porque faz sentido</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card-interativo">
+                            <i class="fa-solid fa-question fs-1 text-info"></i>
+                            <p class="mt-2">Aceite o mistério</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card-interativo">
+                            <i class="fa-solid fa-user fs-1 text-success"></i>
+                            <p class="mt-2">Seja honesto consigo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="text-center p-3 bg-dark">
+        <p class="text-light">&copy; Lz_ntn - 2026</p>
+    </footer>
+
+    <script src="../componentes/js/interativo.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Interativo.progresso.init();
+            Interativo.accordion.init('.accordion-item');
+            Interativo.tabs.init('viver');
+            Interativo.timeline.init();
+            Interativo.animacoes.init();
+            
+            Interativo.quiz.init({
+                containerId: 'quiz-viver',
+                perguntas: [
+                    {
+                        pergunta: "O que significa 'viver sem filtros'?",
+                        opcoes: ["Viver sem pensar", "Sentir tudo sem anestesia", "Fazer o que quiser"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "A impermanência nos ensina que:",
+                        opcoes: ["Nada dura, aproveite agora", "Tudo é ilusão", "Devemos temer a morte"],
+                        correta: 0
+                    },
+                    {
+                        pergunta: "O que a Didache revelou?",
+                        opcoes: ["Uma nova religião", "Como era o cristianismo primitivo", "Um código secreto"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "O que a perseguição a ideias revela?",
+                        opcoes: ["Que há perigo real", "Que estão protegendo poder", "Que são justos"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "Qual é a chave para viver de verdade?",
+                        opcoes: ["Seguir regras religiosas", "Buscar evidências e ser honesto", "Evitar todo sofrimento"],
+                        correta: 1
+                    }
+                ]
+            });
+            
+            Interativo.tema.init();
+        });
+    </script>
+</body>
+
+</html>

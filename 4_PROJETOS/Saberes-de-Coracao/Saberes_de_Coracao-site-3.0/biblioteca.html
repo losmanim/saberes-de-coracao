@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca — Saberes de Coração</title>
+    <meta name="description" content="Biblioteca completa dos Saberes de Coração — Gnose, Hermetismo, Epigenética, Práticas, Mestres e muito mais">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+    <style>
+        :root {
+            --cor-fundo: #0d1117;
+            --cor-card: #161b22;
+            --cor-borda: #30363d;
+            --cor-texto: #c9d1d9;
+            --cor-texto-sec: #8b949e;
+            --cor-destaque: #58a6ff;
+            --cor-espirito: #9b59b6;
+            --cor-praticas: #3498db;
+            --cor-ciencia: #2ecc71;
+            --cor-jornada: #e67e22;
+            --cor-vida: #e74c3c;
+            --cor-midia: #e91e63;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            --radius: 8px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+            --transition: 0.2s ease;
+        }
+
+        body.modo-claro {
+            --cor-fundo: #f5f7fa;
+            --cor-card: #ffffff;
+            --cor-borda: #d0d7de;
+            --cor-texto: #24292f;
+            --cor-texto-sec: #57606a;
+            --cor-destaque: #0969da;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.7;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background: var(--cor-card);
+            border-bottom: 1px solid var(--cor-borda);
+            padding: 0.75rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--cor-texto);
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--cor-espirito), var(--cor-destaque));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logo-text { font-size: 1.1rem; font-weight: 600; }
+
+        .header-actions { display: flex; gap: 0.4rem; }
+
+        .btn-icon {
+            background: transparent;
+            border: 1px solid var(--cor-borda);
+            color: var(--cor-texto-sec);
+            padding: 0.4rem 0.5rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all var(--transition);
+        }
+
+        .btn-icon:hover, .btn-icon:focus {
+            background: var(--cor-card);
+            color: var(--cor-texto);
+            border-color: var(--cor-destaque);
+            outline: none;
+        }
+
+        /* Main */
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+            background: var(--cor-card);
+            border: 1px solid var(--cor-borda);
+            border-radius: var(--radius);
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--cor-espirito), var(--cor-destaque), var(--cor-ciencia));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--cor-texto-sec);
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Nav Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.3rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--cor-borda);
+            padding-bottom: 0.5rem;
+        }
+
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--cor-texto-sec);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .nav-tab:hover, .nav-tab:focus {
+            color: var(--cor-texto);
+            background: var(--cor-card);
+            outline: none;
+        }
+
+        .nav-tab.active {
+            color: var(--cor-destaque);
+            border-color: var(--cor-destaque);
+            font-weight: 600;
+        }
+
+        /* Sections */
+        .section { display: none; }
+        .section.active { display: block; }
+
+        /* Accordion */
+        .accordion { margin-bottom: 0.5rem; }
+
+        .accordion-header {
+            background: var(--cor-card);
+            border: 1px solid var(--cor-borda);
+            border-radius: var(--radius);
+            padding: 1rem 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--cor-texto);
+            width: 100%;
+            text-align: left;
+        }
+
+        .accordion-header:hover, .accordion-header:focus {
+            border-color: var(--cor-destaque);
+            outline: none;
+        }
+
+        .accordion-header.active {
+            border-radius: var(--radius) var(--radius) 0 0;
+            border-bottom-color: transparent;
+        }
+
+        .accordion-arrow {
+            transition: transform var(--transition);
+            font-size: 0.8rem;
+        }
+
+        .accordion-header.active .accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            display: none;
+            background: var(--cor-card);
+            border: 1px solid var(--cor-borda);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            padding: 1.2rem;
+        }
+
+        .accordion-content.active { display: block; }
+
+        /* Content styling */
+        .content h3 {
+            color: var(--cor-destaque);
+            margin: 1.2rem 0 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .content h4 {
+            color: var(--cor-texto);
+            margin: 1rem 0 0.4rem;
+            font-size: 1rem;
+        }
+
+        .content p { margin-bottom: 0.8rem; }
+
+        .content ul {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .content li { margin-bottom: 0.3rem; }
+
+        .content blockquote {
+            border-left: 3px solid var(--cor-destaque);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: var(--cor-texto-sec);
+        }
+
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+        }
+
+        .content th, .content td {
+            padding: 8px 12px;
+            border: 1px solid var(--cor-borda);
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .content th {
+            background: var(--cor-fundo);
+            font-weight: 600;
+        }
+
+        .content pre {
+            background: var(--cor-fundo);
+            padding: 1rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin: 0.8rem 0;
+            font-size: 0.85rem;
+        }
+
+        .content code {
+            background: var(--cor-fundo);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+        }
+
+        .pratica-box {
+            background: var(--cor-fundo);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 0.8rem 0;
+            border-left: 3px solid var(--cor-destaque);
+        }
+
+        .pratica-box h4 {
+            color: var(--cor-destaque);
+            margin-bottom: 0.4rem;
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            background: var(--cor-fundo);
+            border-radius: 3px;
+            color: var(--cor-texto-sec);
+            margin-right: 0.3rem;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .badge-espirito { background: #3d2352; color: #c084fc; }
+        .badge-pratica { background: #1a3a52; color: #60a5fa; }
+        .badge-ciencia { background: #1a4a2e; color: #4ade80; }
+        .badge-jornada { background: #4a2e0a; color: #fb923c; }
+        .badge-vida { background: #4a1a1a; color: #f87171; }
+
+        /* Footer */
+        .footer {
+            background: var(--cor-card);
+            border-top: 1px solid var(--cor-borda);
+            padding: 1rem 1.5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--cor-texto-sec);
+        }
+
+        .footer a { color: var(--cor-destaque); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.5rem; }
+            .nav-tabs { gap: 0.2rem; }
+            .nav-tab { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
+            .accordion-header { padding: 0.8rem 1rem; font-size: 0.9rem; }
+            .content table { font-size: 0.8rem; }
+            .content th, .content td { padding: 6px 8px; }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--cor-destaque);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header" role="banner">
+        <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Voltar ao início">
+                <div class="logo-icon" aria-hidden="true">📚</div>
+                <span class="logo-text">Biblioteca — Saberes de Coração</span>
+            </a>
+            <div class="header-actions">
+                <button class="btn-icon" type="button" onclick="toggleTema()" title="Alternar tema" aria-label="Alternar tema">🌓</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main" role="main">
+        <section class="hero" aria-label="Introdução">
+            <h1>📚 Biblioteca dos Saberes</h1>
+            <p>"O conhecimento que não se compartilha é como a luz sob o alqueire."</p>
+        </section>
+
+        <nav class="nav-tabs" aria-label="Categorias da biblioteca">
+            <button class="nav-tab active" type="button" onclick="mostrarSecao('gnose')">🜂 Gnose</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('hermetismo')">🔮 Hermetismo</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('praticas')">🧘 Práticas</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('ciencia')">🔬 Ciência</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('jornada')">🧭 Jornada</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('mestres')">👁️ Mestres</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('vida')">∞ Vida Verdadeira</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('referencias')">📖 Referências</button>
+        </nav>
+
+        <!-- GNOSSE -->
+        <div class="section active" id="sec-gnose">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 1 — O Que é Gnosis?</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#gnose</span> <span class="tag">#autoconhecimento</span>
+
+                        <p>Gnosis significa <strong>conhecimento direto e íntimo da realidade divina</strong>. Não é conhecimento intelectual — é experiência direta. É o autoconhecimento que leva à transformação interior.</p>
+
+                        <h3>O Que é Gnosis?</h3>
+                        <p>A Gnosis não é apenas conhecimento intelectual, mas uma experiência direta da realidade divina. É um estado de consciência em que o indivíduo percebe sua verdadeira natureza além das limitações da personalidade condicionada.</p>
+                        <p>Este conhecimento é obtido através de:</p>
+                        <ul>
+                            <li><strong>Autoobservação consciente</strong> — Observar pensamentos, emoções e ações sem julgamento</li>
+                            <li><strong>Trabalho interior constante</strong> — Prática diária de transformação</li>
+                            <li><strong>Desidentificação dos condicionamentos</strong> — Não ser escravo dos hábitos e crenças</li>
+                        </ul>
+
+                        <h3>A Importância do Autoconhecimento</h3>
+                        <p>Sem autoconhecimento, permanecemos prisioneiros de nossos hábitos, crenças e reações automáticas. O autoconhecimento nos permite:</p>
+                        <ul>
+                            <li>Reconhecer nossos padrões limitantes</li>
+                            <li>Fazer escolhas conscientes em vez de reativas</li>
+                            <li>Desenvolver qualidades essenciais como compaixão, sabedoria e amor</li>
+                        </ul>
+
+                        <h3>A Revolução da Consciência</h3>
+                        <p>A verdadeira Gnosis inicia uma revolução interior que transforma profundamente nossa percepção de nós mesmos e do mundo:</p>
+                        <ul>
+                            <li>Despertar para nossa essência divina</li>
+                            <li>Transmutação de energias inferiores em superiores</li>
+                            <li>Integração de todos os aspectos do ser em harmonia</li>
+                        </ul>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Autoobservação Diária</h4>
+                            <p>Durante 10 minutos por dia, observe seus pensamentos, emoções e ações sem julgamento. Anote em um jornal os padrões que perceber.</p>
+                            <p><em>Pergunta para contemplação: "Quem eu seria se não estivesse identificado com meus pensamentos e emoções?"</em></p>
+                        </div>
+
+                        <blockquote>"Conhece-te a ti mesmo e conhecerás o universo e os deuses." — Templo de Delfos</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 2 — Personalidade, Essência e Ego</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#personalidade</span> <span class="tag">#essencia</span> <span class="tag">#ego</span>
+
+                        <h3>Personalidade</h3>
+                        <p>A máscara social, o personagem que criamos para nos apresentar ao mundo. É composta por:</p>
+                        <ul>
+                            <li>Hábitos e crenças adquiridas</li>
+                            <li>Identificações com grupos, ideias, papéis</li>
+                            <li>Memórias do Ego</li>
+                        </ul>
+
+                        <h3>Essência</h3>
+                        <p>A centelha divina interior, o verdadeiro Ser. É pura, inata, imortal — o núcleo real do ser.</p>
+
+                        <h3>Ego</h3>
+                        <p>O "eu" falso, composto por múltiplas personalidades (personae) que representam defeitos psicológicos, vícios, maus hábitos e conflitos íntimos.</p>
+
+                        <table>
+                            <tr><th>Personalidade</th><th>Essência</th></tr>
+                            <tr><td>Adquirida</td><td>Inata</td></tr>
+                            <tr><td>Artificial</td><td>Natural</td></tr>
+                            <tr><td>Temporária</td><td>Eterna</td></tr>
+                            <tr><td>Ego</td><td>SER</td></tr>
+                        </table>
+
+                        <h3>Compreendendo a Tríade</h3>
+                        <p>A Personalidade é o veículo que usamos para navegar no mundo físico, mas não somos nós mesmos verdadeiros. É um acúmulo de condicionamentos desde a infância — aquilo que aprendemos ser "aceitável" ou "necessário" para sobreviver e ser amado.</p>
+                        <p>A Essência, por outro lado, é nossa natureza divina inata. Ela existe independentemente de nossas experiências, crenças ou condições externas.</p>
+                        <p>O Ego funciona como um administrador conflitante que tenta manter o controle através da personalidade. Ele acumula trauma, medo e desejos não realizados, criando um senso separado de "eu" que constantemente luta por sobrevivência e validação.</p>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Observação da Máscara</h4>
+                            <p>Durante o dia, identifique momentos em que você nota estar usando uma "máscara" social — comportamentos que são mais sobre agradar os outros ou se proteger do que expressar sua verdade autêntica.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 3 — O Despertar da Consciência (Os 3 Fatores)</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#despertar</span> <span class="tag">#3-fatores</span>
+
+                        <blockquote>"Se excluirmos qualquer um dos três fatores da Revolução da Consciência, o resultado será o fracasso."</blockquote>
+
+                        <h3>1. Nascer — Morte do Ego</h3>
+                        <p>Trabalho de eliminação dos defeitos psicológicos, vícios, maus hábitos e conflitos íntimos. Este não é um conceito mórbido, mas sim o processo de eliminar tudo o que nos impede de expressar nossa verdadeira natureza.</p>
+
+                        <h3>2. Morrer — Transmutação Sexual</h3>
+                        <p>Sábio manejo das energias capazes de despertar os poderes da Alma e cristalizar o arquétipo do Homem Perfeito. Refere-se ao sábio manejo da energia criativa (energia sexual) não para sua dissipação, mas para sua transmutação em energia espiritual.</p>
+
+                        <h3>3. Sacrifício pela Humanidade</h3>
+                        <p>Praticar amor incondicional e desinteressado por nossos semelhantes. Seguir as pegadas dos grandes sábios que dedicaram suas vidas mostrando à humanidade um caminho de ascensão espiritual.</p>
+
+                        <table>
+                            <tr><th>Fator</th><th>Significado</th></tr>
+                            <tr><td>Nascer</td><td>Morte do Ego</td></tr>
+                            <tr><td>Morrer</td><td>Transmutação sexual</td></tr>
+                            <tr><td>Sacrifício</td><td>Serviço à humanidade</td></tr>
+                        </table>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Autoanálise dos Três Fatores</h4>
+                            <p>Três vezes por dia (manhã, tarde e noite):</p>
+                            <p><strong>Nascer:</strong> Que defeito psicológico eu observei em mim hoje que gostaria de transformar?</p>
+                            <p><strong>Morrer:</strong> Como eu tenho dirigido minha energia vital? Foi para baixo (dissipação) ou para cima (transmutação)?</p>
+                            <p><strong>Sacrifício:</strong> Em que ocasião eu pude praticar amor desinteressado hoje?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 4 — O Eu Psicológico</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#eu-psicologico</span> <span class="tag">#multiplicidade</span>
+
+                        <p>O "eu" psicológico é uma coleção de múltiplas personalidades que habitam a mente humana. Cada pessoa carrega dentro de si dezenas ou centenas de "eus" diferentes que emergem conforme as circunstâncias.</p>
+
+                        <h3>Características do Eu Psicológico</h3>
+                        <ul>
+                            <li><strong>Múltiplo:</strong> Composto por diversas personalidades</li>
+                            <li><strong>Conflitivo:</strong> Os diferentes "eus" frequentemente entram em conflito entre si</li>
+                            <li><strong>Ilusório:</strong> Cria uma falsa sensação de unidade e identidade</li>
+                            <li><strong>Efêmero:</strong> Não é a verdadeira essência, apenas uma construção</li>
+                        </ul>
+
+                        <h3>Compreendendo a Fragmentação</h3>
+                        <p>Imagine sua mente como um teatro onde diversos personagens entram e saem de cena conforme a situação:</p>
+                        <ul>
+                            <li>O "eu" profissional no trabalho (competente, sério, focado)</li>
+                            <li>O "eu" familiar com os pais (obediente, buscando aprovação)</li>
+                            <li>O "eu" romântico no relacionamento (apaixonado, ciumento, carente)</li>
+                            <li>O "eu" social com os amigos (engraçado, extrovertido, buscando aceitação)</li>
+                            <li>O "eu" infantil que emerge sob estresse (choramingo, fazendo birra)</li>
+                        </ul>
+
+                        <h3>O Trabalho de Integração</h3>
+                        <p>O objetivo não é eliminar completamente essas personalidades, mas sim:</p>
+                        <ol>
+                            <li>Tornar-se consciente delas quando elas aparecem</li>
+                            <li>Não se identificar completamente com nenhuma delas</li>
+                            <li>Escolher conscientemente qual aspecto de nós mesmos queremos expressar</li>
+                            <li>Conectar-se com o observador silencioso que está por trás de todos esses papéis</li>
+                        </ol>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Diário dos Eus</h4>
+                            <p>Por uma semana, sempre que notar uma forte reação emocional, pergunte-se:</p>
+                            <ul>
+                                <li>Qual "eu" está emergindo agora?</li>
+                                <li>Que situação ativou esse eu?</li>
+                                <li>Que necessidade esse eu está tentando atender?</li>
+                                <li>Como minha essência verdadeira responderia a esta situação?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 5 — A Máquina Humana</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#maquina-humana</span> <span class="tag">#4-centros</span>
+
+                        <p>O ser humano é comparado a uma máquina complexa composta por múltiplos sistemas que funcionam de forma interdependente.</p>
+
+                        <h3>Os 4 Centros</h3>
+                        <table>
+                            <tr><th>Centro</th><th>Função</th></tr>
+                            <tr><td><strong>Corpo Físico</strong></td><td>Veículo material. Reflexo dos estados psicológicos. Requer cuidado e manutenção.</td></tr>
+                            <tr><td><strong>Mente</strong></td><td>Centro de processamento. Repositório de memórias e padrões. Arena de batalha entre essência e ego.</td></tr>
+                            <tr><td><strong>Emoções</strong></td><td>Energia vital em movimento. Podem ser transmutadas. Fundamental para o equilíbrio.</td></tr>
+                            <tr><td><strong>Sexualidade</strong></td><td>Energia criativa fundamental. Chave para a transformação. Transmutação sexual como prática espiritual.</td></tr>
+                        </table>
+
+                        <h3>A Abordagem Gnóstica da Saúde</h3>
+                        <p>Enquanto a medicina convencional frequentemente trata sintomas, a Gnose busca a causa raiz nos níveis psicológico e energético:</p>
+                        <ul>
+                            <li>Uma dor de cabeça crônica pode estar ligada ao ego intelectual que insiste em controlar tudo</li>
+                            <li>Problemas digestivos podem refletir dificuldade em "digerir" experiências emocionais</li>
+                            <li>Fadiga persistente pode indicar que nossa energia vital está sendo desperdiçada em lutas internas</li>
+                        </ul>
+
+                        <h3>Defeitos e seus Efeitos no Corpo</h3>
+                        <table>
+                            <tr><th>Defeito</th><th>Efeitos Físicos</th></tr>
+                            <tr><td>Ira</td><td>Problemas no fígado, pâncreas e cegueira</td></tr>
+                            <tr><td>Gula</td><td>Obesidade, problemas cardíacos e desvios de coluna</td></tr>
+                            <tr><td>Vaidade</td><td>Esgotamento da energia sexual e debilitação geral</td></tr>
+                            <tr><td>Preguiça</td><td>Depressão e falta de ação da vontade</td></tr>
+                            <tr><td>Orgulho</td><td>Problemas no estômago e coração</td></tr>
+                            <tr><td>Luxúria</td><td>Impotência e desvios energéticos</td></tr>
+                        </table>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Mapeamento dos Sistemas</h4>
+                            <p>Três vezes ao dia, faça uma rápida avaliação:</p>
+                            <ul>
+                                <li><strong>Corpo:</strong> Quais sensações físicas estou notando? Onde há tensão?</li>
+                                <li><strong>Mente:</strong> Que padrões de pensamento estão dominando minha atenção?</li>
+                                <li><strong>Emoções:</strong> Que sentimentos estão presentes e com que intensidade?</li>
+                                <li><strong>Energia:</strong> Como estou dirigindo minha energia vital hoje?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 6 — Os Corpos Sutis e as Faculdades Superiores</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#corpos-sutis</span> <span class="tag">#faculdades</span>
+
+                        <p>O ser humano não é apenas corpo físico. Somos um universo em miniatura, com múltiplos veículos de consciência.</p>
+
+                        <h3>Os Corpos do Ser Humano</h3>
+                        <table>
+                            <tr><th>Corpo</th><th>Mundo</th><th>Função</th><th>Elemento</th></tr>
+                            <tr><td>Físico</td><td>Material</td><td>Ação no mundo denso</td><td>Terra</td></tr>
+                            <tr><td>Vital (Etérico)</td><td>Energético</td><td>Força vital, saúde</td><td>Éter</td></tr>
+                            <tr><td>Astral (Desejo)</td><td>Emocional</td><td>Sentimentos, paixões</td><td>Água</td></tr>
+                            <tr><td>Mental</td><td>Intelectual</td><td>Pensamento, razão</td><td>Ar</td></tr>
+                            <tr><td>Causal (Alma)</td><td>Consciência</td><td>Essência, vontade divina</td><td>Fogo</td></tr>
+                        </table>
+
+                        <h3>Os Chakras como Portais</h3>
+                        <table>
+                            <tr><th>Chakra</th><th>Conexão</th><th>Faculdade</th></tr>
+                            <tr><td>Múládhara (Raiz)</td><td>Físico → Vital</td><td>Vitalidade, enraizamento</td></tr>
+                            <tr><td>Svádhishthána (Sexual)</td><td>Vital → Astral</td><td>Criatividade, transmutação</td></tr>
+                            <tr><td>Manipúra (Plexo)</td><td>Astral → Mental</td><td>Poder pessoal, vontade</td></tr>
+                            <tr><td>Anáhata (Coração)</td><td>Mental → Causal</td><td>Amor incondicional</td></tr>
+                            <tr><td>Vishúdda (Garganta)</td><td>Causal → Superior</td><td>Expressão da verdade</td></tr>
+                            <tr><td>Ajña (Terceiro Olho)</td><td>Todos → Intuição</td><td>Clarividência, percepção</td></tr>
+                            <tr><td>Sahasrára (Coroa)</td><td>Conexão com o Divino</td><td>Samadhi, unidade</td></tr>
+                        </table>
+
+                        <h3>Faculdades Superiores</h3>
+                        <ul>
+                            <li><strong>Clarividência:</strong> Percepção além da visão física — auras, energias, intenções</li>
+                            <li><strong>Telepatia:</strong> Comunicação direta de consciência a consciência</li>
+                            <li><strong>Projeção Astral:</strong> A consciência opera no corpo astral durante o sono ou meditação profunda</li>
+                            <li><strong>Intuição Genuína:</strong> Conhecimento direto, sem mediação do pensamento</li>
+                            <li><strong>Samadhi:</strong> Estado de união com o Todo</li>
+                        </ul>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Meditação dos Corpos Sutis</h4>
+                            <p>1. Sente-se em silêncio. Respire profundamente 3 vezes.</p>
+                            <p>2. Visualize seu corpo físico — sinta o peso, o contato com a cadeira.</p>
+                            <p>3. Agora sinta a energia vital percorrendo seu corpo — calor, formigamento, presença.</p>
+                            <p>4. Observe suas emoções sem se identificar — veja-as como cores ao redor de você.</p>
+                            <p>5. Silencie o pensamento — deixe a mente como um lago calmo.</p>
+                            <p>6. No silêncio que resta, pergunte: "Quem sou eu além de tudo isso?"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 7 — O Mundo das Relações</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#relacoes</span> <span class="tag">#3-esferas</span>
+
+                        <blockquote>"O exterior é um reflexo do interior"</blockquote>
+
+                        <h3>1. Relação com o Corpo Físico</h3>
+                        <p>O corpo é um veículo que requer cuidado. A principal causa das doenças é a atuação dos egos (defeitos psicológicos).</p>
+
+                        <h3>2. Relação com o Mundo Exterior</h3>
+                        <p>O convívio social é o campo onde os egos emergem mais intensamente.</p>
+                        <ul>
+                            <li>O sábio não é vítima das circunstâncias, mas senhor de si mesmo</li>
+                            <li>Isolar-se não é a solução; é necessário conviver para trabalhar psicologicamente</li>
+                            <li>Deve-se evitar impor opiniões</li>
+                            <li>Praticar a não-identificação com reações mecânicas</li>
+                            <li>Acolher manifestações desagradáveis dos outros com perdão</li>
+                        </ul>
+
+                        <h3>3. Relação Conosco Mesmos</h3>
+                        <p><strong>A mais importante</strong> das três relações. Envolve o contato com o Ser Íntimo, não com os egos. Requer auto-observação constante e prática de oração para despertar a intuição.</p>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Prática: Análise das Três Esferas</h4>
+                            <p>Três vezes por dia:</p>
+                            <p><strong>Corpo:</strong> Onde sinto tensão? Que emoção pode estar por trás?</p>
+                            <p><strong>Relações:</strong> Onde reagi mecanicamente? Onde respondi conscientemente?</p>
+                            <p><strong>Interior:</strong> Quanto tempo passei em contato comigo mesmo além do pensamento?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HERMETISMO -->
+        <div class="section" id="sec-hermetismo">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔮 Os 7 Princípios Herméticos</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#hermetismo</span> <span class="tag">#kybalion</span>
+
+                        <blockquote>"Os lábios da sabedoria são fechados, exceto aos ouvidos do entendimento." — O Kybalion</blockquote>
+
+                        <h3>1. Mentalismo</h3>
+                        <p><em>"O Todo é Mente; o Universo é Mental."</em></p>
+                        <p>Tudo o que existe é criação de uma Mente Universal. Nossa mente individual é uma fração dessa Mente infinita. Seus pensamentos criam sua realidade — não como "lei da atração" simplificada, mas como reconhecimento de que consciência é a base de toda manifestação.</p>
+
+                        <h3>2. Correspondência</h3>
+                        <p><em>"Como em cima, assim embaixo; como embaixo, assim em cima."</em></p>
+                        <p>Tudo o que existe no macrocosmo existe no microcosmo. O universo é um espelho infinito onde cada parte reflete o todo. O que está fora está dentro.</p>
+
+                        <h3>3. Vibração</h3>
+                        <p><em>"Nada está em repouso; tudo vibra; tudo se move."</em></p>
+                        <p>Tudo no universo está em constante vibração. Da partícula subatômica à galáxia, do pensamento mais sutil ao objeto mais denso — tudo é vibração em diferentes frequências. Você pode alterar seu estado vibracional através de som, pensamento, respiração e intenção.</p>
+
+                        <h3>4. Polaridade</h3>
+                        <p><em>"Tudo é duplo; tudo tem dois polos; tudo tem seu par de opostos."</em></p>
+                        <p>Os opostos são na verdade a mesma coisa em graus diferentes. Calor e frio são temperatura. Amor e medo são emoção. Você pode transformar qualquer estado em seu oposto — não destruindo, mas transmutando.</p>
+
+                        <h3>5. Ritmo</h3>
+                        <p><em>"Tudo flui e reflui; tudo tem suas marés; tudo sobe e desce."</em></p>
+                        <p>Tudo opera em ciclos e ritmos. As marés, as estações, as emoções, as civilizações. Quando você compreende o ritmo, pode navegar os ciclos em vez de ser arrastado por eles. Não lute contra o refluxo — saiba que o fluxo virá.</p>
+
+                        <h3>6. Causa e Efeito</h3>
+                        <p><em>"Toda causa tem seu efeito; todo efeito tem sua causa."</em></p>
+                        <p>Nada acontece por acaso. O que chamamos de "sorte" ou "azar" são apenas causas que ainda não compreendemos. Você é tanto causa quanto efeito. Suas ações presentes criam seus futuros.</p>
+
+                        <h3>7. Gênero</h3>
+                        <p><em>"O gênero está em tudo; tudo tem seu princípio masculino e feminino."</em></p>
+                        <p>Masculino e feminino não são sexos biológicos apenas — são princípios energéticos presentes em tudo. O equilíbrio entre ambos dentro de si é a chave para a criação consciente e a harmonia interior.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🪞 Lei da Correspondência — Detalhada</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#correspondencia</span> <span class="tag">#unidade</span>
+
+                        <h3>No Corpo Humano</h3>
+                        <table>
+                            <tr><th>Cosmo</th><th>Corpo Humano</th></tr>
+                            <tr><td>Sistema Solar</td><td>Sistema Circulatório</td></tr>
+                            <tr><td>Planetas</td><td>Órgãos</td></tr>
+                            <tr><td>Lua</td><td>Glândula Pineal</td></tr>
+                            <tr><td>Estrelas</td><td>Células</td></tr>
+                            <tr><td>Galáxias</td><td>Cérebro</td></tr>
+                        </table>
+
+                        <h3>Nas Emoções</h3>
+                        <table>
+                            <tr><th>Emoção Superior</th><th>Emoção Inferior</th></tr>
+                            <tr><td>Amor divino</td><td>Amor humano</td></tr>
+                            <tr><td>Sabedoria</td><td>Conhecimento</td></tr>
+                            <tr><td>Paz eternal</td><td>Paz momentânea</td></tr>
+                            <tr><td>Força criadora</td><td>Força muscular</td></tr>
+                        </table>
+
+                        <h3>Correspondências Elementais</h3>
+                        <table>
+                            <tr><th>Grande</th><th>Pequeno</th></tr>
+                            <tr><td>Sol</td><td>Coração</td></tr>
+                            <tr><td>Lua</td><td>Mente</td></tr>
+                            <tr><td>Terra</td><td>Corpo</td></tr>
+                            <tr><td>Ar</td><td>Pulmões</td></tr>
+                            <tr><td>Fogo</td><td>Metabolismo</td></tr>
+                            <tr><td>Água</td><td>Emoções</td></tr>
+                        </table>
+
+                        <h3>Como Usar</h3>
+                        <ul>
+                            <li><strong>Para Cura:</strong> Se há um padrão em qualquer nível, você pode influenciá-lo em qualquer nível. Cura física? Trabalhe o emocional.</li>
+                            <li><strong>Para Compreensão:</strong> O que está fora está dentro. Problema no mundo? Examine seu interior.</li>
+                        </ul>
+
+                        <div class="pratica-box">
+                            <h4>🧘 Meditação da Correspondência</h4>
+                            <p>1. Sente-se em silêncio</p>
+                            <p>2. Escolha um aspecto da natureza</p>
+                            <p>3. Pergunte: "O que isto reflete em mim?"</p>
+                            <p>4. Observe a resposta que surge</p>
+                            <p>5. Pergunte: "O que isto reflete no cosmos?"</p>
+                            <p>6. Integre a compreensão</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRATICAS -->
+        <div class="section" id="sec-praticas">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🌬️ Respiração Quadrada (4x4)</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#respiracao</span> <span class="tag">#iniciante</span>
+
+                        <p>A respiração é a única função do sistema nervoso autônomo que podemos controlar conscientemente. Ao controlar a respiração, você acessa diretamente o sistema nervoso.</p>
+
+                        <h3>Instruções</h3>
+                        <ol>
+                            <li>Sente-se confortavelmente com a coluna reta</li>
+                            <li><strong>Inspire</strong> pelo nariz contando até 4</li>
+                            <li><strong>Segure</strong> o ar contando até 4</li>
+                            <li><strong>Exale</strong> pelo nariz contando até 4</li>
+                            <li><strong>Segure</strong> sem ar contando até 4</li>
+                            <li>Repita o ciclo 5-10 vezes</li>
+                        </ol>
+
+                        <h3>Efeitos</h3>
+                        <ul>
+                            <li>Equilibra o sistema nervoso simpático e parassimpático</li>
+                            <li>Acalma a mente imediatamente</li>
+                            <li>Aumenta foco e presença</li>
+                            <li>Prepara o corpo para meditação</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🌬️ Respiração Alternada (Nadi Shodhana)</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#respiracao</span> <span class="tag">#intermediario</span>
+
+                        <h3>Instruções</h3>
+                        <ol>
+                            <li>Use o polegar direito para fechar a narina direita</li>
+                            <li>Inspire pela narina esquerda contando até 4</li>
+                            <li>Feche a esquerda com o anular, abra a direita</li>
+                            <li>Exale pela direita contando até 4</li>
+                            <li>Inspire pela direita contando até 4</li>
+                            <li>Feche a direita, abra a esquerda</li>
+                            <li>Exale pela esquerda contando até 4</li>
+                            <li>Isso é 1 ciclo. Repita 5-10 ciclos.</li>
+                        </ol>
+
+                        <h3>Efeitos</h3>
+                        <ul>
+                            <li>Equilibra os hemisférios cerebrais</li>
+                            <li>Harmoniza os canais Ida (lunar) e Pingala (solar)</li>
+                            <li>Clareza mental profunda</li>
+                            <li>Preparação para estados meditativos avançados</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🌬️ Respiração Coerente (HeartMath)</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#respiracao</span> <span class="tag">#coracao</span>
+
+                        <h3>Instruções</h3>
+                        <ol>
+                            <li>Coloque uma mão no coração</li>
+                            <li>Respire pelo nariz contando 5 segundos (inspiração)</li>
+                            <li>Exale pelo nariz ou boca por 5 segundos</li>
+                            <li>Mantenha o foco na área do coração</li>
+                            <li>Pense em algo que faz sentir gratidão</li>
+                            <li>Continue por 5 minutos</li>
+                        </ol>
+
+                        <h3>Efeitos</h3>
+                        <ul>
+                            <li>Aumenta a coerência cardíaca (comprovado pelo HeartMath Institute)</li>
+                            <li>Reduz cortisol em minutos</li>
+                            <li>Melhora a função imunológica</li>
+                            <li>Conecta corpo físico ao corpo astral</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔊 Mantras de Poder</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#mantra</span> <span class="tag">#som</span>
+
+                        <p>O som é vibração. A vibração é energia. Os mantras não são "orações mágicas" — são frequências sonoras que alteram estados de consciência.</p>
+
+                        <h3>OM (AUM)</h3>
+                        <p><em>O som primordial. Contém todos os outros sons.</em></p>
+                        <p>Vocalize: <strong>Aaaaaaa</strong> (abre a garganta) → <strong>Ooooooo</strong> (ressoa no peito) → <strong>Mmmmmmm</strong> (vibra na cabeça). Após o M, permaneça em silêncio. Repita 3-108 vezes.</p>
+
+                        <h3>OM MANI PADME HUM</h3>
+                        <p><em>"A joia no lótus" — iluminação.</em></p>
+                        <p>Sinta cada sílaba vibrando: OM (coroa), MA (terceiro olho), NI (garganta), PAD (coração), ME (plexo solar), HUM (base da coluna).</p>
+
+                        <h3>HU</h3>
+                        <p><em>O sopro de vida — cura.</em></p>
+                        <p>Ao exalar, cante <strong>Huuuuuu</strong> (som suave, como um suspiro longo). Sinta o som vibrando no peito. Continue por 5-15 minutos.</p>
+
+                        <h3>RAM</h3>
+                        <p><em>Associado ao chakra do coração — amor e coragem.</em></p>
+                        <p>Vocalize <strong>Raaaaam</strong> (som longo, vibrante). Sinta a vibração no centro do peito. Repita 12-36 vezes.</p>
+
+                        <h3>IAO</h3>
+                        <p><em>Gnóstica — transmutação.</em></p>
+                        <p>Ao inspirar, pense em <strong>I</strong>. Ao segurar, pense em <strong>A</strong>. Ao exalar, pense em <strong>O</strong>. Visualize a energia subindo da base ao cérebro.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🧘 Meditação por Chakras</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#meditacao</span> <span class="tag">#chakra</span>
+
+                        <h3>Instruções</h3>
+                        <p>Comece pelo topo (Coronário) e desça gradualmente. A cada chakra, repita o mantra vocalizado por 1-2 minutos, respirando profundamente.</p>
+
+                        <table>
+                            <tr><th>Chakra</th><th>Mantra</th><th>Foco</th></tr>
+                            <tr><td>Coronário</td><td>I</td><td>Conexão espiritual</td></tr>
+                            <tr><td>Frontal</td><td>I</td><td>Intuição</td></tr>
+                            <tr><td>Laríngeo</td><td>E</td><td>Comunicação</td></tr>
+                            <tr><td>Cardíaco</td><td>O</td><td>Amor</td></tr>
+                            <tr><td>Plexo Solar</td><td>U</td><td>Poder pessoal</td></tr>
+                            <tr><td>Pulmonares</td><td>A</td><td>Vitalidade</td></tr>
+                            <tr><td>Prostático</td><td>M</td><td>Criatividade</td></tr>
+                            <tr><td>Coccígeo</td><td>S</td><td>Segurança</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CIENCIA -->
+        <div class="section" id="sec-ciencia">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔬 O Que é Epigenética?</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-ciencia">CIÊNCIA</span> <span class="tag">#epigenetica</span> <span class="tag">#genes</span>
+
+                        <p>Epigenética é o estudo das mudanças na atividade dos genes que não envolvem alterações na sequência do DNA.</p>
+
+                        <blockquote>"Pense no seu DNA como um livro de receitas com todas as possibilidades. A epigenética são as anotações e marcadores que decidem quais receitas serão lidas e executadas."</blockquote>
+
+                        <p>Você pode ter genes "de risco" que nunca se expressam se mantiver bons hábitos epigenéticos!</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔬 Os Três Mecanismos Epigenéticos</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-ciencia">CIÊNCIA</span> <span class="tag">#epigenetica</span> <span class="tag">#mecanismos</span>
+
+                        <h3>1. Metilação 🎯</h3>
+                        <p>Adição de grupos metil ao DNA que <strong>desligam</strong> genes. Como colocar um "não leia" em uma página.</p>
+                        <p><em>Exemplo:</em> Fumar pode adicionar metil em genes de tumor.</p>
+
+                        <h3>2. Histonas 📚</h3>
+                        <p>Proteínas ao redor das quais o DNA se enrola. Podem <strong>abrir</strong> ou <strong>fechar</strong> o acesso aos genes.</p>
+                        <p><em>Exemplo:</em> Estresse crônico compacta genes relacionados à imunidade.</p>
+
+                        <h3>3. MicroRNA ✉️</h3>
+                        <p>Moléculas que <strong>regulam</strong> quais genes são traduzidos em proteínas.</p>
+                        <p><em>Exemplo:</em> Dieta rica em ômega-3 afeta microRNAs inflamatórios.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔬 O Que Influencia a Epigenética?</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-ciencia">CIÊNCIA</span> <span class="tag">#epigenetica</span> <span class="tag">#habitos</span>
+
+                        <table>
+                            <tr><th>Fator</th><th>Efeito Epigenético</th></tr>
+                            <tr><td>🍎 Alimentação</td><td>Folatos, ômega-3, antioxidantes. Dieta mediterrânea = genes pró-inflamatórios desligados.</td></tr>
+                            <tr><td>😰 Estresse</td><td>Cortisol crônico = epigenética do envelhecimento acelerado. Mas meditação reverte isso!</td></tr>
+                            <tr><td>🏃 Exercício</td><td>Atividade física = metilação em genes relacionados à inflamação e metabolismo.</td></tr>
+                            <tr><td>😴 Sono</td><td>Noite bem dormida = epigenética de regeneração. Noite ruim = genes de estresse ativados.</td></tr>
+                            <tr><td>👥 Conexões Sociais</td><td>Solidão = genes inflamatórios ativados. Comunidade = genes de imunidade fortalecidos.</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>❤️ Campo Eletromagnético do Coração</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-ciencia">CIÊNCIA</span> <span class="tag">#coracao</span> <span class="tag">#heartmath</span>
+
+                        <p>O coração gera o campo eletromagnético mais potente do corpo humano — <strong>60x maior que o cérebro</strong>. Este campo pode ser medido a até 3 metros do corpo.</p>
+                        <p>Pesquisas do HeartMath Institute mostram que o campo cardíaco influencia o cérebro e até o campo de pessoas próximas.</p>
+
+                        <h3>Coerência Cardíaca</h3>
+                        <p>Estado em que o ritmo do coração é organizado e equilibrado, criando harmonia entre coração, mente e emoção.</p>
+                        <ul>
+                            <li>Redução de cortisol (hormônio do estresse)</li>
+                            <li>Melhoria do sistema imunológico</li>
+                            <li>Clareza mental e tomada de decisão</li>
+                            <li>Melhoria na saúde cardiovascular</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- JORNADA -->
+        <div class="section" id="sec-jornada">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🧭 A Jornada da Consciência</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-jornada">JORNADA</span> <span class="tag">#consciencia</span> <span class="tag">#filosofia</span>
+
+                        <h3>Três Visões sobre a Consciência</h3>
+
+                        <h4>1. Visão Materialista</h4>
+                        <p>Você é um pedaço do Todo que ganhou complexidade suficiente pra se olhar no espelho. O universo é um sistema físico. A consciência surge como propriedade emergente.</p>
+                        <blockquote>"Você é o universo se autoconhecendo." — Carl Sagan</blockquote>
+
+                        <h4>2. Visão Não-Dual</h4>
+                        <p>A consciência não "surge" do cérebro; ela é fundamental, como espaço, tempo ou massa. Tudo tem um grão mínimo de "experiência".</p>
+                        <blockquote>"O Todo é consciente em si mesmo e você é apenas um ponto focal dele."</blockquote>
+
+                        <h4>3. Visão Experiencial</h4>
+                        <p>Muitos humanos (místicos, psicodélicos, meditação profunda) sentem o "eu" dissolver e virar o Todo. O cérebro, quando certos circuitos são desligados, para de gerar a ilusão do "eu separado".</p>
+                        <blockquote>"Você vira o universo experimentando a si mesmo."</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🧭 O Ciclo de Transformação</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-jornada">JORNADA</span> <span class="tag">#transformacao</span>
+
+                        <pre>
+INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível superior)
+                        </pre>
+
+                        <table>
+                            <tr><th>Estágio</th><th>Descrição</th><th>Prática</th></tr>
+                            <tr><td>Inconsciente</td><td>Vivendo no automático</td><td>—</td></tr>
+                            <tr><td>Busca</td><td>Insatisfação, procura</td><td>Estudo, leitura</td></tr>
+                            <tr><td>Prática</td><td>Aplicação diária</td><td>Meditação, respiração</td></tr>
+                            <tr><td>Despertar</td><td>Expansão de consciência</td><td>Os 3 Fatores</td></tr>
+                            <tr><td>Integração</td><td>Vivendo no cotidiano</td><td>Vida Verdadeira</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MESTRES -->
+        <div class="section" id="sec-mestres">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>👁️ Mestres Gnósticos</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#mestres</span> <span class="tag">#gnose</span>
+
+                        <h3>V.M. Samael Aun Weor</h3>
+                        <ul>
+                            <li>Fundador das Escolas Gnósticas</li>
+                            <li>Autor de mais de 75 livros sobre esoterismo</li>
+                            <li>Considerado o Avatara da Era de Aquário</li>
+                            <li>Responsável pela divulgação da "Revolução da Consciência"</li>
+                        </ul>
+
+                        <h3>V.M. Lakshmi</h3>
+                        <ul>
+                            <li>Designada para restaurar os grupos gnósticos mundiais</li>
+                            <li>Encarregada de confederar grupos gnósticos em diversos países</li>
+                            <li>Revelou ensinamentos como as "Jóias do Dragão Amarelo"</li>
+                        </ul>
+
+                        <h3>Mestres Históricos</h3>
+                        <table>
+                            <tr><th>Mestre</th><th>Contribuição</th></tr>
+                            <tr><td>Eliphas Lévi</td><td>Esoterismo ocidental</td></tr>
+                            <tr><td>Helena Blavatsky</td><td>Teosofia</td></tr>
+                            <tr><td>Rudolf Steiner</td><td>Antroposofia</td></tr>
+                            <tr><td>Charles Leadbeater</td><td>Teosofia</td></tr>
+                            <tr><td>Arnold Krumm-Heller</td><td>Gnose na Europa e Américas</td></tr>
+                        </table>
+
+                        <h3>Mestres do Raio Maia</h3>
+                        <p>A América do Sul abriga templos dos Mistérios Maias. Milhões de pessoas pertencem ao raio maia devido à herança indígena predominante.</p>
+                        <table>
+                            <tr><th>Mestre</th><th>Área de Influência</th></tr>
+                            <tr><td>Kitichi</td><td>Regente elementar</td></tr>
+                            <tr><td>Varuna</td><td>Elemento água</td></tr>
+                            <tr><td>Paralda</td><td>Elemento fogo</td></tr>
+                            <tr><td>Kalusuanga</td><td>Raio Maia — Sabedoria ancestral</td></tr>
+                        </table>
+
+                        <blockquote>"É fundamental lembrar que, na América do Sul, a herança indígena é predominante. Muitos buscadores focam exclusivamente no Tibete, mas o sucesso exige descobrir o raio e a tônica pessoais."</blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIDA VERDADEIRA -->
+        <div class="section" id="sec-vida">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>∞ Viver Sem Filtros</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-vida">VIDA VERDADEIRA</span> <span class="tag">#vida</span> <span class="tag">#sem-filtros</span>
+
+                        <h3>A Didaché e a Vida Sem Filtros</h3>
+                        <p>A Didaché (ou "Ensinamento dos Doze Apóstolos") é um dos mais antigos escritos cristãos, datado do século I. Descoberto em 1884 por Filoteu Briênio, revela um cristianismo primitivo sem dogmas, sem pecado original, sem cruz — um caminho de vida direta.</p>
+
+                        <h3>Princípios</h3>
+                        <ul>
+                            <li><strong>Sem filtros:</strong> Viver autenticamente, sem máscaras sociais</li>
+                            <li><strong>Sem dogmas:</strong> Experiência direta sobre crença</li>
+                            <li><strong>Sem barreiras:</strong> Conhecimento livre para todos</li>
+                            <li><strong>Com empatia:</strong> Cada pessoa tem seu ritmo</li>
+                        </ul>
+
+                        <h3>O Segredo de 1884</h3>
+                        <p>A descoberta da Didaché revelou que o cristianismo primitivo era radicalmente diferente do que se tornou. Era um caminho de vida prática, não de dogmas teológicos. Um manual de como viver, não de como crer.</p>
+
+                        <blockquote>"O verdadeiro conhecimento deve ser passado de coração, com boa vontade, em empatia ativa, elevando o campo."</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>∞ Filosofia do Projeto</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-vida">VIDA VERDADEIRA</span> <span class="tag">#filosofia</span>
+
+                        <h3>O Que Este Projeto É</h3>
+                        <ul>
+                            <li>Um mapa, não o território</li>
+                            <li>Um convite à experiência direta</li>
+                            <li>Uma síntese de tradições</li>
+                            <li>Conhecimento livre para quem busca</li>
+                        </ul>
+
+                        <h3>O Que Este Projeto NÃO É</h3>
+                        <ul>
+                            <li>❌ Mágica ou atalho espiritual</li>
+                            <li>❌ Substituto de acompanhamento profissional</li>
+                            <li>❌ Garantia de iluminação</li>
+                            <li>❌ Uma religião ou culto</li>
+                        </ul>
+
+                        <h3>Princípios do Compartilhamento</h3>
+                        <ol>
+                            <li><strong>Sem expectativa de retorno</strong> — O conhecimento é livre</li>
+                            <li><strong>Com empatia</strong> — Cada pessoa tem seu ritmo</li>
+                            <li><strong>Elevando o campo</strong> — Contribuir para a evolução coletiva</li>
+                            <li><strong>De coração</strong> — Não por obrigação, mas por amor</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REFERENCIAS -->
+        <div class="section" id="sec-referencias">
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Obras de Referência</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <table>
+                            <tr><th>Obra</th><th>Autor</th><th>Tradição</th></tr>
+                            <tr><td>A Doutrina Secreta</td><td>Helena Blavatsky</td><td>Teosofia</td></tr>
+                            <tr><td>O Kybalion</td><td>Três Iniciados</td><td>Hermetismo</td></tr>
+                            <tr><td>O Corpus Hermeticum</td><td>Hermes Trismegisto</td><td>Hermetismo</td></tr>
+                            <tr><td>A Voz do Silêncio</td><td>Helena Blavatsky</td><td>Teosofia</td></tr>
+                            <tr><td>O Matrimônio Perfeito</td><td>Samael Aun Weor</td><td>Gnose</td></tr>
+                            <tr><td>Tratado de Psicologia Revolucionária</td><td>Samael Aun Weor</td><td>Gnose</td></tr>
+                            <tr><td>O Livro de Ouro</td><td>Samael Aun Weor</td><td>Gnose</td></tr>
+                            <tr><td>Biblioteca de Nag Hammadi</td><td>Vários</td><td>Gnose</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🎵 Áudios Recomendados</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <table>
+                            <tr><th>Áudio</th><th>Categoria</th><th>Conexão</th></tr>
+                            <tr><td>A Frequência Proibida de Thoth</td><td>Gnose/Esoterismo</td><td>Hermetismo, Gnose</td></tr>
+                            <tr><td>Alan Watts — Segredo Quântico</td><td>Gnose/Esoterismo</td><td>Jornada</td></tr>
+                            <tr><td>Jesus e as 4 Emoções dos Arcontes</td><td>Gnose/Esoterismo</td><td>Gnose</td></tr>
+                            <tr><td>Metafísica Cristã (Audiolivro)</td><td>Cristianismo Esotérico</td><td>Textos Gnósticos</td></tr>
+                            <tr><td>O Evangelho Perdido de Tomé</td><td>Cristianismo Esotérico</td><td>Textos Gnósticos</td></tr>
+                            <tr><td>Helena Blavatsky — Verdade</td><td>Hermetismo/Teosofia</td><td>Teosofia</td></tr>
+                            <tr><td>Carl Jung — Universo Te Testa</td><td>Consciência</td><td>Jornada</td></tr>
+                            <tr><td>Você É o Observador</td><td>Consciência</td><td>Jornada, Meditação</td></tr>
+                            <tr><td>Autofagia — Regeneração</td><td>Corpo/Regeneração</td><td>Epigenética</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🎬 Vídeos Recomendados</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <table>
+                            <tr><th>Vídeo</th><th>Categoria</th><th>Conexão</th></tr>
+                            <tr><td>9 Frequências Solfeggio</td><td>Frequências/Cura</td><td>Mantras, Coração</td></tr>
+                            <tr><td>Blavatsky — O Que Fazer ao Acordar</td><td>Filosofia</td><td>Teosofia</td></tr>
+                            <tr><td>Carl Jung — Programação Mental</td><td>Filosofia</td><td>Jornada</td></tr>
+                            <tr><td>O Brasil Antes de 1500</td><td>História</td><td>Cultura ancestral</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <p>Biblioteca dos Saberes — Saberes de Coração © 2026 — Domínio Público — <a href="index.html">Voltar ao Início</a></p>
+    </footer>
+
+    <script>
+    function mostrarSecao(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('sec-' + id).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function toggleAccordion(header) {
+        const content = header.nextElementSibling;
+        const isActive = header.classList.contains('active');
+
+        header.classList.toggle('active');
+        content.classList.toggle('active');
+        header.setAttribute('aria-expanded', !isActive);
+    }
+
+    function toggleTema() {
+        document.body.classList.toggle('modo-claro');
+        localStorage.setItem('tema', document.body.classList.contains('modo-claro') ? 'claro' : 'escuro');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('tema') === 'claro') {
+            document.body.classList.add('modo-claro');
+        }
+    });
+    </script>
+</body>
+
+</html>

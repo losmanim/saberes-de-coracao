@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capa - Epigenética</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .capa {
+            width: 1600px;
+            height: 2560px;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a5c 50%, #0d2840 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* DNA helix effect */
+        .capa::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                #00ff88 20%, 
+                transparent 25%,
+                transparent 50%,
+                #00ff88 55%,
+                transparent 60%,
+                transparent 75%,
+                #00ff88 80%,
+                transparent 100%
+            );
+            animation: dnaMove 3s ease-in-out infinite;
+        }
+        
+        .capa::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,255,136,0.1) 0%, transparent 70%);
+        }
+        
+        @keyframes dnaMove {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* DNA double helix circles */
+        .dna-circles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+        }
+        
+        .dna {
+            position: absolute;
+            border: 3px solid rgba(0,255,136,0.2);
+            border-radius: 50%;
+        }
+        
+        .dna-1 {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        
+        .dna-2 {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+        }
+        
+        .dna-3 {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+        }
+        
+        /*Main symbol */
+        .simbolo {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #00ff88, #00cc6a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 100px rgba(0,255,136,0.3);
+        }
+        
+        .simbolo-inner {
+            width: 280px;
+            height: 280px;
+            background: #0a1628;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dna-symbol {
+            font-size: 120px;
+            color: #00ff88;
+            font-weight: bold;
+        }
+        
+        /* Texto principal */
+        .titulo {
+            font-size: 130px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 30px rgba(0,255,136,0.5);
+        }
+        
+        .subtitulo {
+            font-size: 45px;
+            color: #00ff88;
+            margin-bottom: 60px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Linha decorativa */
+        .linha {
+            width: 300px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #00ff88, transparent);
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Texto inferior */
+        .autor {
+            font-size: 35px;
+            color: #666;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .colecao {
+            font-size: 30px;
+            color: #00ff88;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Elementos decorativos */
+        .dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #00ff88;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+        
+        .dot-1 { top: 100px; left: 100px; }
+        .dot-2 { top: 200px; right: 150px; }
+        .dot-3 { bottom: 200px; left: 150px; }
+        .dot-4 { bottom: 100px; right: 100px; }
+    </style>
+</head>
+<body>
+    <div class="capa">
+        <div class="dna-circles">
+            <div class="dna dna-1"></div>
+            <div class="dna dna-2"></div>
+            <div class="dna dna-3"></div>
+        </div>
+        
+        <div class="dot dot-1"></div>
+        <div class="dot dot-2"></div>
+        <div class="dot dot-3"></div>
+        <div class="dot dot-4"></div>
+        
+        <div class="simbolo">
+            <div class="simbolo-inner">
+                <span class="dna-symbol">E</span>
+            </div>
+        </div>
+        
+        <h1 class="titulo">Epigenética</h1>
+        <p class="subtitulo">A Ciência que os Ancestrais<br>Já Conheciam</p>
+        
+        <div class="linha"></div>
+        
+        <p class="autor">Coleção Saberes Antigos</p>
+        <p class="colecao">• 2026 •</p>
+    </div>
+</body>
+</html>

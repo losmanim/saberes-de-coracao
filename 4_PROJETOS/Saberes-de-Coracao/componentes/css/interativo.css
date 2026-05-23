@@ -1,0 +1,371 @@
+/* ============================================
+   ESTILOS DOS COMPONENTES INTERATIVOS
+   Para todos os sites do projeto Monetizar
+   ============================================ */
+
+/* === DARK MODE === */
+body.dark-mode {
+    background-color: #0a0a0a !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode main,
+body.dark-mode section,
+body.dark-mode .container {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode header {
+    background: linear-gradient(180deg, #1a1a2e 0%, #0a0a0a 100%) !important;
+}
+
+body.dark-mode .btn-success {
+    background-color: #00ff88 !important;
+    color: #000 !important;
+}
+
+body.dark-mode .btn-danger {
+    background-color: #ff6b6b !important;
+}
+
+/* === ACCORDION MODERNO === */
+.accordion-item {
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+    margin: 10px 0;
+    overflow: hidden;
+    background: rgba(0,0,0,0.3);
+}
+
+.accordion-header {
+    padding: 15px 20px;
+    background: linear-gradient(45deg, rgba(0,255,136,0.1), rgba(0,204,255,0.1));
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.accordion-header:hover {
+    background: linear-gradient(45deg, rgba(0,255,136,0.2), rgba(0,204,255,0.2));
+}
+
+.accordion-header::after {
+    content: '+';
+    font-size: 24px;
+    color: #00ff88;
+    transition: transform 0.3s;
+}
+
+.accordion-item.open .accordion-header::after {
+    transform: rotate(45deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    padding: 0 20px;
+}
+
+.accordion-content.show {
+    max-height: 500px;
+    padding: 20px;
+}
+
+/* === QUIZ === */
+.quiz-container {
+    background: rgba(0,0,0,0.5);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #00ff88;
+    margin: 20px 0;
+}
+
+.quiz-progresso {
+    color: #00ccff;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.quiz-pergunta {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.quiz-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quiz-opcao {
+    padding: 15px;
+    background: linear-gradient(45deg, #1a1a2e, #2a2a4e);
+    border: 1px solid #00ff88;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.quiz-opcao:hover {
+    background: linear-gradient(45deg, #00ff88, #00ccff);
+    color: #000;
+    transform: translateX(10px);
+}
+
+.quiz-feedback {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.quiz-correto {
+    color: #00ff88;
+    font-size: 18px;
+    animation: pulse 0.5s;
+}
+
+.quiz-incorreto {
+    color: #ff6b6b;
+    font-size: 16px;
+    animation: shake 0.5s;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.quiz-resultado {
+    text-align: center;
+    padding: 30px;
+}
+
+.quiz-pontos {
+    font-size: 48px;
+    font-weight: bold;
+    color: #00ff88;
+    margin: 20px 0;
+}
+
+.btn-reiniciar {
+    background: linear-gradient(45deg, #00ff88, #00ccff);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+/* === TABS === */
+.tab-group {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    padding: 12px 25px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid #00ff88;
+    border-radius: 25px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-button:hover,
+.tab-button.active {
+    background: linear-gradient(45deg, #00ff88, #00ccff);
+    color: #000;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === TIMELINE === */
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, #00ff88, #00ccff);
+}
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 20px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #00ff88;
+    border-radius: 50%;
+    top: 20px;
+}
+
+.timeline-item:nth-child(odd)::before {
+    right: -10px;
+}
+
+.timeline-item:nth-child(even)::before {
+    left: -10px;
+}
+
+/* === ANIMAÇÕES === */
+[data-animar="fade-in"] {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+[data-animar="slide-up"] {
+    animation: slideUp 0.6s ease forwards;
+}
+
+[data-animar="zoom-in"] {
+    animation: zoomIn 0.6s ease forwards;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* === CARD INTERATIVO === */
+.card-interativo {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid #00ff88;
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.card-interativo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,255,136,0.3);
+    border-color: #00ccff;
+}
+
+/* === TOOLTIP === */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltip-texto {
+    visibility: hidden;
+    width: 200px;
+    background: #1a1a2e;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border: 1px solid #00ff88;
+}
+
+.tooltip:hover .tooltip-texto {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* === PROGRESS BAR CIRCULAR === */
+.progress-circular {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(#00ff88 var(--progress), #333 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.progress-circular-interno {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #00ff88;
+}
+
+/* === SCROLL ANIMADO === */
+.scroll-animado {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.scroll-animado.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}

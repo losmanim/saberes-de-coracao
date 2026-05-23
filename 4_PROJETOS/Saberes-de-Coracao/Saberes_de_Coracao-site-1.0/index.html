@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Caminho - Saberes Ancestrais</title>
+    <meta name="description" content="Um caminho de conhecimento que une ciência, espiritualidade e sabedoria prática.">
+    <!-- Estilos -->
+    <link rel="stylesheet" href="css/estilo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="bi bi-universal-access logo-icon"></i>
+                <div>
+                    <h1>O Caminho</h1>
+                    <span class="logo-subtitle">Saberes Ancestrais</span>
+                </div>
+            </div>
+            <div class="controles-tema">
+                <button class="btn-tema" onclick="MudarTema('escuro')" title="Modo Escuro">
+                    <i class="bi bi-moon-stars"></i>
+                </button>
+                <button class="btn-tema" onclick="MudarTema('claro')" title="Modo Claro">
+                    <i class="bi bi-sun"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    <!-- Navegação -->
+    <nav>
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#inicio" class="nav-link active">Início</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#conhecimento" class="nav-link">Conhecimento</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#praticas" class="nav-link">Práticas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#jornada" class="nav-link">Jornada</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#impacto" class="nav-link">Impacto</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#quiz" class="nav-link">Quiz</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Main -->
+    <main>
+        <!-- Introdução -->
+        <section id="inicio" class="introducao animacao-entrada">
+            <h1>O Caminho do Conhecimento</h1>
+            <p>Uma jornada através dos saberes que unen ciência, espiritualidade e sabedoria prática. Descubra como transformar conhecimento em evolução pessoal.</p>
+            <div class="destaque-texto">
+                <i class="bi bi-quote" style="font-size: 2rem; color: var(--cor-destaque);"></i>
+                <p style="margin-top: 15px; font-style: italic; font-size: 1.2rem;">
+                    "O conhecimento sem prática é vazio. A prática sem conhecimento é cega."<br>
+                    <span style="font-size: 0.9rem; opacity: 0.7;">— Tradição Hermética</span>
+                </p>
+            </div>
+            <a href="#conhecimento" class="btn btn-primary" style="margin-top: 20px;">
+                <i class="bi bi-arrow-down-circle"></i> Começar a Jornada
+            </a>
+        </section>
+        <!-- Conhecimento - Abas -->
+        <section id="conhecimento">
+            <h2><i class="bi bi-book"></i> Tradições de Conhecimento</h2>
+            <p class="section-subtitle">Explore saberes ancestrais e científicos que transformam a consciência</p>
+            <div class="progress-categories">
+                <div class="progress-item" data-category="gnose">
+                    <span class="progress-label">Gnose</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-item" data-category="epigenetica">
+                    <span class="progress-label">Epigenética</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-item" data-category="hermetismo">
+                    <span class="progress-label">Hermetismo</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-item" data-category="teosofia">
+                    <span class="progress-label">Teosofia</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-item" data-category="kundalini">
+                    <span class="progress-label">Kundalini</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="progress-item" data-category="coracao">
+                    <span class="progress-label">Coração</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tabs-container">
+                <div class="tabs-buttons">
+                    <button class="tab-btn active" data-tab-target="gnose">
+                        <i class="bi bi-fire"></i> <span>Gnose</span>
+                        <span class="tab-status" id="status-gnose">0%</span>
+                    </button>
+                    <button class="tab-btn" data-tab-target="epigenetica">
+                        <i class="bi bi-dna"></i> <span>Epigenética</span>
+                        <span class="tab-status" id="status-epigenetica">0%</span>
+                    </button>
+                    <button class="tab-btn" data-tab-target="hermetismo">
+                        <i class="bi bi-gem"></i> <span>Hermetismo</span>
+                        <span class="tab-status" id="status-hermetismo">0%</span>
+                    </button>
+                    <button class="tab-btn" data-tab-target="kundalini">
+                        <i class="bi bi-lightning-charge"></i> <span>Kundalini</span>
+                        <span class="tab-status" id="status-kundalini">0%</span>
+                    </button>
+                    <button class="tab-btn" data-tab-target="teosofia">
+                        <i class="bi bi-eye"></i> <span>Teosofia</span>
+                        <span class="tab-status" id="status-teosofia">0%</span>
+                    </button>
+                    <button class="tab-btn" data-tab-target="coracao">
+                        <i class="bi bi-heart-pulse"></i> <span>Coração</span>
+                        <span class="tab-status" id="status-coracao">0%</span>
+                    </button>
+                </div>
+                <!-- Tab: Gnose -->
+                <div class="tab-content" data-tab="gnose">
+                    <div class="tab-intro">
+                        <p>Conhecimento direto e experiencial da natureza divina — não crença, mas experiência.</p>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-item active" data-lesson="gnose-1">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-check-circle"></i></div>
+                                <h3><i class="bi bi-fire"></i> O Que é Gnose?</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p><strong>Gnose (γνῶσις)</strong> significa "conhecimento" em grego. É o conhecimento direto e experiencial da natureza divina, não apenas conhecimento intelectual.</p>
+                                <div class="conceito-box">
+                                    <h4>A Centelha Divina</h4>
+                                    <p>Na tradição gnóstica, o objetivo é o despertar da "centelha divina" (pneuma) dentro do ser humano, através do autoconhecimento.</p>
+                                </div>
+                                <ul class="conceitos-list">
+                                    <li><strong>Gnose não é acreditar</strong> — é conhecer por experiência direta</li>
+                                    <li><strong>O matter (hyle)</strong> é a matéria como prisão espiritual</li>
+                                    <li><strong>O demiurgo</strong> é a inteligência criadora imperfeita que governa o mundo material</li>
+                                    <li><strong>A salvação</strong> vem pelo conhecimento de si mesmo</li>
+                                </ul>
+                                <div class="destaque-texto">"Conhece-te a ti mesmo e conhecerás o universo e os deuses."</div>
+                                <button class="btn-marcar" data-lesson="gnose-1" onclick="Aprendizado.marcar(this, 'gnose')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="gnose-2">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-person"></i> Os Três Mundos</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="worlds-grid">
+                                    <div class="world-card">
+                                        <span class="world-icon">🔥</span>
+                                        <h4>Plerooma</h4>
+                                        <p>O mundo da plenitude divina. Realm da luz, onde habitam os eones e a verdadeira essência espiritual.</p>
+                                    </div>
+                                    <div class="world-card">
+                                        <span class="world-icon">🌫️</span>
+                                        <h4>Kenoma</h4>
+                                        <p>O vazio ou falta. O mundo material criado pelo demiurgo, onde a alma está aprisionada.</p>
+                                    </div>
+                                    <div class="world-card">
+                                        <span class="world-icon">🌱</span>
+                                        <h4>Sarak</h4>
+                                        <p>O ser humano pneumático. Acentelha divina que pode ascender e retornar ao Plerooma.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="gnose-2" onclick="Aprendizado.marcar(this, 'gnose')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="gnose-3">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-book"></i> Textos Gnósticos</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Os textos gnósticos foram preservados principalmente pela Biblioteca de Nag Hammadi (Egito, 1945).</p>
+                                <div class="texts-list">
+                                    <div class="text-item">
+                                        <strong>Evangelho de Tomé</strong>
+                                        <p>Contém ditos de Jesus preservados independentemente dos evangelhos canônicos.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <strong>Evangelho de Filipe</strong>
+                                        <p>Explora a espiritualidade e os sacramentos gnósticos.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <strong>Apocalipse de Pedro</strong>
+                                        <p>Revela visões do julgamento e da salvação.</p>
+                                    </div>
+                                    <div class="text-item">
+                                        <strong>Hipóstases do Arquon</strong>
+                                        <p>Descreve a estrutura do cosmo e a descida da luz.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="gnose-3" onclick="Aprendizado.marcar(this, 'gnose')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="gnose-4">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-question-circle"></i> Prática: Autoobservação</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="practice-box">
+                                    <h4>Exercício Gnóstico</h4>
+                                    <p>Sente-se em silêncio por 10 minutos. Observe seus pensamentos sem julgamento. Quem está observando? Essa é a centelha.</p>
+                                    <ul>
+                                        <li>Não tente controlar os pensamentos</li>
+                                        <li>Apenas observe</li>
+                                        <li>Note o "testemunho" interno</li>
+                                    </ul>
+                                </div>
+                                <button class="btn-marcar" data-lesson="gnose-4" onclick="Aprendizado.marcar(this, 'gnose')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab: Epigenética -->
+                <div class="tab-content" data-tab="epigenetica">
+                    <div class="tab-intro">
+                        <p>A ciência que prova: você não é vítima dos seus genes. Seus hábitos moldam sua expressão gênica.</p>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-item active" data-lesson="epigenetica-1">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-check-circle"></i></div>
+                                <h3><i class="bi bi-dna"></i> O Que é Epigenética?</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p><strong>Epigenética</strong> é o estudo das mudanças na atividade dos genes que não envolvem alterações na sequência do DNA.</p>
+                                <div class="analogy-box">
+                                    <h4>🧬 Analogia do Livro de Receitas</h4>
+                                    <p>Pense no seu DNA como um livro de receitas com todas as possibilidades. A epigenética são as <strong>anotações e marcadores</strong> que decidem quais receitas serão lidas e executadas.</p>
+                                </div>
+                                <div class="key-insight">
+                                    <i class="bi bi-lightbulb"></i>
+                                    <p><strong>Insight crucial:</strong> Você pode ter genes "de risco" que nunca se expressam se mantiver bons hábitos epigenéticos!</p>
+                                </div>
+                                <button class="btn-marcar" data-lesson="epigenetica-1" onclick="Aprendizado.marcar(this, 'epigenetica')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="epigenetica-2">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-gear"></i> Os Três Mecanismos</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="mechanisms-grid">
+                                    <div class="mechanism-card">
+                                        <span class="mech-icon">🎯</span>
+                                        <h4>Metilação</h4>
+                                        <p>Adição de grupos metil ao DNA que <strong>desligam</strong> genes. Como colocar um "não leia" em uma página.</p>
+                                        <span class="mech-example">Ex: Fumar pode adicionar metil em genes de tumor</span>
+                                    </div>
+                                    <div class="mechanism-card">
+                                        <span class="mech-icon">📚</span>
+                                        <h4>Histonas</h4>
+                                        <p>Proteínas ao redor das quais o DNA se enrola. Podem <strong>abrir ou fechar</strong> o acesso aos genes.</p>
+                                        <span class="mech-example">Ex: Estresse crônico compacta genes relacionados à imunidade</span>
+                                    </div>
+                                    <div class="mechanism-card">
+                                        <span class="mech-icon">✉️</span>
+                                        <h4>MicroRNA</h4>
+                                        <p>Moléculas que <strong>regulam</strong> quais genes são traduzidos em proteínas.</p>
+                                        <span class="mech-example">Ex: Dieta rica em ômega-3 afeta microRNAs inflamatórios</span>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="epigenetica-2" onclick="Aprendizado.marcar(this, 'epigenetica')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="epigenetica-3">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-arrow-up"></i> O Que Influencia?</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="influences-timeline">
+                                    <div class="influence-item">
+                                        <span class="influence-icon">🍎</span>
+                                        <div class="influence-content">
+                                            <h4>Alimentação</h4>
+                                            <p>Folatos, ômega-3, antioxidantes. Dieta mediterrânea = genes pró-inflamatórios desligados.</p>
+                                        </div>
+                                    </div>
+                                    <div class="influence-item">
+                                        <span class="influence-icon">😰</span>
+                                        <div class="influence-content">
+                                            <h4>Estresse</h4>
+                                            <p>Cortisol crônico = epigenética do envelhecimento acelerado. Mas meditação reverte isso!</p>
+                                        </div>
+                                    </div>
+                                    <div class="influence-item">
+                                        <span class="influence-icon">🏃</span>
+                                        <div class="influence-content">
+                                            <h4>Exercício</h4>
+                                            <p>Atividade física = metilação em genes relacionados à inflamação e metabolismo.</p>
+                                        </div>
+                                    </div>
+                                    <div class="influence-item">
+                                        <span class="influence-icon">😴</span>
+                                        <div class="influence-content">
+                                            <h4>Sono</h4>
+                                            <p>Noite bem dormida = epigenética de regeneração. Noite ruim = genes de estresse ativados.</p>
+                                        </div>
+                                    </div>
+                                    <div class="influence-item">
+                                        <span class="influence-icon">👥</span>
+                                        <div class="influence-content">
+                                            <h4>Conexões Sociais</h4>
+                                            <p>Solidão = genes inflamatórios ativados. Comunidade = genes de imunidade fortalecidos.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="epigenetica-3" onclick="Aprendizado.marcar(this, 'epigenetica')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="epigenetica-4">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-clipboard-data"></i> Calculadora Epigenética</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div id="calculadora-epigenetica"></div>
+                                <button class="btn-marcar" data-lesson="epigenetica-4" onclick="Aprendizado.marcar(this, 'epigenetica')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="epigenetica-5">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-person-heart"></i> Epigenética Transgeracional</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Surpreendentemente, experiências podem ser transmitidas aos descendentes!</p>
+                                <div class="research-box">
+                                    <h4>Pesquisas Importantes</h4>
+                                    <ul>
+                                        <li><strong>Fome na Holanda (1944-45):</strong> Filhos de mulheres grávidas durante a escassez passaram epigenética de estresse para netos</li>
+                                        <li><strong>Estudo Swedish Överkalix:</strong> Dieta dos avôs correlacionada com saúde dos netos</li>
+                                        <li><strong>Experimentos com ratos:</strong>清香 exposição ao cheiro de flores associou a pais com medo, filhos também mostraram medo do cheiro</li>
+                                    </ul>
+                                </div>
+                                <div class="implication-box">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <p><strong>Implicação:</strong> Seus hábitos de hoje afetam não apenas você, mas potencialmente seus filhos e netos. A responsabilidade é maior do que imaginamos.</p>
+                                </div>
+                                <button class="btn-marcar" data-lesson="epigenetica-5" onclick="Aprendizado.marcar(this, 'epigenetica')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab: Hermetismo -->
+                <div class="tab-content" data-tab="hermetismo">
+                    <div class="tab-intro">
+                        <p>A filosofia hermética une ciência, misticismo e sabedoria prática. Tradição que influenciou Newton, Descartes e Böhme.</p>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-item active" data-lesson="hermetismo-1">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-check-circle"></i></div>
+                                <h3><i class="bi bi-gem"></i> Os Sete Princípios do Kybalion</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Estes são os sete princípios fundamentais que regem o universo:</p>
+                                <div class="principles-list">
+                                    <div class="principle-item">
+                                        <span class="princ-num">1</span>
+                                        <div class="princ-content">
+                                            <h4>Mentalismo</h4>
+                                            <p>"O Todo é Mente. O universo é mental." — Tudo existe na consciência divina, e nossa mente é uma parcela da mente universal.</p>
+                                        </div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <span class="princ-num">2</span>
+                                        <div class="princ-content">
+                                            <h4>Correspondência</h4>
+                                            <p>"Como acima, assim abaixo." — O microcosmo reflete o macrocosmo. O ser humano é um universo em miniatura.</p>
+                                        </div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <span class="princ-num">3</span>
+                                        <div class="princ-content">
+                                            <h4>Vibração</h4>
+                                            <p>"Nada está em repouso; tudo se move." — A matéria é vibração em diferentes frequências. O pensamento também vibra.</p>
+                                        </div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <span class="princ-num">4</span>
+                                        <div class="princ-content">
+                                            <h4>Polaridade</h4>
+                                            <p>"Tudo tem dois polos." — Calor/frio, luz/sombra, amor/medo. Os opostos são extremos do mesmo espectro.</p>
+                                        </div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <span class="princ-num">5</span>
+                                        <div class="princ-content">
+                                            <h4>Ritmo</h4>
+                                            <p>"Tudo flui e reflui." — Os ciclos estão em tudo: respiração, marés, estações, emoções. Há um fluxo e refluxo.</p>
+                                        </div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <span class="princ-num">6</span>
+                                        <div class="princ-content">
+                                            <h4>Causa e Efeito</h4>
+                                            <p>"Cada efeito tem uma causa." — Não há acaso, apenas causas que não percebemos. Você co-cria sua realidade.</p>
+                                        </div>
+                                    </div>
+                                    <div class="principle-item">
+                                        <span class="princ-num">7</span>
+                                        <div class="princ-content">
+                                            <h4>Gênero</h4>
+                                            <p>"Tudo tem masculino e feminino." — Não apenas física, mas em todos os níveis. Equilíbrio é chave.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="hermetismo-1" onclick="Aprendizado.marcar(this, 'hermetismo')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="hermetismo-2">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-bookmark"></i> Tábua de Esmeralda</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="emerald-quote">
+                                    <p class="quote-text">"O que está em cima é como o que está em baixo, e o que está em baixo é como o que está em cima, para realizar os milagres da única coisa."</p>
+                                    <p class="quote-author">— Tábua de Esmeralda de Thoth</p>
+                                </div>
+                                <div class="tabula-analise">
+                                    <h4>Análise do Princípio</h4>
+                                    <p>Esta frase contém o segredo hermético central:</p>
+                                    <ul>
+                                        <li><strong>"O que está em cima"</strong> = o mundo espiritual/divino</li>
+                                        <li><strong>"como o que está em baixo"</strong> = o mundo material/físico</li>
+                                        <li><strong>"única coisa"</strong> = a substância única (matéria-prima do universo)</li>
+                                    </ul>
+                                    <div class="insight-box">
+                                        <p>💡 <strong>Aplicação prática:</strong> Ao transformar você mesmo (microcosmo), você transforma o universo (macrocosmo).</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="hermetismo-2" onclick="Aprendizado.marcar(this, 'hermetismo')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="hermetismo-3">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-person"></i> Hermes Trismegisto</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Figura lendária fundida de Thoth (deus egípcio) e Hermes (deus grego). Considerado o "pai" da alquimia e filosofia hermética.</p>
+                                <div class="hermes-teachings">
+                                    <h4>As Lei do Hermes</h4>
+                                    <div class="teaching-item">
+                                        <span class="teach-icon">👁️</span>
+                                        <p><strong>Correspondência:</strong> Os três planos (físico, mental, espiritual) são reflexos uns dos outros.</p>
+                                    </div>
+                                    <div class="teaching-item">
+                                        <span class="teach-icon">🌊</span>
+                                        <p><strong>Vibração:</strong> Os três princípios (espírito, alma, matéria) são diferentes frequências da mesma energia.</p>
+                                    </div>
+                                    <div class="teaching-item">
+                                        <span class="teach-icon">⚖️</span>
+                                        <p><strong>Gênero:</strong> Os três estados (sólido, líquido, gasoso) contém princípio masculino e feminino.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="hermetismo-3" onclick="Aprendizado.marcar(this, 'hermetismo')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab: Kundalini -->
+                <div class="tab-content" data-tab="kundalini">
+                    <div class="tab-intro">
+                        <p>A energia serpentina que ascende pela coluna vertebral, despertando centros de consciência (chakras).</p>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-item active" data-lesson="kundalini-1">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-check-circle"></i></div>
+                                <h3><i class="bi bi-lightning-charge"></i> O Que é Kundalini?</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p><strong>Kundalini</strong> (sânscrito: "enrolada") é a energia espiritual latente na base da coluna, frequentemente representada como uma serpente adormecida.</p>
+                                <div class="kundalini-viz">
+                                    <div class="chakra-flow">
+                                        <div class="chakra-level" style="--color: #f87271;">
+                                            <span class="chakra-name">Múládhara</span>
+                                            <span class="chakra-desc">Raiz - Base da coluna</span>
+                                        </div>
+                                        <div class="chakra-level" style="--color: #fb923c;">
+                                            <span class="chakra-name">Svádhishthána</span>
+                                            <span class="chakra-desc">Sexual - 2 vértebras acima</span>
+                                        </div>
+                                        <div class="chakra-level" style="--color: #facc15;">
+                                            <span class="chakra-name">Manipúra</span>
+                                            <span class="chakra-desc">Umbigo - Plexo solar</span>
+                                        </div>
+                                        <div class="chakra-level" style="--color: #4ade80;">
+                                            <span class="chakra-name">Anáhata</span>
+                                            <span class="chakra-desc">Coração - Centro do peito</span>
+                                        </div>
+                                        <div class="chakra-level" style="--color: #60a5fa;">
+                                            <span class="chakra-name">Vishúdda</span>
+                                            <span class="chakra-desc">Garganta - Pescoço</span>
+                                        </div>
+                                        <div class="chakra-level" style="--color: #a78bfa;">
+                                            <span class="chakra-name">Ajña</span>
+                                            <span class="chakra-desc">Terceiro olho - Entre sobrancelhas</span>
+                                        </div>
+                                        <div class="chakra-level" style="--color: #c084fc;">
+                                            <span class="chakra-name">Sahasrára</span>
+                                            <span class="chakra-desc">Coroa - Topo da cabeça</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="warning-box">
+                                    <i class="bi bi-exclamation-triangle"></i>
+                                    <p><strong>Atenção:</strong> O despertar de Kundalini deve ser gradual. Despertar abrupto pode causar desconforto. Comece com práticas suaves.</p>
+                                </div>
+                                <button class="btn-marcar" data-lesson="kundalini-1" onclick="Aprendizado.marcar(this, 'kundalini')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="kundalini-2">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-123"></i> Os 33 Vértebras</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>O canal central (Sushumna) passa por 33 vértebras, correspondendo a estágios de elevação.</p>
+                                <div class="vertebrae-map">
+                                    <div class="vertebra-group">
+                                        <h4>4 vértebras inferiores (Kámadhátu)</h4>
+                                        <p>Mundo do desejo. Aqui começa o despertar.</p>
+                                    </div>
+                                    <div class="vertebra-group">
+                                        <h4>6 vértebras medianas (Manódhátu)</h4>
+                                        <p>Mundo mental. Transmutação de energia.</p>
+                                    </div>
+                                    <div class="vertebra-group">
+                                        <h4>7 vértebras superiores (Vijnánadhátu)</h4>
+                                        <p>Mundo da sabedoria. Iluminação progressiva.</p>
+                                    </div>
+                                    <div class="vertebra-group">
+                                        <h4>16 vértebras superiores (Tadmátrá)</h4>
+                                        <p>Formas sutis. Estados de consciência expandida.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="kundalini-2" onclick="Aprendizado.marcar(this, 'kundalini')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="kundalini-3">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-wind"></i> Práticas de Despertar</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="practices-grid">
+                                    <div class="practice-mini">
+                                        <span class="p-icon">🧘</span>
+                                        <h4>Meditação Kundalini</h4>
+                                        <p>Sentar em silêncio, focar na base da coluna, visualizar uma serpente acordando gradualmente.</p>
+                                    </div>
+                                    <div class="practice-mini">
+                                        <span class="p-icon">🌬️</span>
+                                        <h4>Respiração de Fogo</h4>
+                                        <p>Kapalabhati: respiração rápida pelo nariz com abdominal contraído. Apenas avançados.</p>
+                                    </div>
+                                    <div class="practice-mini">
+                                        <span class="p-icon">🧎</span>
+                                        <h4>Postura da Aranha</h4>
+                                        <p>Mudras específicos +asanas que direcionam energia para o canal central.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="kundalini-3" onclick="Aprendizado.marcar(this, 'kundalini')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab: Teosofia -->
+                <div class="tab-content" data-tab="teosofia">
+                    <div class="tab-intro">
+                        <p>Teosofia = "Sabedoria Divina". Síntese de todas as tradições religiosas, filosóficas e científicas.</p>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-item active" data-lesson="teosofia-1">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-check-circle"></i></div>
+                                <h3><i class="bi bi-eye"></i> O Que é Teosofia?</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p><strong>Teosofia</strong> (do grego: <em>theos</em> = Deus, <em>sophia</em> = sabedoria) significa "sabedoria divina".</p>
+                                <p>É a síntese de:</p>
+                                <div class="synthesis-list">
+                                    <div class="synth-item">🌟 Religiões orientais (Hinduísmo, Budismo)</div>
+                                    <div class="synth-item">📖 Filosofia ocidental (Platão, Pitágoras)</div>
+                                    <div class="synth-item">🔬 Ciência moderna (física quântica, epigenética)</div>
+                                    <div class="synth-item">🧘 Práticas contemplativas (meditação, yoga)</div>
+                                </div>
+                                <div class="quote-box">
+                                    <p>"Não existe religião maior que a verdade." — Helena Blavatsky</p>
+                                </div>
+                                <button class="btn-marcar" data-lesson="teosofia-1" onclick="Aprendizado.marcar(this, 'teosofia')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="teosofia-2">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-person"></i> Helena Blavatsky</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="blavatsky-card">
+                                    <div class="blavatsky-img">👤</div>
+                                    <div class="blavatsky-info">
+                                        <h4>Helena Petrovna Blavatsky</h4>
+                                        <p class="dates">1831 - 1891</p>
+                                        <p>Fundadora da Sociedade Teosófica em 1875, em Nova York.</p>
+                                    </div>
+                                </div>
+                                <div class="works-list">
+                                    <h4>Obras Principais</h4>
+                                    <div class="work-item">
+                                        <strong>A Doutrina Secreta (1888)</strong>
+                                        <p>6 volumes sobre cosmologia, evolução espiritual e tradições antigas.</p>
+                                    </div>
+                                    <div class="work-item">
+                                        <strong>A Voz do Silêncio (1889)</strong>
+                                        <p>Fragmentos do Livro dos Vermelhos, práticas budistas de iluminação.</p>
+                                    </div>
+                                    <div class="work-item">
+                                        <strong>Isis Sem Véu (1877)</strong>
+                                        <p>Síntese de ciência, religião e filosofia.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="teosofia-2" onclick="Aprendizado.marcar(this, 'teosofia')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="teosofia-3">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-diagram-3"></i> Os Três Principais</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>A Teosofia ensina que existem três princípios fundamentais no ser humano:</p>
+                                <div class="triple-principles">
+                                    <div class="tp-item">
+                                        <span class="tp-icon">👻</span>
+                                        <h4>Espírito (Atman)</h4>
+                                        <p>A centelha divina, a essência imortal.</p>
+                                    </div>
+                                    <div class="tp-item">
+                                        <span class="tp-icon">🧠</span>
+                                        <h4>Alma (Manas)</h4>
+                                        <p>Mente individual, veículo de pensamento e escolha.</p>
+                                    </div>
+                                    <div class="tp-item">
+                                        <span class="tp-icon">💪</span>
+                                        <h4>Corpo (Kama-Rupa)</h4>
+                                        <p>Elementos densos, energia e matéria.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="teosofia-3" onclick="Aprendizado.marcar(this, 'teosofia')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab: Coração -->
+                <div class="tab-content" data-tab="coracao">
+                    <div class="tab-intro">
+                        <p>O coração como centro de inteligência, não apenas bomba física. Campo eletromagnético 60x maior que o cérebro.</p>
+                    </div>
+                    <div class="accordion">
+                        <div class="accordion-item active" data-lesson="coracao-1">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-check-circle"></i></div>
+                                <h3><i class="bi bi-heart"></i> Campo Eletromagnético</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="heart-science">
+                                    <div class="stat-highlight">
+                                        <span class="stat-num">60x</span>
+                                        <span class="stat-desc">maior campo eletromagnético que o cérebro</span>
+                                    </div>
+                                </div>
+                                <p>O coração gera o campo eletromagnético mais potente do corpo humano. Este campo pode ser medido a até 3 metros do corpo.</p>
+                                <div class="heart-insight">
+                                    <i class="bi bi-info-circle"></i>
+                                    <p>Pesquisas do HeartMath Institute mostram que o campo cardíaco influencia o cérebro e até o campo de pessoas próximas.</p>
+                                </div>
+                                <button class="btn-marcar" data-lesson="coracao-1" onclick="Aprendizado.marcar(this, 'coracao')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="coracao-2">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-activity"></i> Coerência Cardíaca</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Estado em que o ritmo do coração é organizado e equilibrado, criando harmonia entre coração, mente e emoção.</p>
+                                <div class="coherence-benefits">
+                                    <div class="benefit-item">
+                                        <span class="ben-icon">🛡️</span>
+                                        <span>Redução de cortisol (hormônio do estresse)</span>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <span class="ben-icon">💉</span>
+                                        <span>Melhoria do sistema imunológico</span>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <span class="ben-icon">🧠</span>
+                                        <span>Clareza mental e tomada de decisão</span>
+                                    </div>
+                                    <div class="benefit-item">
+                                        <span class="ben-icon">❤️</span>
+                                        <span>Melhoria na saúde cardiovascular</span>
+                                    </div>
+                                </div>
+                                <button class="btn-marcar" data-lesson="coracao-2" onclick="Aprendizado.marcar(this, 'coracao')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                        <div class="accordion-item" data-lesson="coracao-3">
+                            <div class="accordion-header">
+                                <div class="lesson-indicator"><i class="bi bi-circle"></i></div>
+                                <h3><i class="bi bi-heart-pulse"></i> Prática: Respiração Coerente</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="coherence-practice">
+                                    <h4>Exercício de 5 Minutos</h4>
+                                    <ol>
+                                        <li>Sente-se confortavelmente</li>
+                                        <li>Coloque uma mão no coração</li>
+                                        <li>Respire pelo nariz contando 5 segundos (inspiração)</li>
+                                        <li>Exale pelo nariz ou boca por 5 segundos</li>
+                                        <li>Mantenha o foco na área do coração</li>
+                                        <li>Pense em algo que te faz sentir gratidão</li>
+                                    </ol>
+                                    <p class="practice-note"><em>Pratique 2x ao dia, de preferência manhã e noite.</em></p>
+                                </div>
+                                <button class="btn-marcar" data-lesson="coracao-3" onclick="Aprendizado.marcar(this, 'coracao')">
+                                    <i class="bi bi-check2-square"></i> Marque como estudado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Práticas - Timeline -->
+        <section id="praticas">
+            <h2><i class="bi bi-person-bounding-box"></i> O Caminho Prático</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 40px;">
+                A transformação não acontece apenas pelo conhecimento, mas pela prática constante.
+                Estas são as etapas fundamentais do caminho.
+            </p>
+            <div class="timeline">
+                <div class="timeline-item animacao-entrada">
+                    <h4>1. Autoconhecimento</h4>
+                    <p>Conhecer a si mesmo é o primeiro passo. Quem sou eu? O que me move? O que me limita? Sem honestidade, não há evolução.</p>
+                </div>
+                <div class="timeline-item animacao-entrada">
+                    <h4>2. Observação</h4>
+                    <p>Observar sem julgamento os próprios pensamentos, emoções e ações. O observador é diferente do observado.</p>
+                </div>
+                <div class="timeline-item animacao-entrada">
+                    <h4>3. Transformação</h4>
+                    <p>Compreender que a mudança vem de dentro. Não Busque mudar o mundo, mas transforme sua percepção dele.</p>
+                </div>
+                <div class="timeline-item animacao-entrada">
+                    <h4>4. Prática Diária</h4>
+                    <p>Meditação, respiração consciente, estudos. A disciplina diário é o motor da evolução espiritual.</p>
+                </div>
+                <div class="timeline-item animacao-entrada">
+                    <h4>5. Serviço</h4>
+                    <p>Servir à humanidade sem esperar nada em retorno. O sacrifício pelo outro é a síntese do caminho.</p>
+                </div>
+                <div class="timeline-item animacao-entrada">
+                    <h4>6. União</h4>
+                    <p>Reconhecer que somos parte do Todo. A separação é ilusão. A unidade é realidade.</p>
+                </div>
+            </div>
+        </section>
+        <!-- Técnica de Meditação -->
+        <section id="meditacao">
+            <h2><i class="bi bi-snow"></i> Técnica de Meditação</h2>
+            <div class="tabs-container">
+                <div class="tabs-buttons">
+                    <button class="tab-btn active" data-tab-target="chakras">
+                        <i class="bi bi-circle"></i> Chakras
+                    </button>
+                    <button class="tab-btn" data-tab-target="respiracao-pratica">
+                        <i class="bi bi-wind"></i> Respiração
+                    </button>
+                    <button class="tab-btn" data-tab-target="mantras">
+                        <i class="bi bi-music-note-beamed"></i> Mantras
+                    </button>
+                </div>
+                <!-- Tab: Chakras -->
+                <div class="tab-content" data-tab="chakras">
+                    <div class="cards-grid">
+                        <div class="card">
+                            <span class="card-icon" style="color: #c084fc;">I</span>
+                            <h4>Coronário</h4>
+                            <p><strong>Sílaba:</strong> I<br><strong>Foco:</strong> Conexão espiritual, expansão da consciência</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #a78bfa;">I</span>
+                            <h4>Frontal</h4>
+                            <p><strong>Sílaba:</strong> I<br><strong>Foco:</strong> Intuição, sabedoria</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #60a5fa;">E</span>
+                            <h4>Laríngeo</h4>
+                            <p><strong>Sílaba:</strong> E<br><strong>Foco:</strong> Comunicação, verdade</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #f472b6;">O</span>
+                            <h4>Cardíaco</h4>
+                            <p><strong>Sílaba:</strong> O<br><strong>Foco:</strong> Amor, compaixão</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #4ade80;">U</span>
+                            <h4>Plexo Solar</h4>
+                            <p><strong>Sílaba:</strong> U<br><strong>Foco:</strong> Poder pessoal, confiança</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #facc15;">A</span>
+                            <h4>Pulmonares</h4>
+                            <p><strong>Sílaba:</strong> A<br><strong>Foco:</strong> Vitalidade, expressão</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #fb923c;">M</span>
+                            <h4>Prostático</h4>
+                            <p><strong>Sílaba:</strong> M<br><strong>Foco:</strong> Criatividade, acolhimento</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon" style="color: #f87171;">S</span>
+                            <h4>Coccígeo</h4>
+                            <p><strong>Sílaba:</strong> S<br><strong>Foco:</strong> Segurança, ancoramento</p>
+                        </div>
+                    </div>
+                    <div class="destaque-texto" style="margin-top: 30px;">
+                        <strong>Prática:</strong> Comece pelo topo (Coronário) e desça gradualmente. A cada chakra, repita o mantra vocalizado por 1-2 minutos, respirando profundamente.
+                    </div>
+                </div>
+                <!-- Tab: Respiração na Prática -->
+                <div class="tab-content" data-tab="respiracao-pratica">
+                    <h3 style="color: var(--cor-destaque); margin-bottom: 20px;">Pranayama — Control da Energia Vital</h3>
+                    <div class="accordion">
+                        <div class="accordion-item active">
+                            <div class="accordion-header">
+                                <h3><i class="bi bi-inhale"></i> Respiração Completa</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Sente-se com a coluna ereta. Inspire lentamente pelo nariz, expandindo o abdomen, depois o peito e finalmente a parte superior dos pulmões. Segure por 4 segundos. Exale completamente pela boca, invertendo o processo. Repita 10 vezes.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3><i class="bi bi-exhale"></i> Respiração Quadrada</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Inspire por 4 segundos, segure por 4 segundos, exale por 4 segundos, segure por 4 segundos. Este ritmo equilibra o sistema nervoso e acalma a mente.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h3><i class="bi bi-lightning-charge"></i> Respiração de Fogo</h3>
+                                <span class="accordion-icon">+</span>
+                            </div>
+                            <div class="accordion-content">
+                                <p>Respiração rápida e rítmica pelo nariz, com o abdomen contraído. Produz calor e ativa a energia Kundalini. Apenas para praticantes avançados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab: Mantras -->
+                <div class="tab-content" data-tab="mantras">
+                    <h3 style="color: var(--cor-destaque); margin-bottom: 20px;">Mantras — Sons Sagrados</h3>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <span class="card-icon">🕉️</span>
+                            <h4>OM (AUM)</h4>
+                            <p>O som primordial. Contém todos os outros sons. Representa a consciência universal.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon">✡️</span>
+                            <h4>ARRONSA</h4>
+                            <p>Mantra auxiliar para o corpo etérico na jornada da Kundalini.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon">🙏</span>
+                            <h4>RAM</h4>
+                            <p>Associado ao chakra do coração. Promove amor e compaixão.</p>
+                        </div>
+                        <div class="card">
+                            <span class="card-icon">🔔</span>
+                            <h4>OM MANI PADME HUM</h4>
+                            <p>Mantra budista de compaixão. Significa "A joia no lótus".</p>
+                        </div>
+                    </div>
+                    <div class="destaque-texto" style="margin-top: 30px;">
+                        <strong>Prática:</strong> Repita o mantra vocalizado em voz baixa, depois sussurrado, e finalmente em silêncio (mana). O som cria vibração que PURIFICA a consciência.
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Jornada da Consciência -->
+        <section id="jornada">
+            <h2><i class="bi bi-stars"></i> A Jornada da Consciência</h2>
+            <p style="text-align: center; max-width: 700px; margin: 0 auto 40px;">
+                A consciência humana e sua ligação com o "Todo" é o maior mistério que existe.
+                Aqui apresentamos três visões que ajudam a compreender esta questão.
+            </p>
+            <div class="tabs-container">
+                <div class="tabs-buttons">
+                    <button class="tab-btn active" data-tab-target="materialista">
+                        <i class="bi bi-atom"></i> Materialista
+                    </button>
+                    <button class="tab-btn" data-tab-target="nao-dual">
+                        <i class="bi bi-infinity"></i> Não-Dual
+                    </button>
+                    <button class="tab-btn" data-tab-target="experiencial">
+                        <i class="bi bi-lightbulb"></i> Experiencial
+                    </button>
+                </div>
+                <div class="tab-content" data-tab="materialista">
+                    <div class="card" style="max-width: 800px; margin: 0 auto;">
+                        <p>Você é um pedaço do Todo que ganhou complexidade suficiente pra se olhar no espelho. O universo é um sistema físico gigantesco (Big Bang → estrelas → planetas → vida → cérebro). A consciência surge como propriedade emergente quando a matéria se organiza em redes absurdamente complexas.</p>
+                        <p class="destaque-texto" style="margin-top: 20px;">
+                            "Você é o universo se autoconhecendo." — Carl Sagan
+                        </p>
+                        <p style="margin-top: 20px;">
+                            <strong>Sem filtro:</strong> Isso explica tudo que observamos, mas não explica por que a experiência subjetiva existe. É o modelo que mais cola com evidências.
+                        </p>
+                    </div>
+                </div>
+                <div class="tab-content" data-tab="nao-dual">
+                    <div class="card" style="max-width: 800px; margin: 0 auto;">
+                        <p>A consciência não "surge" do cérebro; ela é fundamental, como espaço, tempo ou massa. Tudo tem um grão mínimo de "experiência" (até elétron). No humano, isso se integra numa coisa gigantesca e unificada (Teoria da Informação Integrada de Giulio Tononi).</p>
+                        <p class="destaque-texto" style="margin-top: 20px;">
+                            O "Todo" é consciente em si mesmo e você é apenas um ponto focal dele.
+                        </p>
+                        <p style="margin-top: 20px;">
+                            <strong>Sem filtro:</strong> Isso soa místico, mas tem modelos matemáticos sérios. O problema é que ainda não tem prova experimental.
+                        </p>
+                    </div>
+                </div>
+                <div class="tab-content" data-tab="experiencial">
+                    <div class="card" style="max-width: 800px; margin: 0 auto;">
+                        <p>Muitos humanos (místicos, psicodélicos, meditação profunda) sentem o "eu" dissolver e virar o Todo. O cérebro, quando certos circuitos são desligados, para de gerar a ilusão do "eu separado".</p>
+                        <p class="destaque-texto" style="margin-top: 20px;">
+                            Resultado: Você vira o universo experimentando a si mesmo.
+                        </p>
+                        <p style="margin-top: 20px;">
+                            <strong>Sem filtro:</strong> Pode ser só química do cérebro… ou pode ser que o cérebro seja uma antena que, em certos estados, capta a consciência maior. Não sabemos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Impacto na Vida -->
+        <section id="impacto">
+            <h2><i class="bi bi-heart"></i> Impacto na Vida</h2>
+            <p style="max-width: 700px; margin: 0 auto 40px; text-align: center;">
+                Este conhecimento transformando não é teoria — é prática. O que acontece quando você integra saberes ancestrais na vida cotidiana?
+            </p>
+            <!-- Quiz de Impacto -->
+            <div id="quiz-impacto" style="max-width: 700px; margin: 0 auto;"></div>
+            <!-- Reflexões -->
+            <div class="accordion" style="max-width: 700px; margin: 40px auto;">
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        <h3><i class="bi bi-person-check"></i> O Que Muda de Verdade?</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p>Não é sobre "acreditar" em algo. É sobre transformar como você:</p>
+                        <ul style="margin: 15px 0; padding-left: 20px;">
+                            <li><strong>Vê o mundo</strong> — Deixa de sersó consumidor epassa ser participante</li>
+                            <li><strong>Responde</strong> — Não reage ao estímulo, mas responde com consciência</li>
+                            <li><strong>Cuida</strong> — O corpo não é prisão, é templo a serhonrado</li>
+                            <li><strong>Compartilha</strong> — O conhecimento não é posse, é fluxo</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3><i class="bi bi-arrow-repeat"></i> Sem Filtros: O Que Esperar</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <p><strong>Não espere:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px; opacity: 0.8;">
+                            <li>Transformação instantânea — Não funciona assim</li>
+                            <li>Garantia de resultados — Cada um tem sua jornada</li>
+                            <li>Validação externa — Você validating internamente</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Espere:</strong></p>
+                        <ul style="margin: 10px 0; padding-left: 20px;">
+                            <li>Mais presença no momento presente</li>
+                            <li>Menos identificação com pensamentos</li>
+                            <li>Maior capacidade de escolher reactions</li>
+                            <li>Sentido de conexão com algo maior</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3><i class="bi bi-calendar-check"></i> Prática Diária Sugerida</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="timeline" style="max-width: 100%;">
+                            <div class="timeline-item">
+                                <h4>🅰️ Manhã (5-10 min)</h4>
+                                <p>Respiração consciente + 1 minuto de silêncio antes de levantar</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4>�️ Meio-dia</h4>
+                                <p>Pausa de 2 minutos para respiração no momento que sentir estresse</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4>🌙 Noite (10-15 min)</h4>
+                                <p>Observação sem julgamento do dia + gratidão</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Citação Final -->
+            <div class="destaque-texto" style="max-width: 700px; margin: 40px auto; text-align: center;">
+                <p style="font-size: 1.3rem;">"O conhecimento que não transforma a vida é apenas informação."</p>
+                <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 10px;">— Prática é a única prova</p>
+            </div>
+        </section>
+        <!-- Quiz Final -->
+        <section id="quiz">
+            <h2><i class="bi bi-question-circle"></i> Teste Seu Conhecimento</h2>
+            <p style="text-align: center; margin-bottom: 30px;">
+                Responda estas perguntas para verificar o que aprendeu nesta jornada.
+            </p>
+            <div id="quiz-principal"></div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 O Caminho — Saberes Ancestrais</p>
+        <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">
+            Conhecimento sem prática é vazio. Prática sem conhecimento é cega.
+        </p>
+    </footer>
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script>
+    // Quiz de Impacto
+    document.addEventListener('DOMContentLoaded', function() {
+        App.Quiz.init({
+            containerId: 'quiz-impacto',
+            perguntas: [{
+                    pergunta: "Você praticou alguma técnica de respiração ou meditação nos últimos 7 dias?",
+                    opcoes: ["Sim, diariamente", "Algumas vezes", "Raramente", "Não ainda"],
+                    correta: 0
+                },
+                {
+                    pergunta: "O que significa 'sem filtros' neste projeto?",
+                    opcoes: ["Sem custos", "Informação pura sem comercialização", "Conteúdo adulto", "Sem regras"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Qual é o primeiro passo segundo o caminho prático?",
+                    opcoes: ["Meditação", "Autoconhecimento", "Leitura", "Oração"],
+                    correta: 1
+                },
+                {
+                    pergunta: "A epigenética nos diz que:",
+                    opcoes: ["Genes determinam tudo", "Hábitos influenciam genes", "DNA não muda", "Escrever é inútil"],
+                    correta: 1
+                }
+            ]
+        });
+    });
+    </script>
+    <script>
+    // Quiz Principal com perguntas reais sobre o conteúdo
+    document.addEventListener('DOMContentLoaded', function() {
+        App.Quiz.init({
+            containerId: 'quiz-principal',
+            perguntas: [{
+                    pergunta: "O que significa 'Gnose' em grego?",
+                    opcoes: ["Fé", "Conhecimento direto", "Meditação", "Oração"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Quantas vértebras tem o canal Sushumna na prática da Kundalini?",
+                    opcoes: ["22", "33", "44", "12"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Qual é o primeiro princípio hermético?",
+                    opcoes: ["Correspondência", "Mentalismo", "Polaridade", "Ritmo"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Quem fundou a Sociedade Teosófica em 1875?",
+                    opcoes: ["Carl Jung", "Helena Blavatsky", "Rudolf Steiner", "Annie Besant"],
+                    correta: 1
+                },
+                {
+                    pergunta: "O que é epigenética?",
+                    opcoes: ["Estudo do DNA", "Mudanças na expressão gênica sem alterar o DNA", "Genética molecular", "Biologia evolutiva"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Qual mantra é usado para o corpo etérico na jornada da Kundalini?",
+                    opcoes: ["OM", "RAM", "ARRONSA", "HUM"],
+                    correta: 2
+                },
+                {
+                    pergunta: "O que diz o princípio hermético 'como acima, assim abaixo'?",
+                    opcoes: ["Ascensão espiritual", "Correspondência entre macrocosmo e microcosmo", "Hierarquia celestial", "Reencarnação"],
+                    correta: 1
+                }
+            ]
+        });
+    });
+    </script>
+    <script>
+    // Quiz Principal com perguntas reais sobre o conteúdo
+    document.addEventListener('DOMContentLoaded', function() {
+        Quiz.init({
+            containerId: 'quiz-principal',
+            perguntas: [{
+                    pergunta: "O que significa 'Gnose' em grego?",
+                    opcoes: ["Fé", "Conhecimento direto", "Meditação", "Oração"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Quantas vértebras tem o canal Sushumna na prática da Kundalini?",
+                    opcoes: ["22", "33", "44", "12"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Qual é o primeiro princípio hermético?",
+                    opcoes: ["Correspondência", "Mentalismo", "Polaridade", "Ritmo"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Quem fundou a Sociedade Teosófica em 1875?",
+                    opcoes: ["Carl Jung", "Helena Blavatsky", "Rudolf Steiner", "Annie Besant"],
+                    correta: 1
+                },
+                {
+                    pergunta: "O que é epigenética?",
+                    opcoes: ["Estudo do DNA", "Mudanças na expressão gênica sem alterar o DNA", "Genética molecular", "Biologia evolutiva"],
+                    correta: 1
+                },
+                {
+                    pergunta: "Qual mantra é usado para o corpo etérico na jornada da Kundalini?",
+                    opcoes: ["OM", "RAM", "ARRONSA", "HUM"],
+                    correta: 2
+                },
+                {
+                    pergunta: "O que diz o princípio hermético 'como acima, assim abaixo'?",
+                    opcoes: ["Ascensão espiritual", "Correspondência entre macrocosmo e microcosmo", "Hierarquia celestial", "Reencarnação"],
+                    correta: 1
+                }
+            ]
+        });
+    });
+    </script>
+</body>
+
+</html>

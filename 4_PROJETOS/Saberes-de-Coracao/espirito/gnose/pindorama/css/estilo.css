@@ -1,0 +1,155 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Bangers&family=Cherry+Bomb+One&family=Give+You+Glory&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Story+Script&display=swap');
+
+:root {
+    --titulo: "Bangers", monospace;
+    --titulos: "Cherry Bomb One", monospace;
+    --texto-pq: "Give You Glory", sans-serif;
+    --texto-md: "Google Sans Code", sans-serif;
+    --texto-gd: "Story Script";
+
+    --cor-fundo-body: rgba(0, 0, 0, 0.888);
+    --cor-fundo-card: lightskyblue;
+    --cor-texto: wheat;
+    --cor-extra: forestgreen;
+}
+
+html body {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cor-fundo-body);
+    color: var(--cor-texto);
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+header .titulo {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-image: linear-gradient(var(--cor-fundo-body), var(--cor-texto));
+}
+
+header .titulo audio {
+    border-radius: 0.5rem;
+}
+
+header .titulo h1 {
+    opacity: 1;
+    font-family: var(--titulo);
+    letter-spacing: 1.1px;
+    line-height: 1.5;
+    color: var(--cor-extra);
+    text-shadow: 0 0 3px yellow;
+    padding: 1.5rem;
+}
+header nav a {
+    font-family: var(--texto-md);
+    font-weight: bolder;
+    color: orangered !important;
+}
+main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: linear-gradient(forestgreen, orangered);
+    gap: 0.5rem;
+}
+
+main section#o-livro #oLivro {
+    display: none;
+}
+
+main section#o-livro .container {
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 0 1px 1px forestgreen;
+    background-color: darkslategray;
+    color: lightyellow;
+}
+
+main section#o-livro .container h2 {
+    font-family: var(--titulos);
+    font-weight: 100;
+    letter-spacing: 1.1px;
+    font-size: 2.1rem;
+    text-align: center;
+    color: forestgreen;
+    text-shadow: 0 0 1px yellow;
+}
+
+main section#o-livro .container p {
+    font-family: var(--texto-md);
+    text-align: justify;
+}
+
+main section#o-livro .container p#ref {
+    font-family: var(--texto-gd);
+}
+
+main section#todos-juntos .container {
+    padding: 1rem;
+    background-image: linear-gradient(darkslategray, rgba(0, 0, 0, 0.888));
+    border-radius: 0.5rem;
+}
+
+main section#todos-juntos .container h4 {
+    font-family: var(--titulo);
+    text-shadow: 0 0 1px black;
+    text-align: justify;
+}
+
+main section#todos-juntos .container p {
+    font-family: var(--texto-gd);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: orangered;
+    text-align: justify;
+}
+
+#mostra-todos-juntos {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mostra-todos-juntos.visivel {
+    display: block;
+    opacity: 1;
+    max-height: 1200px;
+}
+
+#mostraPindrm-outros-qunlhnts {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    max-height: 0;
+    overflow: hidden;
+}
+
+#mostraPindrm-outros-qunlhnts.visivel {
+    opacity: 1;
+    max-height: 3000px;
+}
+
+@media (max-width: 680px) {
+    header .titulo {
+        display: flex;
+        flex-direction: column;
+    }
+}

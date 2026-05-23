@@ -1,0 +1,1040 @@
+:root {
+  --cor-cosmos: #1a0a2e;
+  --cor-ouro: #c9a227;
+  --cor-pergaminho: #f5ede0;
+  --cor-esmeralda: #2d6a4f;
+  --cor-turquesa: #2a7a8c;
+  --cor-ocre: #8b4513;
+  --fonte-titulo: 'Cinzel', serif;
+  --fonte-corpo: 'Lora', serif;
+  --fonte-citacao: 'EB Garamond', serif;
+
+  --bg: var(--cor-cosmos);
+  --texto: var(--cor-pergaminho);
+  --accent: var(--cor-ouro);
+  --accent2: var(--cor-esmeralda);
+  --surface: color-mix(in srgb, var(--cor-cosmos) 85%, var(--cor-ouro));
+  --transition: 0.4s ease;
+}
+
+[data-theme="light"] {
+  --bg: #f5ede0;
+  --texto: #1a0a2e;
+  --accent: #8b6914;
+  --accent2: #1a5c3a;
+  --surface: color-mix(in srgb, #f5ede0 85%, #8b6914);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--fonte-corpo);
+  background: var(--bg);
+  color: var(--texto);
+  line-height: 1.7;
+  transition: background var(--transition), color var(--transition);
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+a {
+  color: var(--accent2);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--accent);
+}
+
+.titulo-sagrado {
+  animation: revelar 2s ease-out forwards;
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+}
+
+@keyframes revelar {
+  from { opacity: 0; letter-spacing: 0.3em; filter: blur(4px); }
+  to   { opacity: 1; letter-spacing: normal; filter: blur(0); }
+}
+
+.divisor-ancestral::after {
+  content: '\u2295 \u00B7 \u2295 \u00B7 \u2295';
+  display: block;
+  text-align: center;
+  color: var(--accent);
+  opacity: 0.5;
+  letter-spacing: 1em;
+  margin: 2rem 0;
+}
+
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+}
+
+header {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+header h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-family: var(--fonte-citacao);
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  opacity: 0.8;
+  max-width: 600px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(8px);
+  transition: background var(--transition);
+}
+
+nav .logo {
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+  font-size: 1.3rem;
+  letter-spacing: 0.15em;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav ul li a {
+  color: var(--texto);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  position: relative;
+  cursor: pointer;
+}
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width var(--transition);
+}
+nav ul li a:hover::after {
+  width: 100%;
+}
+
+#theme-toggle {
+  background: none;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  border-radius: 4px;
+  transition: all var(--transition);
+}
+#theme-toggle:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+section {
+  margin-bottom: 5rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+section.visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+section h2::after {
+  content: '';
+  display: block;
+  width: 60%;
+  height: 2px;
+  background: var(--accent);
+  margin-top: 0.3rem;
+  opacity: 0.6;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.card .card-expandido {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  font-size: 0.9rem;
+  display: none;
+}
+.card.ativo .card-expandido {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card .card-expandido ul {
+  list-style: none;
+  padding: 0;
+}
+.card .card-expandido ul li {
+  padding: 0.3rem 0;
+  padding-left: 1rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  margin-bottom: 0.3rem;
+}
+.card .card-expandido ul li strong {
+  color: var(--accent);
+}
+
+.contemplacao-box {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  margin-top: 1.5rem;
+}
+
+.contemplacao-box::before {
+  content: '\u275D';
+  position: absolute;
+  top: 0.5rem;
+  left: 1rem;
+  font-size: 3rem;
+  color: var(--accent);
+  opacity: 0.2;
+  font-family: serif;
+  line-height: 1;
+}
+
+.contemplacao-box .frase {
+  font-family: var(--fonte-citacao);
+  font-size: 1.4rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.contemplacao-box .autor {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.contemplacao-box .btn-contemplar {
+  margin-top: 1.5rem;
+}
+
+.fatores-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.fator-card {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.fator-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.fator-card .simbolo {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--accent);
+}
+
+.fator-card h3 {
+  font-size: 1.1rem;
+}
+
+.fator-card .fator-detalhe {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  font-size: 0.9rem;
+  display: none;
+}
+.fator-card.ativo .fator-detalhe {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+.mapa-conexoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.conexao-item {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.conexao-item:hover {
+  border-left-color: var(--cor-esmeralda);
+  transform: translateX(6px);
+}
+
+.conexao-item .conceito {
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.conexao-item .tradicoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.conexao-item .tradicoes span {
+  background: color-mix(in srgb, var(--bg) 85%, var(--accent));
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: var(--fonte-citacao);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.conexao-item .tradicoes span:hover {
+  background: var(--accent);
+  color: var(--cor-cosmos);
+  transform: scale(1.05);
+}
+
+.mapa-detalhe {
+  margin-top: 0.8rem;
+  padding: 0.8rem;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+.conexao-item.ativo .mapa-detalhe {
+  display: block;
+}
+
+/* Timer */
+.timer-container {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.timer-display {
+  font-family: var(--fonte-titulo);
+  font-size: 3.5rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.timer-controls button {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--texto);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  transition: all var(--transition);
+}
+.timer-controls button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.timer-controls button.ativo {
+  background: var(--accent);
+  color: var(--cor-cosmos);
+  border-color: var(--accent);
+}
+
+.timer-btn-main {
+  background: var(--accent) !important;
+  color: var(--cor-cosmos) !important;
+  border-color: var(--accent) !important;
+  font-family: var(--fonte-titulo) !important;
+  letter-spacing: 0.05em;
+}
+.timer-btn-main:hover {
+  background: var(--accent2) !important;
+  color: var(--cor-pergaminho) !important;
+}
+
+.timer-frase {
+  margin-top: 1rem;
+  font-family: var(--fonte-citacao);
+  font-style: italic;
+  font-size: 0.9rem;
+  opacity: 0.6;
+  min-height: 1.5rem;
+}
+
+.centro-badge {
+  display: inline-block;
+  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--accent);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-family: var(--fonte-titulo);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+/* Modal / tooltip */
+.tradicao-tooltip {
+  position: fixed;
+  z-index: 200;
+  background: var(--cor-cosmos);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  max-width: 300px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.tradicao-tooltip.visivel {
+  opacity: 1;
+}
+[data-theme="light"] .tradicao-tooltip {
+  background: var(--cor-pergaminho);
+}
+
+.tradicao-tooltip h4 {
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.tradicao-tooltip p {
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--cor-cosmos);
+  border: none;
+  padding: 0.6rem 1.4rem;
+  font-family: var(--fonte-titulo);
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all var(--transition);
+}
+.btn:hover {
+  background: var(--accent2);
+  color: var(--cor-pergaminho);
+  transform: translateY(-2px);
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 3rem 2rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* Glossário */
+.glossario-link {
+  color: var(--accent);
+  border-bottom: 1px dashed var(--accent);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.glossario-link:hover {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+
+.glossario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.glossario-item {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 8px;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.glossario-item:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.glossario-item .termo {
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+.glossario-item .definicao {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  display: none;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+}
+.glossario-item.ativo .definicao {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+.glossario-item .etimologia {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  font-family: var(--fonte-citacao);
+  font-style: italic;
+}
+
+/* Cadeia Causa e Efeito */
+.cadeia-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+.cadeia-elo {
+  background: var(--surface);
+  border: 2px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+  padding: 0.5rem;
+  position: relative;
+}
+.cadeia-elo:hover {
+  border-color: var(--accent);
+  transform: scale(1.08);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--accent) 20%, transparent);
+}
+.cadeia-elo.ativo {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface));
+}
+
+.cadeia-elo .elo-numero {
+  font-size: 0.7rem;
+  opacity: 0.4;
+  font-family: var(--fonte-titulo);
+}
+.cadeia-elo .elo-nome {
+  font-family: var(--fonte-titulo);
+  font-size: 0.8rem;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.cadeia-seta {
+  color: var(--accent);
+  opacity: 0.3;
+  font-size: 1.2rem;
+}
+
+.cadeia-detalhe {
+  margin-top: 1.5rem;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 8px;
+  padding: 1.5rem;
+  min-height: 80px;
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+.cadeia-detalhe.visivel {
+  display: block;
+}
+.cadeia-detalhe h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.cadeia-detalhe p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+.cadeia-detalhe .cadeia-pergunta {
+  margin-top: 0.8rem;
+  padding: 0.8rem;
+  border-left: 3px solid var(--accent);
+  font-family: var(--fonte-citacao);
+  font-style: italic;
+  font-size: 0.95rem;
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  border-radius: 0 6px 6px 0;
+}
+
+@media (min-width: 700px) {
+  .cadeia-container {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cadeia-seta {
+    transform: rotate(0deg);
+  }
+}
+
+/* 6 Defeitos */
+.defeitos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.defeito-card {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 8px;
+  padding: 1.2rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+}
+.defeito-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+.defeito-card.ativo {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.defeito-card .defeito-nome {
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+}
+.defeito-card .defeito-origem {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  font-family: var(--fonte-citacao);
+}
+.defeito-card .defeito-icone {
+  font-size: 1.8rem;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+  opacity: 0.15;
+}
+.defeito-card .defeito-detalhe {
+  display: none;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  font-size: 0.85rem;
+}
+.defeito-card.ativo .defeito-detalhe {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+.defeito-card .defeito-detalhe strong {
+  color: var(--accent);
+}
+.defeito-card .defeito-obs-btn {
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  color: var(--texto);
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: var(--fonte-corpo);
+  transition: all var(--transition);
+}
+.defeito-card .defeito-obs-btn:hover {
+  background: var(--accent);
+  color: var(--cor-cosmos);
+}
+.defeito-card .defeito-contador {
+  font-size: 0.7rem;
+  opacity: 0.4;
+  margin-top: 0.4rem;
+}
+
+/* Correspondências */
+.correspondencias-container {
+  margin-top: 1.5rem;
+}
+
+.correspondencia-par {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.correspondencia-par:hover {
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+.correspondencia-par.ativo {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+}
+
+.correspondencia-par .corresp-esquerda,
+.correspondencia-par .corresp-direita {
+  text-align: center;
+  font-family: var(--fonte-titulo);
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+.correspondencia-par .corresp-seta {
+  text-align: center;
+  font-size: 1.2rem;
+  opacity: 0.4;
+  color: var(--accent);
+}
+.correspondencia-par .corresp-sub {
+  font-size: 0.7rem;
+  opacity: 0.5;
+  font-family: var(--fonte-corpo);
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.correspondencia-explicacao {
+  display: none;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  border-left: 3px solid var(--accent2);
+  animation: fadeIn 0.3s ease;
+}
+.correspondencia-par.ativo + .correspondencia-explicacao {
+  display: block;
+}
+
+/* Respiração Quadrada */
+.respiracao-container {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.respiracao-quadrado {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 1.5rem;
+}
+
+.respiracao-quadrado svg {
+  width: 100%;
+  height: 100%;
+}
+
+.respiracao-quadrado .resp-path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  transition: stroke-dashoffset 4s linear, stroke 0.5s;
+}
+
+.respiracao-quadrado .resp-path.animando {
+  stroke-dashoffset: 0;
+}
+
+.respiracao-fase {
+  font-family: var(--fonte-titulo);
+  font-size: 1.1rem;
+  color: var(--accent);
+  min-height: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.respiracao-ciclos {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.respiracao-container .btn {
+  margin: 0.3rem;
+}
+
+/* Roda 3 Fatores - Autoavaliação */
+.roda-avaliacao {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.roda-pergunta {
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  border-radius: 8px;
+  padding: 1.2rem;
+}
+.roda-pergunta .pergunta-label {
+  font-family: var(--fonte-titulo);
+  font-size: 0.9rem;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.roda-pergunta textarea {
+  width: 100%;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 15%, transparent);
+  border-radius: 4px;
+  padding: 0.6rem;
+  color: var(--texto);
+  font-family: var(--fonte-corpo);
+  font-size: 0.85rem;
+  resize: vertical;
+  min-height: 60px;
+  transition: border var(--transition);
+}
+.roda-pergunta textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.roda-pergunta textarea::placeholder {
+  color: var(--texto);
+  opacity: 0.3;
+}
+
+.roda-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+.roda-footer .roda-streak {
+  font-family: var(--fonte-titulo);
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.modal-overlay.visivel {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-conteudo {
+  background: var(--cor-cosmos);
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+[data-theme="light"] .modal-conteudo {
+  background: var(--cor-pergaminho);
+}
+
+.modal-conteudo h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+}
+.modal-conteudo .modal-etimologia {
+  font-family: var(--fonte-citacao);
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+.modal-conteudo p {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  line-height: 1.7;
+}
+.modal-fechar {
+  position: absolute;
+  top: 0.8rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition);
+}
+.modal-fechar:hover {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  nav ul { gap: 0.8rem; }
+  nav ul li a { font-size: 0.75rem; }
+  main { padding: 1rem; }
+  .card-grid { grid-template-columns: 1fr; }
+  .fatores-grid { grid-template-columns: 1fr; }
+  .defeitos-grid { grid-template-columns: 1fr; }
+  .cadeia-elo { width: 80px; height: 80px; }
+  .cadeia-elo .elo-nome { font-size: 0.7rem; }
+  .correspondencia-par { grid-template-columns: 1fr; text-align: center; }
+  .correspondencia-par .corresp-seta { transform: rotate(90deg); }
+  .respiracao-quadrado { width: 160px; height: 160px; }
+}

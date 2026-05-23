@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camino Verdade - O Caminho da Vida Verdadeira</title>
+    <meta name="description" content="Um projeto de disseminação do conhecimento vero para todos que buscam, sem controle, evoluir em harmonia com a natureza e consigo mesmo.">
+    <meta name="keywords" content="conhecimento, espiritualidade, filosofia, pneuma, tao, hermetismo, teosofia, sabedoria, vida verdadeira">
+    <meta name="author" content="Lz_ntn">
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <link rel="stylesheet" href="../componentes/css/interativo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Progresso de Leitura -->
+    
+    <header>
+        <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(90deg, #1a3a1a, #2d5a2d);">
+            <div class="logoContainer fs-2">
+                <i class="bi bi-stars text-warning"></i>
+                <i class="bi bi-universal-access text-success"></i>
+                <i class="fa-solid fa-yin-yang text-light"></i>
+            </div>
+            <div class="tema-botoes">
+                <button onclick="Interativo.tema.setDark()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+                <button onclick="Interativo.tema.setLight()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-sun-fill"></i>
+                </button>
+            </div>
+        </div>
+        <div class="titulo text-center py-4">
+            <h1 class="text-light">Camino Verdade</h1>
+            <p class="text-light">O Caminho da Vida Verdadeira</p>
+        </div>
+    </header>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <i class="fa-solid fa-yin-yang"></i> Lz_ntn
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#inicio">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#saberes">Saberes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#praticas">Práticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quiz">Quiz</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main id="conteudo-principal">
+        <!-- Introdução -->
+        <section id="inicio" data-animar="fade-in">
+            <div class="container py-5">
+                <div class="text-center mb-5">
+                    <h2>Bem-vindo ao Camino Verdade</h2>
+                    <p class="lead">
+                        Um projeto de disseminação do conhecimento vero para todos que buscam,
+                        sem controle, evoluir em harmonia com a natureza e consigo mesmo.
+                    </p>
+                </div>
+                
+                <!-- Menu Interativo -->
+                <div class="accordion-item open mb-4">
+                    <div class="accordion-header">Explore o Caminho</div>
+                    <div class="accordion-content show">
+                        <p class="text-center">Escolha uma área para começar sua jornada:</p>
+                        <div class="row mt-4">
+                            <div class="col-md-3 mb-3">
+                                <a href="pneuma.html" class="card-interativo text-decoration-none d-block text-center p-4">
+                                    <i class="fa-solid fa-wind fs-1 text-info"></i>
+                                    <h5 class="mt-3">Pneuma</h5>
+                                    <p class="small">O sopro vital</p>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="tao.html" class="card-interativo text-decoration-none d-block text-center p-4">
+                                    <i class="fa-solid fa-yin-yang fs-1 text-warning"></i>
+                                    <h5 class="mt-3">Tao/Dao</h5>
+                                    <p class="small">O caminho natural</p>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="hermetismo.html" class="card-interativo text-decoration-none d-block text-center p-4">
+                                    <i class="fa-solid fa-gem fs-1 text-success"></i>
+                                    <h5 class="mt-3">Hermetismo</h5>
+                                    <p class="small">Sabedoria antiga</p>
+                                </a>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <a href="teosofia.html" class="card-interativo text-decoration-none d-block text-center p-4">
+                                    <i class="fa-solid fa-eye fs-1 text-primary"></i>
+                                    <h5 class="mt-3">Teosofia</h5>
+                                    <p class="small">Visão de Deus</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Saberes -->
+        <section id="saberes" data-animar="slide-up">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Os Quatro Saberes</h2>
+                
+                <div class="tab-group">
+                    <button class="tab-button active" data-tab-group="saberes" data-tab-target="pneuma">
+                        <i class="fa-solid fa-wind"></i> Pneuma
+                    </button>
+                    <button class="tab-button" data-tab-group="saberes" data-tab-target="tao">
+                        <i class="fa-solid fa-yin-yang"></i> Tao
+                    </button>
+                    <button class="tab-button" data-tab-group="saberes" data-tab-target="hermetismo">
+                        <i class="fa-solid fa-gem"></i> Hermetismo
+                    </button>
+                    <button class="tab-button" data-tab-group="saberes" data-tab-target="teosofia">
+                        <i class="fa-solid fa-eye"></i> Teosofia
+                    </button>
+                </div>
+
+                <div class="tab-content" data-tab-content="saberes" data-tab="pneuma">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-wind"></i> Pneuma</h3>
+                        <p>O sopro vital que anima a matéria e nos conecta com o todo.</p>
+                        <p>Na tradição grega, pneuma significa "sopro" ou "espírito" - a força divina que permeia todas as coisas.</p>
+                        <a href="pneuma.html" class="btn btn-success">Explorar Pneuma</a>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="saberes" data-tab="tao">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-yin-yang"></i> Tao/Dao</h3>
+                        <p>O caminho natural, o fluxo que gera todas as coisas.</p>
+                        <p>Do Tao Te Ching de Lao Tzu: "O Tao que pode ser dito não é o Tao eterno."</p>
+                        <a href="tao.html" class="btn btn-success">Explorar Tao</a>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="saberes" data-tab="hermetismo">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-gem"></i> Hermetismo</h3>
+                        <p>A sabedoria antiga que permeia todas as tradições.</p>
+                        <p>"O que está em cima é como o que está em baixo" - Princípio hermético da correspondência.</p>
+                        <a href="hermetismo.html" class="btn btn-success">Explorar Hermetismo</a>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="saberes" data-tab="teosofia">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-eye"></i> Teosofia</h3>
+                        <p>Visão de Deus - a sabedoria divina oculta em todas as religiões.</p>
+                        <p>Fundada por Helena Blavatsky em 1875, busca a síntese de todas as tradições.</p>
+                        <a href="teosofia.html" class="btn btn-success">Explorar Teosofia</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Práticas -->
+        <section id="praticas" data-animar="zoom-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Práticas do Caminho</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Expressões Úteis</h4>
+                        <p>Ferramentas mentais e conceitos para transformar sua percepção.</p>
+                        <a href="expressoes.html" class="btn btn-sm btn-outline-success">Ver mais</a>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Métodos Práticos</h4>
+                        <p>Técnicas específicas para o trabalho interior.</p>
+                        <a href="metodos.html" class="btn btn-sm btn-outline-success">Ver mais</a>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Prática Diária</h4>
+                        <p>Rituais simples para integrar o caminho no cotidiano.</p>
+                        <a href="pratica-diaria.html" class="btn btn-sm btn-outline-success">Ver mais</a>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Multimídia</h4>
+                        <p>Áudios e vídeos para aprofundamento.</p>
+                        <a href="multimidia.html" class="btn btn-sm btn-outline-success">Ver mais</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section id="quiz" data-animar="fade-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Teste Seu Conhecimento</h2>
+                <div id="quiz-camino"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white py-4 text-center">
+        <p>&copy; Lz_ntn - 2026</p>
+        <p>
+            <a href="https://github.com/losmanim" target="_blank" class="text-white">
+                <i class="fa-brands fa-github"></i> GitHub
+            </a>
+        </p>
+    </footer>
+
+    <script src="../componentes/js/interativo.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Interativo.progresso.init();
+            Interativo.accordion.init('.accordion-item');
+            Interativo.tabs.init('saberes');
+            Interativo.timeline.init();
+            Interativo.animacoes.init();
+            
+            Interativo.quiz.init({
+                containerId: 'quiz-camino',
+                perguntas: [
+                    {
+                        pergunta: "O que significa Pneuma em grego?",
+                        opcoes: ["Alma", "Sopro/Espírito", "Fogo"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "Qual o princípio hermético 'o que está em cima é como o que está em baixo'?",
+                        opcoes: ["As Above So Below", "Unity of All", "Mental Transmutation"],
+                        correta: 0
+                    },
+                    {
+                        pergunta: "De onde vem o Tao Te Ching?",
+                        opcoes: ["Índia", "China", "Grécia"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "Quem fundou a sociedade teosófica em 1875?",
+                        opcoes: ["Lao Tzu", "Carl Jung", "Helena Blavatsky"],
+                        correta: 2
+                    },
+                    {
+                        pergunta: "Qual é o objetivo do Camino Verdade?",
+                        opcoes: ["Ganhar dinheiro", "Evoluir em harmonia", "Dominar outros"],
+                        correta: 1
+                    }
+                ]
+            });
+            
+            Interativo.tema.init();
+        });
+    </script>
+</body>
+
+</html>

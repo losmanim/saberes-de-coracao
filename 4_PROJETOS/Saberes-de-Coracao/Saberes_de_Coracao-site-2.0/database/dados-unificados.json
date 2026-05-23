@@ -1,0 +1,495 @@
+{
+  "meta": {
+    "versao": "1.0",
+    "atualizado": "2026-05-06",
+    "descricao": "Dados unificados do Projeto Saberes de Coração - Fonte única para site, banco de dados e ebooks"
+  },
+  "categorias": [
+    {
+      "id": 1,
+      "nome": "ESPÍRITO",
+      "slug": "espirito",
+      "descricao": "Conhecimento Gnóstico - Gnose, Hermetismo, Teosofia",
+      "cor": "#9b59b6",
+      "icone": "fa-heart"
+    },
+    {
+      "id": 2,
+      "nome": "PRÁTICAS",
+      "slug": "praticas",
+      "descricao": "Trabalho Interior - Meditação, Kundalini, Respiração",
+      "cor": "#3498db",
+      "icone": "fa-brain"
+    },
+    {
+      "id": 3,
+      "nome": "CIÊNCIA",
+      "slug": "ciencia",
+      "descricao": "Conhecimento Baseado em Evidências - Epigenética",
+      "cor": "#2ecc71",
+      "icone": "fa-flask"
+    },
+    {
+      "id": 4,
+      "nome": "JORNADA",
+      "slug": "jornada",
+      "descricao": "Transformação - Jornada da Consciência",
+      "cor": "#e67e22",
+      "icone": "fa-compass"
+    },
+    {
+      "id": 5,
+      "nome": "VIDA VERDADEIRA",
+      "slug": "vida-verdadeira",
+      "descricao": "Integração - Tao, Pneuma, Hermetismo",
+      "cor": "#e74c3c",
+      "icone": "fa-infinity"
+    }
+  ],
+  "saberes": [
+    {
+      "id": "gnose-1",
+      "categoria_id": 1,
+      "titulo": "O Que é Gnose?",
+      "slug": "gnose-o-que-e",
+      "descricao": "Conhecimento direto e experiencial da natureza divina",
+      "nivel": "iniciante",
+      "duracao": 15,
+      "tags": ["gnose", "conhecimento", " autoconhecimento"],
+      "fonte": "Tradição Gnóstica",
+      "licenca": "Domínio Público",
+      "conteudo": {
+        "definicao": "Gnose (γνῶσις) significa 'conhecimento' em grego. É o conhecimento direto e experiencial da natureza divina, não apenas conhecimento intelectual.",
+        "conceitos": [
+          {"termo": "Pneuma", "def": "A centelha divina dentro do ser humano"},
+          {"termo": "Hyle", "def": "A matéria como prisão espiritual"},
+          {"termo": "Demiurgo", "def": "A inteligência criadora imperfeita do mundo material"}
+        ],
+        "citacoes": [
+          "Conhece-te a ti mesmo e conhecerás o universo e os deuses."
+        ]
+      },
+      "praticas": [
+        {
+          "titulo": "Autoobservação",
+          "instrucoes": "Sente-se em silêncio por 10 minutos. Observe seus pensamentos sem julgamento. Quem está observando? Essa é a centelha.",
+          "duracao": 10,
+          "frequencia": "diaria"
+        }
+      ],
+      "conexoes": ["kundalini-1", "pneuma-1", "hermetismo-1"]
+    },
+    {
+      "id": "gnose-2",
+      "categoria_id": 1,
+      "titulo": "Os Três Mundos",
+      "slug": "gnose-tres-mundos",
+      "descricao": "Plerooma, Kenoma e o ser humano",
+      "nivel": "intermediario",
+      "duracao": 20,
+      "tags": ["gnose", "cosmologia", "plerooma"],
+      "fonte": "Tradição Gnóstica",
+      "conteudo": {
+        "mundos": [
+          {"nome": "Plerooma", "simbolo": "🔥", "desc": "O mundo da plenitude divina. Realm da luz, onde habitam os eones e a verdadeira essência espiritual."},
+          {"nome": "Kenoma", "simbolo": "🌫️", "desc": "O vazio ou falta. O mundo material criado pelo demiurgo, onde a alma está aprisionada."},
+          {"nome": "Sarak", "simbolo": "🌱", "desc": "O ser humano pneumático. A centelha divina que pode ascender e retornar ao Plerooma."}
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["gnose-1"]
+    },
+    {
+      "id": "gnose-3",
+      "categoria_id": 1,
+      "titulo": "Textos Gnósticos",
+      "slug": "gnose-textos",
+      "descricao": "Biblioteca de Nag Hammadi",
+      "nivel": "intermediario",
+      "duracao": 30,
+      "tags": ["gnose", "nag-hammadi", "textos"],
+      "fonte": "Biblioteca de Nag Hammadi",
+      "conteudo": {
+        "textos": [
+          {"nome": "Evangelho de Tomé", "desc": "Contém ditos de Jesus preservados independentemente dos evangelhos canônicos."},
+          {"nome": "Evangelho de Filipe", "desc": "Explora a espiritualidade e os sacramentos gnósticos."},
+          {"nome": "Apocalipse de Pedro", "desc": "Revela visões do julgamento e da salvação."},
+          {"nome": "Hipóstases do Arquon", "desc": "Descreve a estrutura do cosmo e a descida da luz."}
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["gnose-1", "gnose-2"]
+    },
+    {
+      "id": "hermetismo-1",
+      "categoria_id": 1,
+      "titulo": "Os Sete Princípios do Kybalion",
+      "slug": "hermetismo-sete-principios",
+      "descricao": "As leis fundamentais do universo",
+      "nivel": "iniciante",
+      "duracao": 30,
+      "tags": ["hermetismo", "kybalion", "leis"],
+      "fonte": "O Kybalion",
+      "conteudo": {
+        "principios": [
+          {"num": 1, "nome": "Mentalismo", "frase": "O Todo é Mente", "desc": "Tudo existe na consciência divina, e nossa mente é uma parcela da mente universal."},
+          {"num": 2, "nome": "Correspondência", "frase": "Como acima, assim abaixo", "desc": "O microcosmo reflete o macrocosmo. O ser humano é um universo em miniatura."},
+          {"num": 3, "nome": "Vibração", "frase": "Nada está em repouso", "desc": "A matéria é vibração em diferentes frequências. O pensamento também vibra."},
+          {"num": 4, "nome": "Polaridade", "frase": "Tudo tem dois polos", "desc": "Calor/frio, luz/sombra, amor/medo. Os opostos são extremos do mesmo espectro."},
+          {"num": 5, "nome": "Ritmo", "frase": "Tudo flui e reflui", "desc": "Os ciclos estão em tudo: respiração, marés, estações, emoções."},
+          {"num": 6, "nome": "Causa e Efeito", "frase": "Todo efeito tem causa", "desc": "Não há acaso, apenas causas que não percebemos. Você co-cria sua realidade."},
+          {"num": 7, "nome": "Gênero", "frase": "Tudo tem masculino e feminino", "desc": "Não apenas física, mas em todos os níveis. Equilíbrio é chave."}
+        ],
+        "citacoes": [
+          "O que está em cima é como o que está em baixo, e o que está em baixo é como o que está em cima."
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["gnose-1", "correspondencia-1"]
+    },
+    {
+      "id": "correspondencia-1",
+      "categoria_id": 1,
+      "titulo": "Lei da Correspondência",
+      "slug": "lei-correspondencia",
+      "descricao": "Como em cima, assim em baixo",
+      "nivel": "iniciante",
+      "duracao": 20,
+      "tags": ["hermetismo", "correspondencia", "macrocosmo"],
+      "fonte": "Tábua de Esmeralda",
+      "conteudo": {
+        "definicao": "Tudo o que existe no macrocosmo existe no microcosmo. O universo é um espelho infinito onde cada parte reflete o todo.",
+        "aplicacoes": [
+          {"maior": "Sol", "menor": "Coração"},
+          {"maior": "Lua", "menor": "Mente"},
+          {"maior": "Terra", "menor": "Corpo"},
+          {"maior": "Ar", "menor": "Pulmões"},
+          {"maior": "Fogo", "menor": "Metabolismo"},
+          {"maior": "Água", "menor": "Emoções"}
+        ]
+      },
+      "praticas": [
+        {
+          "titulo": "Meditação da Correspondência",
+          "instrucoes": "1. Sente-se em silêncio\n2. Escolha um Aspecto da natureza\n3. Pergunte: 'O que isto reflete em mim?'\n4. Observe a resposta\n5. Pergunte: 'O que isto reflete no cosmos?'\n6. Integre a compreensão",
+          "duracao": 15,
+          "frequencia": "semanal"
+        }
+      ],
+      "conexoes": ["hermetismo-1"]
+    },
+    {
+      "id": "epigenetica-1",
+      "categoria_id": 3,
+      "titulo": "O Que é Epigenética?",
+      "slug": "epigenetica-o-que-e",
+      "descricao": "A ciência das mudanças na expressão gênica",
+      "nivel": "iniciante",
+      "duracao": 20,
+      "tags": ["epigenetica", "ciencia", "genes"],
+      "fonte": "Ciência Moderna",
+      "conteudo": {
+        "definicao": "Epigenética é o estudo das mudanças na atividade dos genes que não envolvem alterações na sequência do DNA.",
+        "analogia": "Pense no seu DNA como um livro de receitas com todas as possibilidades. A epigenética são as anotações e marcadores que decidem quais receitas serão lidas e executadas.",
+        "insight": "Você pode ter genes 'de risco' que nunca se expressam se mantiver bons hábitos epigenéticos!"
+      },
+      "praticas": [],
+      "conexoes": ["epigenetica-2", "respiracao-1"]
+    },
+    {
+      "id": "epigenetica-2",
+      "categoria_id": 3,
+      "titulo": "Os Três Mecanismos",
+      "slug": "epigenetica-mecanismos",
+      "descricao": "Metilação, Histonas e MicroRNA",
+      "nivel": "intermediario",
+      "duracao": 25,
+      "tags": ["epigenetica", "mecanismos", "biologia"],
+      "fonte": "Ciência Moderna",
+      "conteudo": {
+        "mecanismos": [
+          {"nome": "Metilação", "icone": "🎯", "desc": "Adição de grupos metil ao DNA que DESLIGAM genes. Como colocar um 'não leia' em uma página.", "exemplo": "Fumar pode adicionar metil em genes de tumor"},
+          {"nome": "Histonas", "icone": "📚", "desc": "Proteínas ao redor das quais o DNA se enrola. Podem ABRIR ou FECHAR o acesso aos genes.", "exemplo": "Estresse crônico compacta genes relacionados à imunidade"},
+          {"nome": "MicroRNA", "icone": "✉️", "desc": "Moléculas que REGULAM quais genes são traduzidos em proteínas.", "exemplo": "Dieta rica em ômega-3 afeta microRNAs inflamatórios"}
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["epigenetica-1", "epigenetica-3"]
+    },
+    {
+      "id": "epigenetica-3",
+      "categoria_id": 3,
+      "titulo": "O Que Influencia?",
+      "slug": "epigenetica-influencias",
+      "descricao": "Fatores que afetam a epigenética",
+      "nivel": "iniciante",
+      "duracao": 20,
+      "tags": ["epigenetica", "habitos", "estilo-de-vida"],
+      "fonte": "Ciência Moderna",
+      "conteudo": {
+        "fatores": [
+          {"nome": "Alimentação", "icone": "🍎", "desc": "Folatos, ômega-3, antioxidantes. Dieta mediterrânea = genes pró-inflamatórios desligados."},
+          {"nome": "Estresse", "icone": "😰", "desc": "Cortisol crônico = epigenética do envelhecimento acelerado. Mas meditação reverte isso!"},
+          {"nome": "Exercício", "icone": "🏃", "desc": "Atividade física = metilação em genes relacionados à inflamação e metabolismo."},
+          {"nome": "Sono", "icone": "😴", "desc": "Noite bem dormida = epigenética de regeneração. Noite ruim = genes de estresse ativados."},
+          {"nome": "Conexões Sociais", "icone": "👥", "desc": "Solidão = genes inflamatórios ativados. Comunidade = genes de imunidade fortalecidos."}
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["epigenetica-2", "respiracao-1", "meditacao-1"]
+    },
+    {
+      "id": "kundalini-1",
+      "categoria_id": 1,
+      "titulo": "O Que é Kundalini?",
+      "slug": "kundalini-o-que-e",
+      "descricao": "A energia serpentina",
+      "nivel": "intermediario",
+      "duracao": 25,
+      "tags": ["kundalini", "energia", "chakra"],
+      "fonte": "Tradição Gnóstica",
+      "conteudo": {
+        "definicao": "Kundalini (sânscrito: 'enrolada') é a energia espiritual latente na base da coluna, frequentemente representada como uma serpente adormecida.",
+        "chakras": [
+          {"nome": "Múládhara", "cor": "#f87271", "desc": "Raiz - Base da coluna"},
+          {"nome": "Svádhishthána", "cor": "#fb923c", "desc": "Sexual - 2 vértebras acima"},
+          {"nome": "Manipúra", "cor": "#facc15", "desc": "Umbigo - Plexo solar"},
+          {"nome": "Anáhata", "cor": "#4ade80", "desc": "Coração - Centro do peito"},
+          {"nome": "Vishúdda", "cor": "#60a5fa", "desc": "Garganta - Pescoço"},
+          {"nome": "Ajña", "cor": "#a78bfa", "desc": "Terceiro olho - Entre sobrancelhas"},
+          {"nome": "Sahasrára", "cor": "#c084fc", "desc": "Coroa - Topo da cabeça"}
+        ],
+        "aviso": "O despertar de Kundalini deve ser gradual. Despertar abrupto pode causar desconforto. Comece com práticas suaves."
+      },
+      "praticas": [],
+      "conexoes": ["gnose-1", "respiracao-1", "meditacao-1"]
+    },
+    {
+      "id": "respiracao-1",
+      "categoria_id": 2,
+      "titulo": "Respiração Quadrada",
+      "slug": "respiracao-quadrada",
+      "descricao": "Técnica 4x4 para acalmar a mente",
+      "nivel": "iniciante",
+      "duracao": 10,
+      "tags": ["respiracao", "pranayama", "calma"],
+      "fonte": "Tradições Orientais",
+      "conteudo": {
+        "tecnica": "Inspire por 4 segundos, segure por 4 segundos, exale por 4 segundos, segure por 4 segundos.",
+        "beneficios": ["Equilibra o sistema nervoso", "Acalma a mente", "Aumenta foco"]
+      },
+      "praticas": [
+        {
+          "titulo": "Respiração Quadrada",
+          "instrucoes": "Inspire por 4 segundos\nSegure por 4 segundos\nExale por 4 segundos\nSegure por 4 segundos\nRepita 5-10 vezes",
+          "duracao": 4,
+          "frequencia": "diaria"
+        }
+      ],
+      "conexoes": ["epigenetica-3", "meditacao-1"]
+    },
+    {
+      "id": "meditacao-1",
+      "categoria_id": 2,
+      "titulo": "Técnica de Meditação",
+      "slug": "tecnica-meditacao",
+      "descricao": "Prática contemplativa por chakras",
+      "nivel": "iniciante",
+      "duracao": 20,
+      "tags": ["meditacao", "chakra", "contemplacao"],
+      "fonte": "Tradições Universais",
+      "conteudo": {
+        "chakras": [
+          {"soma": "I", "nome": "Coronário", "foco": "Conexão espiritual", "cor": "#c084fc"},
+          {"soma": "I", "nome": "Frontal", "foco": "Intuição", "cor": "#a78bfa"},
+          {"soma": "E", "nome": "Laríngeo", "foco": "Comunicação", "cor": "#60a5fa"},
+          {"soma": "O", "nome": "Cardíaco", "foco": "Amor", "cor": "#f472b6"},
+          {"soma": "U", "nome": "Plexo Solar", "foco": "Poder pessoal", "cor": "#4ade80"},
+          {"soma": "A", "nome": "Pulmonares", "foco": "Vitalidade", "cor": "#facc15"},
+          {"soma": "M", "nome": "Prostático", "foco": "Criatividade", "cor": "#fb923c"},
+          {"soma": "S", "nome": "Coccígeo", "foco": "Segurança", "cor": "#f87171"}
+        ]
+      },
+      "praticas": [
+        {
+          "titulo": "Meditação por Chakras",
+          "instrucoes": "Comece pelo topo (Coronário) e desça gradualmente. A cada chakra, repita o mantra vocalizado por 1-2 minutos, respirando profundamente.",
+          "duracao": 15,
+          "frequencia": "diaria"
+        }
+      ],
+      "conexoes": ["respiracao-1", "gnose-4", "epigenetica-3"]
+    },
+    {
+      "id": "mantras-1",
+      "categoria_id": 2,
+      "titulo": "Mantras de Poder",
+      "slug": "mantras-poder",
+      "descricao": "Sons sagrados para transformação",
+      "nivel": "iniciante",
+      "duracao": 15,
+      "tags": ["mantra", "som", "vibracao"],
+      "fonte": "Tradições Universais",
+      "conteudo": {
+        "mantras": [
+          {"nome": "OM (AUM)", "origem": "Hindu/Tântrica", "desc": "O som primordial. Contém todos os outros sons.", "quando": "Meditação, início do dia"},
+          {"nome": "OM MANI PADME HUM", "origem": "Tibetana", "desc": "'A joia no lótus' - iluminação", "quando": "Prática diária"},
+          {"nome": "Hu (הוּ)", "origem": "Hebraica", "desc": "O sopro de vida", "quando": "Cura"},
+          {"nome": "RAM", "origem": "Yoga", "desc": "Associado ao chakra do coração", "quando": "Amor e compaixão"}
+        ]
+      },
+      "praticas": [
+        {
+          "titulo": "Prática de Mantra",
+          "instrucoes": "1. Escolha UM mantra para este mês\n2. Repita em silêncio durante o dia\n3. Cante em voz ALTA pelo menos 5 minutos\n4. Sinta a vibração no corpo\n5. Permaneça no silêncio após",
+          "duracao": 10,
+          "frequencia": "diaria"
+        }
+      ],
+      "conexoes": ["meditacao-1"]
+    },
+    {
+      "id": "jornada-1",
+      "categoria_id": 4,
+      "titulo": "A Jornada da Consciência",
+      "slug": "jornada-consciencia",
+      "descricao": "Três visões sobre a natureza da consciência",
+      "nivel": "avancado",
+      "duracao": 30,
+      "tags": ["jornada", "consciencia", " filosofia"],
+      "fonte": "Múltiplas tradições",
+      "conteudo": {
+        "visoes": [
+          {
+            "nome": "Materialista",
+            "desc": "Você é um pedaço do Todo que ganhou complexidade suficiente pra se olhar no espelho. O universo é um sistema físico. A consciência surge como propriedade emergente.",
+            "citacao": "Você é o universo se autoconhecendo. — Carl Sagan"
+          },
+          {
+            "nome": "Não-Dual",
+            "desc": "A consciência não 'surge' do cérebro; ela é fundamental, como espaço, tempo ou massa. Tudo tem um grão mínimo de 'experiência'.",
+            "citacao": "O Todo é consciente em si mesmo e você é apenas um ponto focal dele."
+          },
+          {
+            "nome": "Experiencial",
+            "desc": "Muitos humanos (místicos, psicodélicos, meditação profunda) sentem o 'eu' dissolver e virar o Todo. O cérebro, quando certos circuitos são desligados, para de gerar a ilusão do 'eu separado'.",
+            "citacao": "Você vira o universo experimentando a si mesmo."
+          }
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["gnose-1", "hermetismo-1"]
+    },
+    {
+      "id": "teosofia-1",
+      "categoria_id": 1,
+      "titulo": "O Que é Teosofia?",
+      "slug": "teosofia-o-que-e",
+      "descricao": "Sabedoria divina - síntese de tradições",
+      "nivel": "iniciante",
+      "duracao": 20,
+      "tags": ["teosofia", "helena-blavatsky", "sabedoria"],
+      "fonte": "Helena Blavatsky",
+      "conteudo": {
+        "definicao": "Teosofia (do grego: theos = Deus, sophia = sabedoria) significa 'sabedoria divina'.",
+        "sintese": [
+          "Religiões orientais (Hinduísmo, Budismo)",
+          "Filosofia ocidental (Platão, Pitágoras)",
+          "Ciência moderna (física quântica, epigenética)",
+          "Práticas contemplativas (meditação, yoga)"
+        ],
+        "citacoes": [
+          "Não existe religião maior que a verdade. — Helena Blavatsky"
+        ]
+      },
+      "praticas": [],
+      "conexoes": ["gnose-1", "hermetismo-1"]
+    },
+    {
+      "id": "coracao-1",
+      "categoria_id": 3,
+      "titulo": "Campo Eletromagnético",
+      "slug": "coracao-campo",
+      "descricao": "O coração como centro de inteligência",
+      "nivel": "iniciante",
+      "duracao": 15,
+      "tags": ["coracao", "coerencia", "heartmath"],
+      "fonte": "HeartMath Institute",
+      "conteudo": {
+        "dado": "60x maior campo eletromagnético que o cérebro",
+        "desc": "O coração gera o campo eletromagnético mais potente do corpo humano. Este campo pode ser medido a até 3 metros do corpo.",
+        "insight": "Pesquisas do HeartMath Institute mostram que o campo cardíaco influencia o cérebro e até o campo de pessoas próximas."
+      },
+      "praticas": [],
+      "conexoes": ["epigenetica-3"]
+    },
+    {
+      "id": "coracao-2",
+      "categoria_id": 3,
+      "titulo": "Coerência Cardíaca",
+      "slug": "coracao-coerencia",
+      "descricao": "Estado de harmonia coração-mente",
+      "nivel": "iniciante",
+      "duracao": 15,
+      "tags": ["coracao", "coerencia", "hrv"],
+      "fonte": "HeartMath Institute",
+      "conteudo": {
+        "definicao": "Estado em que o ritmo do coração é organizado e equilibrado, criando harmonia entre coração, mente e emoção.",
+        "beneficios": [
+          " Redução de cortisol (hormônio do estresse)",
+          "Melhoria do sistema imunológico",
+          "Clareza mental e tomada de decisão",
+          "Melhoria na saúde cardiovascular"
+        ]
+      },
+      "praticas": [
+        {
+          "titulo": "Respiração Coerente",
+          "instrucoes": "1. Sente-se confortavelmente\n2. Coloque uma mão no coração\n3. Respire pelo nariz contando 5 segundos (inspiração)\n4. Exale pelo nariz ou boca por 5 segundos\n5. Mantenha o foco na área do coração\n6. Pense em algo que faz sentir gratidão",
+          "duracao": 5,
+          "frequencia": "diaria"
+        }
+      ],
+      "conexoes": ["coracao-1", "respiracao-1"]
+    }
+  ],
+  "praticas": [
+    {
+      "id": "pratica-1",
+      "nome": "Respiração 4x4",
+      "saberes": ["respiracao-1", "epigenetica-3", "coracao-2"],
+      "instrucoes": "Inspire 4s, segure 4s, exale 4s, segure 4s. Repita 5-10 vezes.",
+      "duracao": 4,
+      "frequencia": "diaria"
+    },
+    {
+      "id": "pratica-2",
+      "nome": "Meditação Chakras",
+      "saberes": ["meditacao-1"],
+      "instrucoes": "Comece pelo topo (Coronário) e desça. A cada chakra, repita o mantra por 1-2 min.",
+      "duracao": 15,
+      "frequencia": "diaria"
+    },
+    {
+      "id": "pratica-3",
+      "nome": "Autoobservação",
+      "saberes": ["gnose-1"],
+      "instrucoes": "Sente-se em silêncio 10 min. Observe pensamentos sem julgamento.",
+      "duracao": 10,
+      "frequencia": "diaria"
+    }
+  ],
+  "referencias": {
+    "obras": [
+      {"titulo": "A Doutrina Secreta", "autora": "Helena Blavatsky"},
+      {"titulo": "O Kybalion", "autores": "Três Iniciados"},
+      {"titulo": "O Corpus Hermeticum", "autor": "Hermes Trismegisto"},
+      {"titulo": "A Voz do Silencio", "autora": "Helena Blavatsky"},
+      {"titulo": "Biblioteca de Nag Hammadi", "editora": "Vários"}
+    ],
+    "links": [
+      {"nome": "HeartMath Institute", "url": "heartmath.org"},
+      {"nome": "Epigenetics", "url": "nih.gov/epigenetics"}
+    ]
+  }
+}

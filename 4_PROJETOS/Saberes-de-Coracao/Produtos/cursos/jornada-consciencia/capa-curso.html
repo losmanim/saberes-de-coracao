@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capa - Curso Jornada da Consciência</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .capa {
+            width: auto;
+            height: auto;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Consciousness waves */
+        .capa::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 1000px;
+            border: 2px solid rgba(255,193,7,0.2);
+            border-radius: 50%;
+            animation: waveExpand 4s ease-out infinite;
+        }
+        
+        .capa::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            height: 1000px;
+            border: 2px solid rgba(255,193,7,0.2);
+            border-radius: 50%;
+            animation: waveExpand 4s ease-out infinite;
+            animation-delay: 2s;
+        }
+        
+        @keyframes waveExpand {
+            0% {
+                width: 100px;
+                height: 100px;
+                opacity: 1;
+            }
+            100% {
+                width: 1000px;
+                height: 1000px;
+                opacity: 0;
+            }
+        }
+        
+        /* Brain/symbol */
+        .simbolo {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 50px rgba(255,193,7,0.3);
+        }
+        
+        .simbolo-inner {
+            width: 100px;
+            height: 100px;
+            background: #1a1a2e;
+            border-radius: 50%;
+        }
+        
+        /* Badge */
+        .badge {
+            position: absolute;
+            top: 100px;
+            right: 200px;
+            background: #ffc107;
+            color: #1a1a2e;
+            padding: 20px 40px;
+            font-size: 30px;
+            font-weight: bold;
+            border-radius: 50px;
+            transform: rotate(15deg);
+            z-index: 1;
+        }
+        
+        /* Texto principal */
+        .titulo {
+            font-size: 110px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: 5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .subtitulo {
+            font-size: 45px;
+            color: #ffc107;
+            margin-bottom: 40px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Texto curso */
+        .curso-badge {
+            background: rgba(255,193,7,0.2);
+            border: 2px solid #ffc107;
+            padding: 15px 50px;
+            font-size: 30px;
+            color: #ffc107;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Linha decorativa */
+        .linha {
+            width: 300px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ffc107, transparent);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Features */
+        .features {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 25px;
+        }
+        
+        /* Texto inferior */
+        .autor {
+            font-size: 35px;
+            color: #666;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .colecao {
+            font-size: 30px;
+            color: #ffc107;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="capa">
+        <div class="badge">CURSO</div>
+        
+        <div class="simbolo">
+            <div class="simbolo-inner"></div>
+        </div>
+        
+        <h1 class="titulo">A Jornada da<br>Consciência</h1>
+        <p class="subtitulo">Um curso interativo</p>
+        
+        <div class="curso-badge">3 MÓDULOS + QUIZ + CERTIFICADO</div>
+        
+        <div class="linha"></div>
+        
+        <div class="features">
+            <span class="feature">📚 3 Módulos</span>
+            <span class="feature">✅ Quiz</span>
+            <span class="feature">🏆 Certificado</span>
+        </div>
+        
+        <p class="autor">Coleção Saberes Antigos</p>
+        <p class="colecao">• 2026 •</p>
+    </div>
+</body>
+</html>

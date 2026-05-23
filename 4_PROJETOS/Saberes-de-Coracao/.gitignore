@@ -1,0 +1,23 @@
+# System files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Python
+__pycache__/
+*.pyc
+
+# Local media symlinks or generated assets
+Saberes_de_Coracao-site-3.0/midia/

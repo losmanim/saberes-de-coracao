@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Curso interativo sobre consciência humana, percepção e realidade. Abordagem direta sem filtros religiosos ou espirituais.">
+    <meta name="keywords" content="consciência, percepção, filosofia, ciência, realidade, autoconhecimento">
+    <meta name="author" content="Jornada da Consciência">
+    <title>A Jornada da Consciência - Curso Interativo Sem Filtros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+</head>
+<body id="pagina">
+    <header role="banner">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation" aria-label="Navegação principal">
+            <div class="container">
+                <a class="navbar-brand" href="#" aria-label="Início - Jornada da Consciência">
+                    <i class="bi bi-universal-access-circle" aria-hidden="true"></i> Jornada da Consciência
+                </a>
+                <div class="d-flex align-items-center">
+                    <div class="progress-container me-3" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do curso">
+                        <div class="progress" style="width: 100px; height: 10px;">
+                            <div id="progressBar" class="progress-bar bg-warning" style="width: 0%"></div>
+                        </div>
+                        <small id="progressText" class="text-light">0%</small>
+                    </div>
+                    <button onclick="temaEscuro()" class="btn btn-outline-light btn-sm me-1" aria-label="Ativar tema escuro"><i class="bi bi-moon-stars-fill" aria-hidden="true"></i></button>
+                    <button onclick="temaClaro()" class="btn btn-outline-light btn-sm" aria-label="Ativar tema claro"><i class="bi bi-sun-fill" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero text-center py-5" role="banner">
+        <div class="container">
+            <h1 class="display-4 fw-bold">A Jornada da Consciência</h1>
+            <p class="lead mb-4">Uma exploração brutalmente honesta sobre consciência, percepção e realidade.<br><small class="text-warning">Sem filtros, sem religião, sem new age. Apenas o que a realidade mostra.</small></p>
+            <button id="btnIniciar" class="btn btn-warning btn-lg mt-3" aria-label="Iniciar o curso">Começar Jornada <i class="bi bi-arrow-down-circle" aria-hidden="true"></i></button>
+        </div>
+    </section>
+
+    <main class="container my-5" role="main">
+        <!-- Módulo 1 -->
+        <section id="modulo1" class="modulo" aria-labelledby="modulo1-titulo">
+            <article class="card">
+                <header class="card-header bg-warning">
+                    <h2 id="modulo1-titulo" class="mb-0 h3"><i class="bi bi-1-circle" aria-hidden="true"></i> Módulo 1: O Que é Consciência?</h2>
+                </header>
+                <div class="card-body">
+                    <div class="alert alert-danger border-0" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i> <strong>VERDADE BRUTAL:</strong> Ninguém sabe o que é consciência. É o maior mistério do universo.
+                    </div>
+                    <p class="fs-5">A consciência humana e sua conexão com a realidade total é o enigma fundamental. Vamos encarar isso sem mentiras confortáveis:</p>
+                    <ul class="list-unstyled fs-6">
+                        <li><i class="bi bi-x-circle text-danger"></i> ❌ Sem religião</li>
+                        <li><i class="bi bi-x-circle text-danger"></i> ❌ Sem espiritualidade barata</li>
+                        <li><i class="bi bi-x-circle text-danger"></i> ❌ Sem new age</li>
+                        <li><i class="bi bi-check-circle text-success"></i> ✅ Apenas ciência real</li>
+                        <li><i class="bi bi-check-circle text-success"></i> ✅ Apenas filosofia rigorosa</li>
+                        <li><i class="bi bi-check-circle text-success"></i> ✅ Apenas experiência direta</li>
+                    </ul>
+                    <button id="btnMod1" class="btn btn-primary btn-lg" aria-expanded="false" aria-controls="mostraMod1">Explorar a Realidade <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></button>
+                    <div id="mostraMod1" class="conteudo-expandido mt-3" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Módulo 2 -->
+        <section id="modulo2" class="modulo mt-4" aria-labelledby="modulo2-titulo">
+            <article class="card">
+                <header class="card-header bg-info">
+                    <h2 id="modulo2-titulo" class="mb-0 h3"><i class="bi bi-2-circle" aria-hidden="true"></i> Módulo 2: Percepção e Conhecimento Real</h2>
+                </header>
+                <div class="card-body">
+                    <h3 class="h4">Como o conhecimento REAL emerge?</h3>
+                    <p class="fs-5">O conhecimento não vem de livros ou gurus. Vem da percepção crua e da atenção implacável.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="mb-0"><i class="bi bi-shield-exclamation" aria-hidden="true"></i> Filtros que DESTROEM a realidade</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        <li><strong>🔴 Vieses emocionais:</strong> Você vê o que quer ver</li>
+                                        <li><strong>🔴 Crenças cegas:</strong> Você distorce para confirmar</li>
+                                        <li><strong>🔴 Pressão social:</strong> Você mente para se encaixar</li>
+                                        <li><strong>🔴 Ego:</strong> Você defende sua identidade, não a verdade</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-success">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0"><i class="bi bi-lightbulb" aria-hidden="true"></i> Caminho do CONHECIMENTO</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ol class="list-unstyled">
+                                        <li><strong>✅ Observação pura:</strong> Sem julgamento</li>
+                                        <li><strong>✅ Questionamento brutal:</strong> Destrua suas crenças</li>
+                                        <li><strong>✅ Evidências reais:</strong> Não opiniões</li>
+                                        <li><strong>✅ Aceitação da ignorância:</strong> Sabe que não sabe</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button id="btnMod2" class="btn btn-primary btn-lg mt-3" aria-expanded="false" aria-controls="mostraMod2">Mergulhar Fundo <i class="bi bi-arrow-down-circle" aria-hidden="true"></i></button>
+                    <div id="mostraMod2" class="conteudo-expandido mt-3" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Módulo 3 -->
+        <section id="modulo3" class="modulo mt-4" aria-labelledby="modulo3-titulo">
+            <article class="card">
+                <header class="card-header bg-success">
+                    <h2 id="modulo3-titulo" class="mb-0 h3"><i class="bi bi-3-circle" aria-hidden="true"></i> Módulo 3: As Três Verdades sobre Consciência</h2>
+                </header>
+                <div class="card-body">
+                    <h3 class="h4">Três visões. Nenhuma tem todas as respostas.</h3>
+                    <p class="fs-5 text-muted mb-4">Cada uma explica parte do mistério. Cada uma falha onde a outra succeeds.</p>
+                    
+                    <div class="row mt-3">
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0"><i class="bi bi-cpu" aria-hidden="true"></i> Materialismo Radical</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="fw-bold">"Consciência = Software do cérebro"</p>
+                                    <ul class="small">
+                                        <li>✓ Explica: correlações cerebrais</li>
+                                        <li>✓ Explica: lesões afetam mente</li>
+                                        <li>❌ Não explica: experiência subjetiva</li>
+                                        <li>❌ Não explica: por que existe "algo"</li>
+                                    </ul>
+                                    <div class="alert alert-warning small py-2">
+                                        <strong>Problema:</strong> Como matéria gera experiência?
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-info">
+                                <div class="card-header bg-info text-white">
+                                    <h5 class="mb-0"><i class="bi bi-infinity" aria-hidden="true"></i> Panpsiquismo</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="fw-bold">"Consciência é fundamental como massa"</p>
+                                    <ul class="small">
+                                        <li>✓ Explica: por que existe experiência</li>
+                                        <li>✓ Evita: problema duro da consciência</li>
+                                        <li>❌ Não explica: diferentes níveis</li>
+                                        <li>❌ Não é: cientificamente testável</li>
+                                    </ul>
+                                    <div class="alert alert-info small py-2">
+                                        <strong>Problema:</strong> Como tudo tem consciência?
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100 border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="mb-0"><i class="bi bi-eye" aria-hidden="true"></i> Experiência Direta</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="fw-bold">"Consciência além do mental"</p>
+                                    <ul class="small">
+                                        <li>✓ Explica: estados místicos</li>
+                                        <li>✓ Explica: unidade com o Todo</li>
+                                        <li>❌ Não é: replicável</li>
+                                        <li>❌ Não é: verbalizável</li>
+                                    </ul>
+                                    <div class="alert alert-danger small py-2">
+                                        <strong>Problema:</strong> Como provar sem evidência?
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-dark mt-4" role="alert">
+                        <i class="bi bi-lightbulb-fill" aria-hidden="true"></i> <strong>REALIDADE:</strong> A resposta provavelmente é uma combinação das três, ou nenhuma delas.
+                    </div>
+                    
+                    <button id="btnMod3" class="btn btn-primary btn-lg" aria-expanded="false" aria-controls="mostraMod3">Explorar as Contradições <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></button>
+                    <div id="mostraMod3" class="conteudo-expandido mt-3" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Quiz Brutal -->
+        <section id="quiz" class="modulo mt-4" aria-labelledby="quiz-titulo">
+            <article class="card">
+                <header class="card-header bg-danger">
+                    <h2 id="quiz-titulo" class="mb-0 h3"><i class="bi bi-question-circle" aria-hidden="true"></i> Teste de Realidade</h2>
+                </header>
+                <div class="card-body">
+                    <p class="fs-5 mb-4">Vamos ver se você realmente entendeu ou apenas está repetindo conceitos.</p>
+                    
+                    <div id="pergunta1" class="mb-4" role="group" aria-labelledby="pergunta1-titulo">
+                        <h3 id="pergunta1-titulo" class="h6 mb-3">1. Sobre consciência, qual é a VERDADE?</h3>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q1" id="q1a" value="errado">
+                            <label class="form-check-label" for="q1a">A ciência já explicou tudo sobre consciência</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q1" id="q1b" value="certo">
+                            <label class="form-check-label" for="q1b">Ninguém sabe exatamente o que é ou como funciona</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q1" id="q1c" value="errado">
+                            <label class="form-check-label" for="q1c">É apenas energia quântica no cérebro</label>
+                        </div>
+                    </div>
+                    
+                    <div id="pergunta2" class="mb-4" role="group" aria-labelledby="pergunta2-titulo">
+                        <h3 id="pergunta2-titulo" class="h6 mb-3">2. Qual visão diz que consciência está em tudo?</h3>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q2" id="q2a" value="certo">
+                            <label class="form-check-label" for="q2a">Panpsiquismo</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q2" id="q2b" value="errado">
+                            <label class="form-check-label" for="q2b">Materialismo</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q2" id="q2c" value="errado">
+                            <label class="form-check-label" for="q2c">Dualismo</label>
+                        </div>
+                    </div>
+                    
+                    <div id="pergunta3" class="mb-4" role="group" aria-labelledby="pergunta3-titulo">
+                        <h3 id="pergunta3-titulo" class="h6 mb-3">3. O que mais distorce a percepção real?</h3>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q3" id="q3a" value="errado">
+                            <label class="form-check-label" for="q3a">Falta de inteligência</label>
+                        </div>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="q3" id="q3b" value="certo">
+                            <label class="form-check-label" for="q3b">Vieses emocionais e crenças pré-existentes</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="q3" id="q3c" value="errado">
+                            <label class="form-check-label" for="q3c">Falta de educação formal</label>
+                        </div>
+                    </div>
+                    
+                    <button id="btnVerificar" class="btn btn-success btn-lg" aria-label="Verificar respostas do quiz">Testar Realidade <i class="bi bi-check-circle" aria-hidden="true"></i></button>
+                    <div id="resultado" class="alert mt-3 d-none" role="alert" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Módulo 4: Neurociência da Consciência -->
+        <section id="modulo4" class="modulo mt-4" aria-labelledby="modulo4-titulo">
+            <article class="card">
+                <header class="card-header bg-warning text-dark">
+                    <h2 id="modulo4-titulo" class="mb-0 h3"><i class="bi bi-4-circle" aria-hidden="true"></i> Módulo 4: Neurociência Brutal</h2>
+                </header>
+                <div class="card-body">
+                    <h3 class="h4">O que o cérebro REALMENTE faz?</h3>
+                    <p class="fs-5">Vamos cortar o bullshit e ver o que a neurociência REALMENTE mostra sobre consciência.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-danger h-100">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="mb-0"><i class="bi bi-activity" aria-hidden="true"></i> MITOS NEURO</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled small">
+                                        <li>❌ \"Usamos apenas 10% do cérebro\" - MENTIRA</li>
+                                        <li>❌ \"Cérebro esquerdo vs direito\" - SIMPLIFICAÇÃO</li>
+                                        <li>❌ \"Neurônios espelhos = empatia\" - EXAGERAÇÃO</li>
+                                        <li>❌ \"Neuroplasticidade = superpoder\" - MODERAÇÃO</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-success h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0"><i class="bi bi-cpu" aria-hidden="true"></i> REALIDADE CEREBRAL</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled small">
+                                        <li>✅ 86 bilhões de neurônios, 100 trilhões de conexões</li>
+                                        <li>✅ Cérebro consome 20% da energia corporal</li>
+                                        <li>✅ Processa 11 milhões bits/segundo, consciente ~50</li>
+                                        <li>✅ 95% das decisões são inconscientes</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-dark mt-4">
+                        <h5 class="alert-heading"><i class="bi bi-lightbulb"></i> A VERDADE INCONFORTÁVEL</h5>
+                        <p class="mb-0">Seu \"eu consciente\" é apenas a ponta do iceberg. 95% do que você \"é\" opera sem sua permissão ou conhecimento.</p>
+                    </div>
+                    
+                    <button id="btnMod4" class="btn btn-primary btn-lg" aria-expanded="false" aria-controls="mostraMod4">Mergulhar na Neurociência <i class="bi bi-arrow-down-circle" aria-hidden="true"></i></button>
+                    <div id="mostraMod4" class="conteudo-expandido mt-3" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Módulo 5: Estados Alterados -->
+        <section id="modulo5" class="modulo mt-4" aria-labelledby="modulo5-titulo">
+            <article class="card">
+                <header class="card-header bg-info text-white">
+                    <h2 id="modulo5-titulo" class="mb-0 h3"><i class="bi bi-5-circle" aria-hidden="true"></i> Módulo 5: Estados Alterados Sem New Age</h2>
+                </header>
+                <div class="card-body">
+                    <h3 class="h4">O que happens quando a consciência muda?</h3>
+                    <p class="fs-5">Sem misticismo barato. Apenas o que a evidência mostra sobre estados modificados de consciência.</p>
+                    
+                        <div class="col-md-3 mb-3">
+                            <div class="card h-100 border-warning text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-moon-stars display-4 text-warning"></i>
+                                    <h6 class="mt-2">SONHO REM</h6>
+                                    <p class="small">Paralisia muscular + atividade cerebral intensa</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card h-100 border-info text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-droplet display-4 text-info"></i>
+                                    <h6 class="mt-2">PSICODÉLICOS</h6>
+                                    <p class="small">Redes neurais default mode desligam</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card h-100 border-success text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-yin-yang display-4 text-success"></i>
+                                    <h6 class="mt-2">MEDITAÇÃO</h6>
+                                    <p class="small">Ondas gama aumentam, ego diminui</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="card h-100 border-danger text-center">
+                                <div class="card-body">
+                                    <i class="bi bi-lightning display-4 text-danger"></i>
+                                    <h6 class="mt-2">FLOW STATE</h6>
+                                    <p class="small">Pré-frontal desliga, performance máxima</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning mt-4">
+                        <h5 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> CUIDADO COM A INTERPRETAÇÃO</h5>
+                        <p class="mb-0">Experiências místicas podem ser apenas <strong>química cerebral</strong>. Não confunda feeling com verdade.</p>
+                    </div>
+                    
+                    <button id="btnMod5" class="btn btn-primary btn-lg" aria-expanded="false" aria-controls="mostraMod5">Explorar Estados Alterados <i class="bi bi-arrow-right-circle" aria-hidden="true"></i></button>
+                    <div id="mostraMod5" class="conteudo-expandido mt-3" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Módulo 6: Experimentos Práticos -->
+        <section id="modulo6" class="modulo mt-4" aria-labelledby="modulo6-titulo">
+            <article class="card">
+                <header class="card-header bg-success text-white">
+                    <h2 id="modulo6-titulo" class="mb-0 h3"><i class="bi bi-6-circle" aria-hidden="true"></i> Módulo 6: Laboratório da Realidade</h2>
+                </header>
+                <div class="card-body">
+                    <h3 class="h4">Teste sua própria percepção AGORA</h3>
+                    <p class="fs-5">Teoria sem prática é bullshit. Vamos fazer experimentos reais para testar os limites da sua consciência.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-primary">
+                                <div class="card-header bg-primary text-white">
+                                    <h5 class="mb-0"><i class="bi bi-eye"></i> Experimento 1: Cego Seletivo</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="small"><strong>Objetivo:</strong> Provar que você só vê o que espera ver</p>
+                                    <ol class="small">
+                                        <li>Escolha uma cor (ex: vermelho)</li>
+                                        <li>Por 2 minutos, só procure objetos vermelhos</li>
+                                        <li>Depois, procure objetos azuis</li>
+                                        <li>Resultado: Você \"não via\" os azuis antes</li>
+                                    </ol>
+                                    <div class="alert alert-info small py-2">
+                                        <strong>Conclusão:</strong> Sua percepção é seletiva, não objetiva
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card border-warning">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="mb-0"><i class="bi bi-clock"></i> Experimento 2: Relógio Parado</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="small"><strong>Objetivo:</strong> Testar o presente subjetivo</p>
+                                    <ol class="small">
+                                        <li>Fique em silêncio absoluto por 5 minutos</li>
+                                        <li>Foque apenas no \"agora\"</li>
+                                        <li>Observe quando sua mente viaja</li>
+                                        <li>Conte quantas vezes isso acontece</li>
+                                    </ol>
+                                    <div class="alert alert-warning small py-2">
+                                        <strong>Conclusão:</strong> Você não consegue ficar no presente
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-danger mt-4">
+                        <h5 class="alert-heading"><i class="bi bi-bug"></i> RESULTADO ESPERADO: FRACASSO</h5>
+                        <p class="mb-0">Se você \"conseguiu\" perfeitamente, você não fez direito. A verdade é que sua percepção é limitada e falha.</p>
+                    </div>
+                    
+                    <button id="btnMod6" class="btn btn-primary btn-lg" aria-expanded="false" aria-controls="mostraMod6">Fazer os Experimentos <i class="bi bi-arrow-down-circle" aria-hidden="true"></i></button>
+                    <div id="mostraMod6" class="conteudo-expandido mt-3" aria-live="polite"></div>
+                </div>
+            </article>
+        </section>
+
+        <!-- Certificado de Realidade -->
+        <section id="certificado" class="modulo mt-4 d-none" aria-labelledby="certificado-titulo">
+            <article class="card border-warning">
+                <header class="card-header bg-warning text-dark text-center">
+                    <h2 id="certificado-titulo" class="mb-0"><i class="bi bi-award" aria-hidden="true"></i> Certificado de Confronto com a Realidade</h2>
+                </header>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-shield-check display-1 text-warning" aria-hidden="true"></i>
+                    </div>
+                    <p class="lead fw-bold">Certificamos que este ser humano</p>
+                    <h1 class="display-5 text-warning mb-3">enfrentou a realidade sem filtros</h1>
+                    <p class="fs-5">e sobreviveu ao curso</p>
+                    <h2 class="text-dark">"A Jornada da Consciência"</h2>
+                    <p class="mt-4 fs-6">Comprovou compreensão brutal sobre:</p>
+                    <ul class="list-unstyled fs-5">
+                        <li><i class="bi bi-check-circle text-success" aria-hidden="true"></i> O mistério insolúvel da consciência</li>
+                        <li><i class="bi bi-check-circle text-success" aria-hidden="true"></i> Como os filtros destroem a realidade</li>
+                        <li><i class="bi bi-check-circle text-success" aria-hidden="true"></i> As contradições das visões filosóficas</li>
+                        <li><i class="bi bi-check-circle text-success" aria-hidden="true"></i> A coragem de admitir: "não sei"</li>
+                    </ul>
+                    <div class="alert alert-dark mt-4">
+                        <strong>Realização:</strong> Aceitou que a verdade é mais complexa que qualquer explicação
+                    </div>
+                    <p class="mt-4 text-muted"><small>Data da confrontação: <span id="dataCertificado"></span></small></p>
+                    <button onclick="window.print()" class="btn btn-primary btn-lg mt-3" aria-label="Imprimir certificado"><i class="bi bi-printer" aria-hidden="true"></i> Imprimir Certificado</button>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="text-center py-4 mt-5" role="contentinfo">
+        <div class="container">
+            <p class="mb-1">&copy; 2026 Jornada da Consciência - Curso Interativo Sem Filtros</p>
+            <small class="text-muted">Um confronto honesto com o maior mistério do universo</small>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

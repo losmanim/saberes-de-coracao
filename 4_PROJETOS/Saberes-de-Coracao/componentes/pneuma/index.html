@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pneuma - O Sopro Vital</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="../componentes/css/interativo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Progresso de Leitura -->
+    
+    <header>
+        <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(90deg, #1a1a3a, #2d2d5a);">
+            <div class="fs-2">
+                <i class="fa-solid fa-wind text-info"></i>
+            </div>
+            <div class="tema-botoes">
+                <button onclick="Interativo.tema.setDark()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+                <button onclick="Interativo.tema.setLight()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-sun-fill"></i>
+                </button>
+            </div>
+        </div>
+        <div class="titulo text-center py-4">
+            <h1 class="text-light">Pneuma</h1>
+            <p class="text-light">O sopro que anima a matéria e nos faz perceber que não somos só "eu" separado do resto</p>
+        </div>
+    </header>
+    
+    <nav class="nav nav-pills navbar navbar-expand-lg navbar-dark" style="background: #1a1a3a;">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPneuma">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navPneuma">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#introducao">Introdução</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#filosofia">Filosofia</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#musica">Música Tool</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#poetica">Descodificação</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#interconectividade">Interconectividade</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#praticas">Práticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ritual">Ritual</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#quiz">Quiz</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Introdução -->
+        <section id="introducao" data-animar="fade-in">
+            <div class="container py-5">
+                <div class="accordion-item open">
+                    <div class="accordion-header">O Que é Pneuma?</div>
+                    <div class="accordion-content show">
+                        <p class="fs-5">Pneuma (πνεῦμα) é uma palavra grega que significa "sopro", "vento", "espírito".</p>
+                        <p>Na filosofia grega, especialmente nos estoicos, o pneuma era a alma do mundo, a força divina que permeia todas as coisas e dá vida à matéria.</p>
+                        <div class="alert alert-info">
+                            <i class="fa-solid fa-quote-left"></i> "O pneuma é o princípio ativo que penetra todo o cosmos." — Zenão de Cício
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">Significado Espiritual</div>
+                    <div class="accordion-content">
+                        <p>O pneuma representa:</p>
+                        <ul>
+                            <li><strong>O sopro divino</strong> que anima a matéria</li>
+                            <li><strong>A conexão</strong> entre todas as coisas</li>
+                            <li><strong>A consciência</strong> que transcende o ego</li>
+                            <li><strong>A energia vital</strong> que movimenta o universo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filosofia -->
+        <section id="filosofia" data-animar="slide-up">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Filosofia do Pneuma</h2>
+                
+                <div class="tab-group">
+                    <button class="tab-button active" data-tab-group="filosofia" data-tab-target="estoico">
+                        <i class="fa-solid fa-fire"></i> Estoicismo
+                    </button>
+                    <button class="tab-button" data-tab-group="filosofia" data-tab-target="gnostico">
+                        <i class="fa-solid fa-eye"></i> Gnose
+                    </button>
+                    <button class="tab-button" data-tab-group="filosofia" data-tab-target="hermetico">
+                        <i class="fa-solid fa-gem"></i> Hermetismo
+                    </button>
+                </div>
+
+                <div class="tab-content" data-tab-content="filosofia" data-tab="estoico">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-fire"></i> Pensamento Estoico</h3>
+                        <p>Para os estoicos, o pneuma é a alma do mundo (anima mundi), a razão que governa o cosmos.</p>
+                        <p>Cada ser humano possui uma centelha desse pneuma divino, chamada "daimon" ou génio interior.</p>
+                        <p class="text-warning">A virtude está em viver de acordo com a razão natural do pneuma.</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="filosofia" data-tab="gnostico">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-eye"></i> Visão Gnóstica</h3>
+                        <p>Na Gnose, o pneuma representa a centelha divina presa na matéria.</p>
+                        <p>O objetivo é o despertar dessa centelha através do autoconhecimento (gnose).</p>
+                        <p class="text-info">A matéria é uma prisão para a alma, mas o pneuma pode libertá-la.</p>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="filosofia" data-tab="hermetico">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-gem"></i> Tradição Hermética</h3>
+                        <p>No Corpus Hermeticum, o pneuma é o espírito Santo, a matéria é o corpo de Deus.</p>
+                        <p>"O homem é um grande milagre." - Poimandres</p>
+                        <p class="text-success">Através do pneuma, o ser humano pode transcender e se tornar uno com o divino.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Música Tool -->
+        <section id="musica" data-animar="zoom-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4"><i class="fa-solid fa-music"></i> Música e Pneuma</h2>
+                
+                <div class="card-interativo">
+                    <h3>Tool - "Pneuma"</h3>
+                    <p>A banda Tool tem uma música dedicada ao conceito de pneuma, explorando a consciência universal.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h4>Letras e Significados</h4>
+                            <ul>
+                                <li>"There is no pain" - A transcendência do ego</li>
+                                <li>"We are all one" - A unidade do pneuma</li>
+                                <li>"Born of silence" - O vazio que precede a consciência</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Princípios Aplicados</h4>
+                            <ul>
+                                <li>A música como portal para estados alterados</li>
+                                <li>O ritmo como fluxo do pneuma</li>
+                                <li>A letra como ensinamento gnóstico</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Áudio -->
+                <div class="mt-4">
+                    <audio src="audio/All-9-SolfeggioFrequencies-played-withHealingTibetanSingingBowls.mp3" controls class="w-100"></audio>
+                    <p class="text-center mt-2 text-muted">Frequências de cura - Frequências Solfeggio</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Poetica/Descodificação -->
+        <section id="poetica" data-animar="fade-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Descodificação Poética</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>O Sopro Original</h4>
+                        <p>No início era o caos, e o pneuma pairava sobre as águas... O sopro divino organisou a matéria informe.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>A Centelha</h4>
+                        <p>Em cada ser humano existe uma centelha do pneuma divino, esperando ser despertada.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>A Queda</h4>
+                        <p>Quando esquecemos nossa natureza pneumática, nos identificamos apenas com o corpo e o ego.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>O Retorno</h4>
+                        <p>O caminho de retorno é lembrar (anamnese) que somos pneuma, não matéria.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interconectividade -->
+        <section id="interconectividade" data-animar="slide-up">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Interconectividade Universal</h2>
+                
+                <div class="alert alert-dark">
+                    <h3><i class="fa-solid fa-link text-info"></i> Todos Somos Um</h3>
+                    <p class="fs-5">O pneuma nos conecta a tudo que existe. Não há separação real - apenas ilusão de separação (Maya).</p>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card-interativo text-center">
+                            <i class="fa-solid fa-atom fs-1 text-warning mb-3"></i>
+                            <h4>Átomos</h4>
+                            <p>Somos feitos de partículas que já foram estrelas. A matéria é comum.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card-interativo text-center">
+                            <i class="fa-solid fa-brain fs-1 text-info mb-3"></i>
+                            <h4>Consciência</h4>
+                            <p>A consciência é uma - fragmentada em many puntos de vista.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card-interativo text-center">
+                            <i class="fa-solid fa-heart fs-1 text-danger mb-3"></i>
+                            <h4>Energia</h4>
+                            <p>A energia flui através de todos - o pneuma é esse fluxo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Práticas -->
+        <section id="praticas" data-animar="zoom-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Práticas para Despertar o Pneuma</h2>
+                
+                <div class="accordion-item open">
+                    <div class="accordion-header">1. Respiração Consciente (Pranayama)</div>
+                    <div class="accordion-content show">
+                        <p>Sente-se em silêncio. Respire profundamente pelo nariz, segure por 4 segundos, solte pela boca. Repita 10 vezes.</p>
+                        <p class="text-info">Objetivo: sentir o pneuma entrar no corpo como energia vital.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">2. Meditação da Conexão</div>
+                    <div class="accordion-content">
+                        <p>Feche os olhos e imagine-se conectado a tudo: o chão, o céu, as pessoas, os animais, as plantas.</p>
+                        <p class="text-info">Sinta que não há fronteira entre você e o universo.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">3. Observação do Pensamento</div>
+                    <div class="accordion-content">
+                        <p>Observe seus pensamentos como nuvens passando no céu. Não se identifique com eles.</p>
+                        <p class="text-info">O observador é o pneuma - não os pensamentos.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">4. Prática do Amor Compassivo</div>
+                    <div class="accordion-content">
+                        <p>Wish happiness to all beings: conhecidos, estranhos, inimigos.</p>
+                        <p class="text-info">O pneuma é amor - expandir esse amor é despertar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ritual -->
+        <section id="ritual" data-animar="fade-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Ritual do Pneuma</h2>
+                
+                <div class="card-interativo">
+                    <h3>Invocação Matinal</h3>
+                    <p>Ao acordar, antes de levantar:</p>
+                    <ol>
+                        <li>Respire profundamente 3 vezes</li>
+                        <li>Diga (ou pense): "Eu sou pneuma, parte do todo. Hoje viverei em consciência dessa unidade."</li>
+                        <li>Coloque a mão no coração e sinta a conexão</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section id="quiz" data-animar="fade-in">
+            <div class="container py-5">
+                <h2 class="text-center mb-4">Teste Seu Conhecimento</h2>
+                <div id="quiz-pneuma"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-3 bg-dark">
+        <p class="text-light">&copy; Lz_ntn - 2026</p>
+    </footer>
+
+    <script src="../componentes/js/interativo.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Interativo.progresso.init();
+            Interativo.accordion.init('.accordion-item');
+            Interativo.tabs.init('filosofia');
+            Interativo.timeline.init();
+            Interativo.animacoes.init();
+            
+            Interativo.quiz.init({
+                containerId: 'quiz-pneuma',
+                perguntas: [
+                    {
+                        pergunta: "O que significa Pneuma em grego?",
+                        opcoes: ["Fogo", "Sopro/Espírito", "Luz"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "Para os estoicos, o pneuma era:",
+                        opcoes: ["A alma do mundo", "Uma ilusão", "Um demônio"],
+                        correta: 0
+                    },
+                    {
+                        pergunta: "O que é 'anmnese' no contexto gnóstico?",
+                        opcoes: ["Esquecer", "Lembrar a verdadeira natureza", "Meditar"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "Qual banda tem uma música chamada Pneuma?",
+                        opcoes: ["Pink Floyd", "Tool", "Metallica"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "O objetivo do despertar do pneuma é:",
+                        opcoes: ["Poder sobre outros", "Tornar-se uno com o divino", "Imortalidade física"],
+                        correta: 1
+                    }
+                ]
+            });
+            
+            Interativo.tema.init();
+        });
+    </script>
+</body>
+
+</html>

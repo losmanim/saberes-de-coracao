@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gnosis — Saberes de Coração</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=EB+Garamond:ital@0;1&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+
+  <nav>
+    <span class="logo">&#x2295; Gnosis</span>
+    <ul>
+      <li><a href="#o-que-e">O que é</a></li>
+      <li><a href="#contemplacao">Contemplar</a></li>
+      <li><a href="#pratica">Prática</a></li>
+      <li><a href="#defeitos">Defeitos</a></li>
+      <li><a href="#conexoes">Conexões</a></li>
+      <li><a href="#glossario">Glossário</a></li>
+    </ul>
+    <button id="theme-toggle" aria-label="Alternar modo dia/noite"></button>
+  </nav>
+
+  <header>
+    <h1 class="titulo-sagrado">Gnosis</h1>
+    <p>"Conhece-te a ti mesmo e conhecerás o universo e os deuses."<br><em>— Templo de Delfos</em></p>
+  </header>
+
+  <main>
+    <section id="o-que-e">
+      <h2>O que é <span class="glossario-link" data-termo="Gnosis">Gnosis</span></h2>
+      <p><span class="glossario-link" data-termo="Gnosis">Gnosis</span> (do grego &#x03B3;&#x03BD;&#x1FF6;&#x03C3;&#x03B9;&#x03C2;) significa <strong>conhecimento direto</strong> — não intelectual ou teórico, mas experiencial e transformador. É o saber que se vive, que revela a verdadeira natureza do ser e do cosmos.</p>
+      <p>No coração da tradição gnóstica está a busca pela <em>iluminação interior</em>: despertar da consciência adormecida, reconhecer o divino em si mesmo e transcender as limitações do ego.</p>
+      <p>Conceitos fundamentais como <span class="glossario-link" data-termo="Pneuma">Pneuma</span>, <span class="glossario-link" data-termo="Hyle">Hyle</span>, <span class="glossario-link" data-termo="Demiurgo">Demiurgo</span>, <span class="glossario-link" data-termo="Pleroma">Pleroma</span> e <span class="glossario-link" data-termo="Sophia">Sophia</span> são as chaves para este despertar. Clique em qualquer termo destacado para saber mais.</p>
+      <div class="divisor-ancestral"></div>
+    </section>
+
+    <section id="contemplacao">
+      <h2>Contemplação</h2>
+      <p>Cada frase é uma semente. Regue-a com a sua atenção.</p>
+      <div class="contemplacao-box">
+        <div class="frase" id="contemplacao-frase"></div>
+        <div class="autor" id="contemplacao-autor"></div>
+        <button class="btn btn-contemplar" id="btn-contemplar">Nova Contemplação</button>
+      </div>
+    </section>
+
+    <section id="ensinamentos">
+      <h2>Ensinamentos Centrais</h2>
+      <p>Clique em cada card para aprofundar o conhecimento.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Personalidade, Essência e Ego</h3>
+          <p>A tríade fundamental — quem você realmente é, versus quem pensa que é.</p>
+          <div class="card-expandido">
+            <p>A personalidade é adquirida ao longo da vida — um conjunto de máscaras que vestimos para nos adaptar ao mundo. A essência é inata, a centelha divina que carregamos desde o nascimento. O ego é o centro conflitivo que se interpõe entre a personalidade e a essência.</p>
+            <p>O trabalho gnóstico consiste em:</p>
+            <ul>
+              <li><strong>Observar</strong> — Reconhecer quando a personalidade está no controle</li>
+              <li><strong>Desidentificar</strong> — Não confundir quem és com os papéis que interpretas</li>
+              <li><strong>Dissolver o ego</strong> — Eliminar os centros conflitivos que geram sofrimento</li>
+              <li><strong>Libertar a essência</strong> — Permitir que o ser genuíno se manifeste</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3>A Máquina Humana</h3>
+          <p>Os quatro centros: intelectual, emocional, motor-instintivo e sexual.</p>
+          <div class="card-expandido">
+            <p>Cada centro possui sua própria linguagem e função. A harmonia entre eles é o caminho do equilíbrio.</p>
+            <ul>
+              <li><span class="centro-badge">Intelectual</span> Pensamento, análise e decisão consciente</li>
+              <li><span class="centro-badge">Emocional</span> Emoções, sentimentos e intuição</li>
+              <li><span class="centro-badge">Motor-Instintivo</span> Movimento, hábitos e instintos</li>
+              <li><span class="centro-badge">Sexual</span> Energia criadora e transmutação</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">Observar qual centro predomina em cada momento é o primeiro passo para o equilíbrio.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Corpos Sutis</h3>
+          <p>A anatomia invisível do ser: físico, vital, astral, mental e causal.</p>
+          <div class="card-expandido">
+            <ul>
+              <li><strong>Físico</strong> — O veículo denso, a base material</li>
+              <li><strong>Vital</strong> — O campo energético, o prana</li>
+              <li><strong>Astral</strong> — O corpo das emoções e sonhos</li>
+              <li><strong>Mental</strong> — A mente concreta e abstrata</li>
+              <li><strong>Causal</strong> — A consciência pura, a essência</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Os 7 Princípios Herméticos</h3>
+          <p>As leis universais que regem a realidade.</p>
+          <div class="card-expandido">
+            <ul>
+              <li><strong>Mentalismo</strong> — O Todo é Mente</li>
+              <li><strong>Correspondência</strong> — Como em cima, assim embaixo</li>
+              <li><strong>Vibração</strong> — Nada está parado</li>
+              <li><strong>Polaridade</strong> — Tudo tem opostos complementares</li>
+              <li><strong>Ritmo</strong> — Tudo flui, para dentro e para fora</li>
+              <li><strong>Causa e Efeito</strong> — Toda causa tem seu efeito</li>
+              <li><strong>Gênero</strong> — Princípios masculino e feminino</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fatores">
+      <h2>Os 3 Fatores da Revolução da Consciência</h2>
+      <p>Clique em cada fator para explorar o seu significado profundo.</p>
+      <div class="fatores-grid">
+        <div class="fator-card">
+          <span class="simbolo">&#x2655;</span>
+          <h3>Nascer</h3>
+          <div class="fator-detalhe"></div>
+        </div>
+        <div class="fator-card">
+          <span class="simbolo">&#x265C;</span>
+          <h3>Morrer</h3>
+          <div class="fator-detalhe"></div>
+        </div>
+        <div class="fator-card">
+          <span class="simbolo">&#x265F;</span>
+          <h3>Sacrificar</h3>
+          <div class="fator-detalhe"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roda">
+      <h2>Roda dos 3 Fatores — Autoavaliação Diária</h2>
+      <p>Responde a cada pergunta ao final do dia. As respostas ficam guardadas no teu navegador.</p>
+      <div class="roda-avaliacao">
+        <div class="roda-pergunta">
+          <div class="pergunta-label">&#x2655; Nascer — O que criei hoje de valor?</div>
+          <textarea id="roda-nascer" placeholder="Ex: Cultivei paciência numa situação difícil..." rows="2"></textarea>
+        </div>
+        <div class="roda-pergunta">
+          <div class="pergunta-label">&#x265C; Morrer — O que percebi que preciso dissolver?</div>
+          <textarea id="roda-morrer" placeholder="Ex: Notei o orgulho quando critiquei alguém..." rows="2"></textarea>
+        </div>
+        <div class="roda-pergunta">
+          <div class="pergunta-label">&#x265F; Sacrificar — Como servi ao bem do outro hoje?</div>
+          <textarea id="roda-sacrificar" placeholder="Ex: Ajudei um colega sem esperar nada em troca..." rows="2"></textarea>
+        </div>
+      </div>
+      <div class="roda-footer">
+        <span><span class="roda-streak" id="roda-streak">0 dias seguidos</span></span>
+        <button class="btn" id="roda-salvar">Salvar</button>
+      </div>
+    </section>
+
+    <section id="cadeia">
+      <h2>Cadeia de Causa e Efeito</h2>
+      <p>Clique em cada elo para compreender como as tuas escolhas moldam o teu destino. A Gnose ensina que quebrar um elo é transformar a vida.</p>
+      <div class="cadeia-container" id="cadeia-container"></div>
+      <div class="cadeia-detalhe" id="cadeia-detalhe">
+        <h4 id="cadeia-titulo">1. Pensamento</h4>
+        <p id="cadeia-descricao">Clique num elo acima para ver o seu significado.</p>
+        <div class="cadeia-pergunta" id="cadeia-pergunta"></div>
+      </div>
+    </section>
+
+    <section id="defeitos">
+      <h2>Os 6 Defeitos e seus Efeitos</h2>
+      <p>Cada defeito é uma oportunidade de auto-observação. Clique para expandir e marque quando observar um deles em ti. Sem julgamento — só consciência.</p>
+      <div class="defeitos-grid" id="defeitos-grid"></div>
+    </section>
+
+    <section id="correspondencias">
+      <h2>Correspondências — Macro e Micro</h2>
+      <p>"Como em cima, assim embaixo". O cosmos reflete-se no ser humano. Clique em cada par para ver a explicação.</p>
+      <div class="correspondencias-container" id="correspondencias-container"></div>
+    </section>
+
+    <section id="conexoes">
+      <h2>O Grande Mapa — Conexões entre Tradições</h2>
+      <p>O mesmo ensinamento aparece em culturas diferentes, separadas por milénios. Clique em cada conceito para ver o fio de ouro que une todas as tradições.</p>
+      <div class="mapa-conexoes">
+        <div class="conexao-item">
+          <div class="conceito">O Uno / Deus Primordial</div>
+          <div class="tradicoes"><span>Hermetismo</span><span>Vedanta</span><span>Taoismo</span><span>Neoplatonismo</span><span>Sufismo</span><span>Kabbalah</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+        <div class="conexao-item">
+          <div class="conceito">Morte e Renascimento</div>
+          <div class="tradicoes"><span>Egípcio</span><span>Cristianismo</span><span>Budismo</span><span>Mitraísmo</span><span>Xamanismo</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+        <div class="conexao-item">
+          <div class="conceito">O Caminho do Meio</div>
+          <div class="tradicoes"><span>Budismo</span><span>Gnose</span><span>Estoicismo</span><span>Alquimia</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+        <div class="conexao-item">
+          <div class="conceito">O Conhecimento Interior</div>
+          <div class="tradicoes"><span>Gnosis</span><span>Budismo Zen</span><span>Hermetismo</span><span>Vedanta</span><span>Platonismo</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+        <div class="conexao-item">
+          <div class="conceito">A Lei de Causa e Efeito</div>
+          <div class="tradicoes"><span>Budismo</span><span>Hermetismo</span><span>Cristianismo</span><span>Hinduísmo</span><span>Estoicismo</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+        <div class="conexao-item">
+          <div class="conceito">O Amor como Força Cósmica</div>
+          <div class="tradicoes"><span>Cristianismo</span><span>Budismo</span><span>Neoplatonismo</span><span>Hinduísmo</span><span>Sufismo</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+        <div class="conexao-item">
+          <div class="conceito">Símbolos Universais</div>
+          <div class="tradicoes"><span>Egípcio</span><span>Cristianismo</span><span>Alquimia</span><span>Xamanismo</span><span>Gnose</span></div>
+          <div class="mapa-detalhe"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pratica">
+      <h2>Práticas</h2>
+      <p>O conhecimento sem prática é como uma semente guardada no bolso. Aqui estão ferramentas para semear.</p>
+
+      <h3 style="margin-top: 2rem; font-size: 1.3rem;">Timer de Auto-observação</h3>
+      <p>Silencia a mente. Observa o momento presente.</p>
+      <div class="timer-container">
+        <div class="timer-display" id="timer-display">05:00</div>
+        <div class="timer-controls">
+          <button class="timer-select ativo" data-minutos="5">5 min</button>
+          <button class="timer-select" data-minutos="10">10 min</button>
+          <button class="timer-select" data-minutos="15">15 min</button>
+          <button class="timer-select" data-minutos="20">20 min</button>
+        </div>
+        <div class="timer-controls" style="margin-top: 1rem;">
+          <button class="timer-btn-main" id="timer-start">Iniciar</button>
+          <button id="timer-reset">Reiniciar</button>
+        </div>
+        <div class="timer-frase" id="timer-frase"></div>
+      </div>
+
+      <h3 style="margin-top: 3rem; font-size: 1.3rem;">Respiração Quadrada</h3>
+      <p>Inspira 4s — Segura 4s — Expira 4s — Segura 4s. Segue o ritmo do quadrado.</p>
+      <div class="respiracao-container">
+        <div class="respiracao-quadrado">
+          <svg viewBox="0 0 200 200">
+            <rect class="resp-path" x="10" y="10" width="180" height="180" rx="4" />
+          </svg>
+        </div>
+        <div class="respiracao-fase" id="resp-fase"></div>
+        <div class="respiracao-ciclos" id="resp-ciclos-label">0 / 5 ciclos</div>
+        <div class="timer-controls">
+          <button class="timer-select ativo resp-ciclos" data-ciclos="5">5 ciclos</button>
+          <button class="timer-select resp-ciclos" data-ciclos="10">10 ciclos</button>
+          <button class="timer-select resp-ciclos" data-ciclos="15">15 ciclos</button>
+        </div>
+        <div style="margin-top: 0.8rem;">
+          <button class="timer-btn-main" id="resp-start">Iniciar</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="glossario">
+      <h2>Glossário Gnóstico</h2>
+      <p>Clique em cada termo para ver a sua definição. Estes são os conceitos fundamentais para navegar o conhecimento gnóstico.</p>
+      <div class="glossario-grid" id="glossario-grid"></div>
+    </section>
+
+    <section id="plataformas">
+      <h2>Plataformas Educacionais Gnósticas</h2>
+      <p>O conhecimento gnóstico floresce em diversas plataformas e formatos. Cada via é uma porta para o mesmo templo interior.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Curso de Gnose</h3>
+          <p>7 lições progressivas do básico ao avançado. Práticas diárias de 15-30 minutos.</p>
+        </div>
+        <div class="card">
+          <h3>Biblioteca Ancestral</h3>
+          <p>Textos sagrados, tratados e ensinamentos organizados por tradição e linhagem do saber.</p>
+        </div>
+        <div class="card">
+          <h3>Tutor Offline</h3>
+          <p>Funcionalidades interativas com contexto ancestral — um guia pessoal para o estudo gnóstico.</p>
+        </div>
+      </div>
+      <div style="margin-top: 2rem; text-align: center;">
+        <a href="https://github.com/lzntn" class="btn" target="_blank">Explorar Saberes</a>
+      </div>
+    </section>
+
+    <section id="relacionados">
+      <h2>Saberes Relacionados</h2>
+      <p>Explore outros conteúdos integrados ao projeto que aprofundam a Gnosis em diferentes direções.</p>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Pistis Sophia</h3>
+          <p>Texto gnóstico fundamental em PDF.</p>
+          <a href="../pistis-sofia/" class="btn" style="margin-top: 0.5rem;">Acessar</a>
+        </div>
+        <div class="card">
+          <h3>Pindorama</h3>
+          <p>A história do Brasil sob a perspectiva ancestral indígena.</p>
+          <a href="../pindorama/" class="btn" style="margin-top: 0.5rem;">Acessar</a>
+        </div>
+        <div class="card">
+          <h3>Curso de Gnose</h3>
+          <p>7 lições para transformação consciente.</p>
+          <a href="../curso/Sumario-do-Curso-de-Gnose.md" class="btn" style="margin-top: 0.5rem;">Acessar</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="divisor-ancestral"></div>
+    <p>&copy; Lz_ntn — Saberes de Coração — 2026</p>
+    <p style="margin-top: 0.5rem; font-family: var(--fonte-citacao); font-style: italic;">
+      A Gnosis não se aprende — se vive. Este é um mapa. O território é você.
+    </p>
+  </footer>
+
+  <div class="modal-overlay" id="modal-glossario">
+    <div class="modal-conteudo">
+      <button class="modal-fechar" id="modal-fechar">&times;</button>
+      <h3 id="modal-titulo">Termo</h3>
+      <div class="modal-etimologia" id="modal-etimologia"></div>
+      <p id="modal-descricao">Definição</p>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

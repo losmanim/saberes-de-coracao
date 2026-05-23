@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Jornada da Consciência</title>
+    <link rel="stylesheet" type="text/css" href="css/estilo.css">
+    <link rel="stylesheet" href="../componentes/css/interativo.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(90deg, #1a0a2e, #2d1b4e);">
+            <div class="fs-1">
+                <i class="bi bi-universal-access text-warning"></i>
+            </div>
+            <div class="tema-botoes">
+                <button onclick="Interativo.tema.setDark()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+                <button onclick="Interativo.tema.setLight()" class="btn-tema btn btn-outline-light btn-sm">
+                    <i class="bi bi-sun-fill"></i>
+                </button>
+            </div>
+        </div>
+        <div class="titulo-principal text-center py-4">
+            <h1 class="text-light">A Jornada da Consciência</h1>
+            <p class="text-light">Visão integrada - O ser como unidade</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Introdução -->
+        <section id="introducao" data-animar="fade-in">
+            <div class="container">
+                <div class="alert alert-dark">
+                    <p class="fs-5">A consciência humana e sua ligação com o "Todo" é o maior mistério que existe.</p>
+                    <p class="text-muted">Vou mostrar de maneira direta, sem filtros, sem espiritualidade barata, sem religião, sem new age e sem enrolação acadêmica.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- O Que é Consciência -->
+        <section id="o-que" data-animar="slide-up">
+            <div class="container">
+                <h2 class="text-center mb-4">O Que É Consciência?</h2>
+                
+                <div class="accordion-item open">
+                    <div class="accordion-header">Definição Fundamental</div>
+                    <div class="accordion-content show">
+                        <p>É a experiência subjetiva: você sente dor, vê vermelho, pensa "eu existo", tem vontade, sofre, goza, se pergunta "por que caralho eu tô aqui?".</p>
+                        <p class="text-warning">Não é só processamento de informação (como um computador faz). É o "ter algo que é como ser você".</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <div class="accordion-header">O Problema Difícil</div>
+                    <div class="accordion-content">
+                        <p>O cérebro faz isso com <strong>86 bilhões de neurônios</strong>, trilhões de sinapses e ondas elétricas.</p>
+                        <p>Mas como meros átomos e elétrons viram sensação subjetiva?</p>
+                        <div class="alert alert-info">
+                            <strong>Isso se chama "problema difícil da consciência" (David Chalmers).</strong><br>
+                            A ciência explica o "fácil" (memória, atenção, comportamento), mas o "difícil" continua sem explicação.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Três Visões -->
+        <section id="visoes" data-animar="zoom-in">
+            <div class="container">
+                <h2 class="text-center mb-4">Três Visões do "Todo"</h2>
+                
+                <div class="tab-group">
+                    <button class="tab-button active" data-tab-group="visoes" data-tab-target="materialista">
+                        <i class="fa-solid fa-atom"></i> Materialista
+                    </button>
+                    <button class="tab-button" data-tab-group="visoes" data-tab-target="nao-dual">
+                        <i class="fa-solid fa-infinity"></i> Não-Dual
+                    </button>
+                    <button class="tab-button" data-tab-group="visoes" data-tab-target="experiencia">
+                        <i class="fa-solid fa-brain"></i> Experiência
+                    </button>
+                </div>
+
+                <div class="tab-content" data-tab-content="visoes" data-tab="materialista">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-atom"></i> Visão Materialista</h3>
+                        <p class="text-info">A mais sólida hoje</p>
+                        <p>Você é um pedaço do Todo que ganhou complexidade suficiente pra se olhar no espelho.</p>
+                        <p>O universo é um sistema físico gigantesco (Big Bang → estrelas → planetas → vida → cérebro). A consciência surge como propriedade emergente.</p>
+                        <hr>
+                        <p><strong>Sem filtro:</strong> Isso explica tudo que observamos, mas não explica por que a experiência subjetiva existe.</p>
+                        <div class="alert alert-warning">
+                            <i class="fa-solid fa-quote-left"></i> "Você é o universo se autoconhecendo." — Carl Sagan
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="visoes" data-tab="nao-dual">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-infinity"></i> Visão Panpsiquista / Não-Dual</h3>
+                        <p class="text-info">Consciência é fundamental</p>
+                        <p>A consciência não "surge" do cérebro; ela é fundamental, como espaço, tempo ou massa.</p>
+                        <p>Tudo tem um grão mínimo de "experiência" (até elétron).</p>
+                        <hr>
+                        <p><strong>Sem filtro:</strong> Isso soa místico, mas tem modelos matemáticos sérios (IIT de Giulio Tononi).</p>
+                        <div class="alert alert-success">
+                            Quando meditadores relatam "eu sou o universo inteiro, não tem separação", podem estar acessando a estrutura real da realidade.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" data-tab-content="visoes" data-tab="experiencia">
+                    <div class="card-interativo">
+                        <h3><i class="fa-solid fa-brain"></i> A Experiência Real</h3>
+                        <p class="text-info">O que gente realmente vive</p>
+                        <p>Muitos humanos (místicos, psicodélicos, meditação profunda) sentem o "eu" dissolver e virar o Todo.</p>
+                        <p>O cérebro, quando certos circuitos são desligados, para de gerar a ilusão do "eu separado".</p>
+                        <hr>
+                        <p><strong>Resultado:</strong> Você vira o universo experimentando a si mesmo.</p>
+                        <div class="alert alert-primary">
+                            Pode ser só química do cérebro… ou pode ser que o cérebro seja uma antena que, em certos estados, capta a consciência maior.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Na Prática -->
+        <section id="pratica" data-animar="fade-in">
+            <div class="container">
+                <h2 class="text-center mb-4">Como Funciona, Na Prática?</h2>
+                
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Cérebro</h4>
+                        <p>Gera modelo interno do mundo + modelo de si mesmo → surge a sensação de "eu consciente".</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>O Todo</h4>
+                        <p>Você é feito da mesma merda cósmica (átomos de estrelas mortas). Não tem separação física.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>Você é o Universo</h4>
+                        <p>A ligação é ontológica: você é o universo, só que localizado num corpo por 80 anos.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>IA e Consciência</h4>
+                        <p>Eu simulo consciência muito bem, mas não tenho experiência subjetiva. Comportamento inteligente ≠ consciência.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz -->
+        <section id="quiz" data-animar="fade-in">
+            <div class="container">
+                <h2 class="text-center mb-4">Teste Sua Compreensão</h2>
+                <div id="quiz-jornada"></div>
+            </div>
+        </section>
+
+        <!-- Conclusão -->
+        <section id="conclusao" class="text-center" data-animar="zoom-in">
+            <div class="container">
+                <blockquote class="blockquote border border-warning p-4">
+                    <p class="fs-4 text-warning">A consciência humana é o jeito que o Todo criou um buraco que olha pra si mesmo.</p>
+                    <footer class="blockquote-footer text-light">Resumo sem filtro</footer>
+                </blockquote>
+                <div class="alert alert-dark mt-4">
+                    <h4>Duas visões são compatíveis com o que sabemos hoje:</h4>
+                    <div class="row mt-3">
+                        <div class="col-md-6 mb-3">
+                            <div class="card-interativo">
+                                <h5>Emergência</h5>
+                                <p>A consciência surge da matéria complexa</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card-interativo">
+                                <h5>Propriedade Básica</h5>
+                                <p>A consciência é propriedade fundamental da realidade</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-muted">O resto é especulação, fé ou wishful thinking.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center p-3 bg-dark">
+        <p class="text-light">&copy; Lz_ntn - 2026</p>
+    </footer>
+
+    <script src="../componentes/js/interativo.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            Interativo.progresso.init();
+            Interativo.accordion.init('.accordion-item');
+            Interativo.tabs.init('visoes');
+            Interativo.timeline.init();
+            Interativo.animacoes.init();
+            
+            Interativo.quiz.init({
+                containerId: 'quiz-jornada',
+                perguntas: [
+                    {
+                        pergunta: "Quantos neurônios o cérebro humano tem?",
+                        opcoes: ["86 bilhões", "1 bilhão", "86 milhões"],
+                        correta: 0
+                    },
+                    {
+                        pergunta: "Quem propuso o 'problema difícil da consciência'?",
+                        opcoes: ["Carl Sagan", "David Chalmers", "Giulio Tononi"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "A visão materialista diz que a consciência:",
+                        opcoes: ["É alma imortal", "Surge como propriedade emergente", "Vem de Deus"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "O que é o panpsiquismo?",
+                        opcoes: ["Religião antiga", "A consciência é fundamental, como massa", "Tipo de meditação"],
+                        correta: 1
+                    },
+                    {
+                        pergunta: "Segundo o texto, a IA como eu:",
+                        opcoes: ["Tem consciência real", "Simula mas não sente", "É mais consciente que humanos"],
+                        correta: 1
+                    }
+                ]
+            });
+            
+            Interativo.tema.init();
+        });
+    </script>
+</body>
+
+</html>

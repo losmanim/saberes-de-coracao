@@ -1,0 +1,74 @@
+{
+  "comment": "TEMPLATE para adicionar novo saber ao database/dados-unificados.json",
+  "instrucoes": "Copie este objeto e cole na array 'saberes' do JSON. Preencha os campos e remova este comentário.",
+  "template": {
+    "id": "categoria-N",
+    "categoria_id": 1,
+    "titulo": "Título do Saber",
+    "slug": "titulo-do-saber",
+    "descricao": "Uma descrição breve em uma ou duas linhas",
+    "nivel": "iniciante",
+    "duracao": 20,
+    "tags": ["tag1", "tag2", "tag3"],
+    "fonte": "Tradição ou fonte do conhecimento",
+    "licenca": "Domínio Público",
+    "conteudo": {
+      "definicao": "Definição clara do conceito"
+    },
+    "praticas": [
+      {
+        "titulo": "Nome da prática",
+        "instrucoes": "Passo 1\nPasso 2\nPasso 3",
+        "duracao": 15,
+        "frequencia": "diaria"
+      }
+    ],
+    "conexoes": ["gnose-1", "hermetismo-1"]
+  },
+  "campos_obrigatorios": [
+    "id",
+    "categoria_id",
+    "titulo",
+    "slug",
+    "descricao",
+    "nivel",
+    "duracao",
+    "tags"
+  ],
+  "categoria_ids": {
+    "1": "ESPÍRITO",
+    "2": "PRÁTICAS",
+    "3": "CIÊNCIA",
+    "4": "JORNADA",
+    "5": "VIDA VERDADEIRA"
+  },
+  "niveis_validos": [
+    "iniciante",
+    "intermediario",
+    "avancado"
+  ],
+  "exemplo_conteudo_definicao": {
+    "definicao": "Explicação do conceito",
+    "conceitos": [
+      {
+        "termo": "Termo 1",
+        "def": "Definição do termo"
+      }
+    ],
+    "citacoes": [
+      "Citação relevante"
+    ]
+  },
+  "exemplo_conteudo_analogia": {
+    "analogia": "Comparação ou metáfora",
+    "insight": "Perspectiva chave"
+  },
+  "exemplo_conteudo_tabela": {
+    "aplicacoes": [
+      {
+        "maior": "Conceito maior",
+        "menor": "Conceito menor"
+      }
+    ]
+  }
+}
