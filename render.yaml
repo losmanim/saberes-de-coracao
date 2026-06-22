@@ -7,7 +7,5 @@ services:
     envVars:
       - key: NODE_VERSION
         value: 22
-      - key: PORT
-        value: "3000"
       - key: ADMIN_PASS
         sync: false

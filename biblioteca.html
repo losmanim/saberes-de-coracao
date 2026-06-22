@@ -33,13 +33,13 @@
         </section>
 
         <nav class="nav-tabs" aria-label="Categorias da biblioteca">
-            <button class="nav-tab active" type="button" onclick="mostrarSecao('gnose')">🜂 Gnose</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('praticas')">🧘 Práticas</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('ciencia')">🔬 Ciência</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('jornada')">🧭 Jornada</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('mestres')">👁️ Mestres</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('vida')">∞ Vida Verdadeira</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('referencias')">📖 Referências</button>
+            <button class="nav-tab active" type="button" onclick="mostrarSecao('gnose', this)">🜂 Gnose</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('praticas', this)">🧘 Práticas</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('ciencia', this)">🔬 Ciência</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('jornada', this)">🧭 Jornada</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('mestres', this)">👁️ Mestres</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('vida', this)">∞ Vida Verdadeira</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('referencias', this)">📖 Referências</button>
         </nav>
 
         <!-- GNOSSE -->
@@ -1380,11 +1380,11 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
     </div>
 
     <script>
-    function mostrarSecao(id) {
+    function mostrarSecao(id, el) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         document.getElementById('sec-' + id).classList.add('active');
-        event.target.classList.add('active');
+        el.classList.add('active');
     }
 
     function toggleAccordion(header) {
