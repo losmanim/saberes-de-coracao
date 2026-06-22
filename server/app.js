@@ -13,6 +13,11 @@ const ADMIN_PASS = process.env.ADMIN_PASS || "admin123";
 const CAMINHO_FRONTEND = resolve(__dirname, "..");
 const CAMINHO_DADOS = resolve(__dirname, "../database/dados-unificados.json");
 
+console.log("[startup] PORTA:", PORTA);
+console.log("[startup] CAMINHO_FRONTEND:", CAMINHO_FRONTEND);
+console.log("[startup] CAMINHO_DADOS:", CAMINHO_DADOS);
+console.log("[startup] __dirname:", __dirname);
+
 const app = express();
 const tokens = new Set();
 
@@ -46,7 +51,7 @@ function salvarDados(dados) {
 }
 
 // =============================================
-// Autenticação
+// Rotas da API
 // =============================================
 
 app.post("/api/login", (req, res) => {
@@ -72,10 +77,6 @@ app.get("/api/verificar", (req, res) => {
 	res.json({ autenticado: true });
 });
 
-// =============================================
-// API — Categorias
-// =============================================
-
 app.get("/api/categorias", async (req, res) => {
 	try {
 		const dados = await lerDados();
@@ -85,10 +86,6 @@ app.get("/api/categorias", async (req, res) => {
 		res.status(500).json({ erro: "Erro ao ler dados" });
 	}
 });
-
-// =============================================
-// API — Saberes (CRUD completo)
-// =============================================
 
 app.get("/api/saberes", async (req, res) => {
 	try {
@@ -182,10 +179,6 @@ app.delete("/api/saberes/:id", autenticar, async (req, res) => {
 	}
 });
 
-// =============================================
-// API — Multimídia
-// =============================================
-
 app.get("/api/midia", async (req, res) => {
 	try {
 		const dados = await lerDados();
@@ -195,10 +188,6 @@ app.get("/api/midia", async (req, res) => {
 		res.status(500).json({ erro: "Erro ao ler dados" });
 	}
 });
-
-// =============================================
-// API — Dados completos (para inicialização)
-// =============================================
 
 app.get("/api/dados", async (req, res) => {
 	try {
@@ -210,16 +199,12 @@ app.get("/api/dados", async (req, res) => {
 	}
 });
 
-// =============================================
-// Health check
-// =============================================
-
 app.get("/api/health", (req, res) => {
 	res.json({ status: "ok", versao: "1.0.0" });
 });
 
 // =============================================
-// Arquivos estáticos (frontend)
+// Arquivos estáticos
 // =============================================
 
 const MIME_TYPES = {
@@ -247,9 +232,14 @@ app.use(express.static(CAMINHO_FRONTEND, {
 	},
 }));
 
-// Fallback: qualquer rota não-API serve index.html (SPA)
-app.get(/^\/(?!api\/).*$/, (req, res) => {
-	res.sendFile(join(CAMINHO_FRONTEND, "index.html"));
+// Fallback SPA
+app.use((req, res) => {
+	const index = join(CAMINHO_FRONTEND, "index.html");
+	if (existsSync(index)) {
+		res.sendFile(index);
+	} else {
+		res.status(404).type("html").send("404 - Página não encontrada");
+	}
 });
 
 // =============================================
