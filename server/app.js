@@ -238,6 +238,7 @@ const MIME_TYPES = {
 };
 
 app.use(express.static(CAMINHO_FRONTEND, {
+	fallthrough: true,
 	setHeaders(res, filePath) {
 		const ext = extname(filePath);
 		if (MIME_TYPES[ext]) {
