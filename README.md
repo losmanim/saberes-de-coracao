@@ -1,33 +1,35 @@
 # Saberes de Coração
 
-Plataforma interativa de saberes, práticas e multimídia — um espaço para explorar conhecimento com profundidade.
+> *"O verdadeiro conhecimento deve ser passado de coração, com boa vontade, em empatia ativa, elevando o campo."*
 
-**Link:** [saberes-de-coracao.onrender.com](https://saberes-de-coracao.onrender.com)
+Plataforma interativa dedicada à exploração do conhecimento em suas múltiplas dimensões — espiritual, prática, científica, existencial e social.
 
 ---
 
-## Sobre
+## Pilares
 
-O Saberes de Coração organiza conteúdos em cinco pilares — Espírito, Práticas, Ciência, Jornada e Vida Verdadeira — com cards interativos, busca, filtros, modo escuro e player multimídia.
+O conteúdo é organizado em cinco pilares fundamentais:
 
-## Tecnologias
+| Pilar | Descrição |
+|-------|-----------|
+| **Espírito** | Estudos sobre a natureza da consciência, tradições espirituais e o desenvolvimento interior |
+| **Práticas** | Métodos e exercícios para aplicação do conhecimento no dia a dia |
+| **Ciência** | Saberes baseados em pesquisa, observação e evidências |
+| **Jornada** | Reflexões sobre o caminho individual de crescimento e autoconhecimento |
+| **Vida Verdadeira** | A integração de todos os saberes em uma existência autêntica e plena |
 
-- **Frontend:** HTML, CSS, JavaScript (vanilla)
-- **Backend:** Node.js + Express
-- **Dados:** JSON (sem banco de dados)
+## Funcionalidades
 
-## Desenvolvimento
+- Cards interativos com conteúdo completo por saber
+- Busca e filtros por pilar
+- Modo claro/escuro
+- Player multimídia (áudios e vídeos)
+- Conexões entre saberes
+- Design responsivo
 
-```bash
-npm install
-npm start
-```
+## Acesse
 
-Acesse `http://localhost:3000`.
-
-## Deploy
-
-O deploy é feito automaticamente no [Render](https://render.com) a cada push na branch `main`.
+[saberes-de-coracao.onrender.com](https://saberes-de-coracao.onrender.com)
 
 ---
 
