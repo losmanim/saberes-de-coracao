@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saberes de Coração</title>
+    <meta name="description" content="Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira">
+    <meta name="theme-color" content="#0d1117">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header" role="banner">
+        <div class="header-content">
+            <a href="index.html" class="logo" aria-label="Saberes de Coração - Início">
+                <div class="logo-icon" aria-hidden="true">🕉️</div>
+                <span class="logo-text">Saberes de Coração</span>
+            </a>
+            <div class="header-actions">
+                <button class="btn-icon" id="btnAleatorio" onclick="saberAleatorio()" title="Saber aleatório" aria-label="Mostrar um saber aleatório">🎲</button>
+                <a href="biblioteca.html" class="btn-icon" title="Biblioteca completa">📚</a>
+                <a href="apocrifos.html" class="btn-icon" title="Textos apócrifos">📜</a>
+                <button class="btn-icon" id="btnBusca" onclick="toggleBusca()" title="Buscar">🔍</button>
+                <button class="btn-icon" id="btnTema" onclick="toggleTema()" title="Alternar tema">🌓</button>
+            </div>
+        </div>
+    </header>
+    <main class="main" role="main">
+        <section class="hero" aria-label="Introdução">
+            <h1>Saberes de Coração</h1>
+            <p>"O verdadeiro conhecimento deve ser passado de coração, com boa vontade, em empatia ativa, elevando o campo."</p>
+            <div class="hero-stats" id="heroStats" aria-label="Estatísticas do projeto">
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statSaberes">—</div>
+                    <div class="hero-stat-label">Saberes</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statPraticas">—</div>
+                    <div class="hero-stat-label">Práticas</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statCategorias">6</div>
+                    <div class="hero-stat-label">Pilares</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statMidia">—</div>
+                    <div class="hero-stat-label">Multimídia</div>
+                </div>
+            </div>
+        </section>
+        <nav class="pilares" id="pilaresNav" aria-label="Filtrar por pilar">
+            <button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')" aria-pressed="true">
+                🌟 Todos
+            </button>
+            <button class="pilar-btn" data-cat="1" onclick="filtrarCategoria('1')" aria-pressed="false">
+                🜂 Espírito
+            </button>
+            <button class="pilar-btn" data-cat="2" onclick="filtrarCategoria('2')" aria-pressed="false">
+                🧠 Práticas
+            </button>
+            <button class="pilar-btn" data-cat="3" onclick="filtrarCategoria('3')" aria-pressed="false">
+                🔬 Ciência
+            </button>
+            <button class="pilar-btn" data-cat="4" onclick="filtrarCategoria('4')" aria-pressed="false">
+                🧭 Jornada
+            </button>
+            <button class="pilar-btn" data-cat="5" onclick="filtrarCategoria('5')" aria-pressed="false">
+                ∞ Vida Verdadeira
+            </button>
+            <span class="pilar-sep"></span>
+            <button class="pilar-btn pilar-link" data-cat="midia" onclick="filtrarCategoria('midia')" aria-pressed="false">
+                🎵 Multimídia
+            </button>
+            <a href="apocrifos.html" class="pilar-btn pilar-link" style="text-decoration:none">
+                📜 Apócrifos
+            </a>
+        </nav>
+        <div class="busca-container" id="buscaContainer" style="display: none;" role="search">
+            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar saberes por título, descrição ou tag..." oninput="buscarSaberes(this.value)" aria-label="Buscar saberes">
+            <div class="busca-info" id="buscaInfo" aria-live="polite"></div>
+        </div>
+        <div class="cards-grid" id="cardsGrid" role="list" aria-label="Lista de saberes">
+            <div class="loading">
+                <div class="loading-spinner" aria-hidden="true"></div>
+                <p>Carregando saberes...</p>
+            </div>
+        </div>
+    </main>
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-titulo" id="modalTitulo"></h2>
+                <button class="modal-close" onclick="fecharModalBtn()" aria-label="Fechar">✕</button>
+            </div>
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+    </div>
+    <div id="playerBar" class="player-bar" role="region" aria-label="Player de mídia" hidden>
+        <audio id="playerAudio" preload="metadata"></audio>
+        <div class="player-track-info">
+            <span id="playerIcon" class="player-icon">🎵</span>
+            <span id="playerTrackName" class="player-track-name">—</span>
+        </div>
+        <div class="player-controls">
+            <button class="player-btn" id="playerPrev" title="Anterior (P)" aria-label="Faixa anterior">⏮</button>
+            <button class="player-btn" id="playerPlayPause" title="Tocar/Pausar (Espaço)" aria-label="Tocar ou pausar">▶</button>
+            <button class="player-btn" id="playerNext" title="Próximo (N)" aria-label="Próxima faixa">⏭</button>
+        </div>
+        <div class="player-seek">
+            <span id="playerTimeCurrent" class="player-time">0:00</span>
+            <div class="player-progress-wrap" id="playerProgressWrap">
+                <div class="player-progress-bar" id="playerProgressBar"></div>
+                <input type="range" class="player-seek-slider" id="playerSeekSlider" min="0" max="100" value="0" aria-label="Buscar posição">
+            </div>
+            <span id="playerTimeTotal" class="player-time">0:00</span>
+        </div>
+        <div class="player-volume-wrap">
+            <button class="player-btn" id="playerMute" title="Mudo (M)" aria-label="Mudo">🔊</button>
+            <input type="range" class="player-volume-slider" id="playerVolumeSlider" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+        </div>
+        <button class="player-btn player-close" id="playerClose" title="Fechar player" aria-label="Fechar player">✕</button>
+    </div>
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">🕉️ Saberes de Coração</a>
+                <p>"O verdadeiro conhecimento deve ser passado de coração, com boa vontade, em empatia ativa, elevando o campo."</p>
+                <p>Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegar</h4>
+                <ul>
+                    <li><a href="index.html">🏠 Início</a></li>
+                    <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                    <li><a href="apocrifos.html">📜 Apócrifos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Conteúdo</h4>
+                <ul>
+                    <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
+                    <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
+                    <li><a href="biblioteca.html#sec-praticas">🧘 Práticas</a></li>
+                    <li><a href="biblioteca.html#sec-ciencia">🔬 Ciência</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Info</h4>
+                <ul>
+                    <li><a href="index.html">📖 Filosofia</a></li>
+                    <li><span style="color:var(--cor-texto-sec)">📧 contato@saberes</span></li>
+                    <li><span style="color:var(--cor-texto-sec)">📄 Domínio Público</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>Saberes de Coração © 2026 — Todos os saberes são de Domínio Público</span>
+            <div class="footer-social">
+                <span style="font-size:0.8rem;color:var(--cor-texto-sec)">Código Livre</span>
+            </div>
+        </div>
+    </footer>
+    <script src="js/app.js" defer></script>
+</body>
+
+</html>
