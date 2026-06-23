@@ -109,7 +109,7 @@ const Player = {
         this.currentIndex = index;
         this.currentItem = list[index];
 
-        const baseDir = localStorage.getItem('midiaPath') || 'midia';
+        const baseDir = window.midiaBaseUrl;
         const partes = this.currentItem.arquivo.split('/');
         const arquivoCod = partes.map(encodeURIComponent).join('/');
         const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
@@ -118,7 +118,7 @@ const Player = {
         audio.src = src;
         audio.load();
         audio.onerror = () => {
-            alert('Arquivo de mídia não encontrado: ' + src + '\nUse configurarMidiaPath() no console para definir o caminho correto.');
+            alert('Arquivo de mídia não encontrado: ' + src);
         };
 
         const bar = document.getElementById('playerBar');
@@ -164,7 +164,7 @@ const Player = {
 
         const audio = document.getElementById('playerAudio');
         const isVideo = item.id && item.id.startsWith('video-');
-        const baseDir = localStorage.getItem('midiaPath') || 'midia';
+        const baseDir = window.midiaBaseUrl;
         const partes = item.arquivo.split('/');
         const arquivoCod = partes.map(encodeURIComponent).join('/');
         const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
@@ -254,7 +254,7 @@ const Player = {
             this.currentIndex = idx;
             this.currentItem = list[idx];
 
-            const baseDir = localStorage.getItem('midiaPath') || 'midia';
+            const baseDir = window.midiaBaseUrl;
             const isVideo = state.trackTipo === 'video';
             const partes = this.currentItem.arquivo.split('/');
             const arquivoCod = partes.map(encodeURIComponent).join('/');
@@ -293,15 +293,24 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') fecharModalBtn();
 });
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
     Player.init();
 
     if (localStorage.getItem('tema') === 'claro') {
         document.body.classList.add('modo-claro');
     }
-    if (!localStorage.getItem('midiaPath')) {
-        localStorage.setItem('midiaPath', 'midia');
+
+    async function carregarMidiaConfig() {
+        try {
+            const res = await fetch('/api/midia-config');
+            const cfg = await res.json();
+            window.midiaBaseUrl = cfg.baseUrl.replace(/\/$/, '');
+        } catch (e) {
+            window.midiaBaseUrl = 'midia';
+        }
     }
+
+    await carregarMidiaConfig();
     carregarDados().then(() => Player.restoreState());
 });
 
@@ -433,7 +442,7 @@ function abrirMidia(tipo, id) {
     const item = lista ? lista.find(m => m.id === id) : null;
     if (!item) return;
 
-    const baseDir = localStorage.getItem('midiaPath') || 'midia';
+    const baseDir = window.midiaBaseUrl;
     const partes = item.arquivo.split('/');
     const arquivoCod = partes.map(encodeURIComponent).join('/');
     const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
@@ -887,19 +896,6 @@ function saberAleatorio() {
     if (!dados || !dados.saberes || dados.saberes.length === 0) return;
     const idx = Math.floor(Math.random() * dados.saberes.length);
     abrirSaber(dados.saberes[idx].id);
-}
-
-function configurarMidiaPath() {
-    const path = prompt(
-        'Caminho base dos arquivos de mídia\n' +
-        '(deixe vazio para usar o padrão "midia"):\n' +
-        'Exemplo: /home/lzntn/Público',
-        localStorage.getItem('midiaPath') || 'midia'
-    );
-    if (path !== null) {
-        localStorage.setItem('midiaPath', path || 'midia');
-        alert('Caminho salvo! Recarregue a página se necessário.');
-    }
 }
 
 // =============================================

@@ -9,3 +9,5 @@ services:
         value: 22
       - key: ADMIN_PASS
         sync: false
+      - key: MIDIA_BASE_URL
+        value: https://res.cloudinary.com/deblzssiw/video/upload

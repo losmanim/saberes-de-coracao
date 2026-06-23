@@ -8,15 +8,10 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const PORTA = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const ADMIN_PASS = process.env.ADMIN_PASS || "admin123";
 const CAMINHO_FRONTEND = resolve(__dirname, "..");
 const CAMINHO_DADOS = resolve(__dirname, "../database/dados-unificados.json");
-
-console.log("[startup] PORTA:", PORTA);
-console.log("[startup] CAMINHO_FRONTEND:", CAMINHO_FRONTEND);
-console.log("[startup] CAMINHO_DADOS:", CAMINHO_DADOS);
-console.log("[startup] __dirname:", __dirname);
 
 const app = express();
 const tokens = new Set();
@@ -37,10 +32,6 @@ function autenticar(req, res, next) {
 	next();
 }
 
-// =============================================
-// Utilitários
-// =============================================
-
 async function lerDados() {
 	const raw = await readFile(CAMINHO_DADOS, "utf-8");
 	return JSON.parse(raw);
@@ -49,10 +40,6 @@ async function lerDados() {
 function salvarDados(dados) {
 	return writeFile(CAMINHO_DADOS, JSON.stringify(dados, null, 2), "utf-8");
 }
-
-// =============================================
-// Rotas da API
-// =============================================
 
 app.post("/api/login", (req, res) => {
 	const { senha } = req.body;
@@ -199,13 +186,19 @@ app.get("/api/dados", async (req, res) => {
 	}
 });
 
+app.get("/api/midia-config", (req, res) => {
+	res.json({
+		baseUrl: process.env.MIDIA_BASE_URL || "midia"
+	});
+});
+
 app.get("/api/health", (req, res) => {
 	res.json({ status: "ok", versao: "1.0.0" });
 });
 
-// =============================================
-// Arquivos estáticos
-// =============================================
+app.get("/api/teste", (req, res) => {
+	res.json({ mensagem: "rota de teste funcionando" });
+});
 
 const MIME_TYPES = {
 	".html": "text/html; charset=utf-8",
@@ -232,7 +225,6 @@ app.use(express.static(CAMINHO_FRONTEND, {
 	},
 }));
 
-// Fallback SPA
 app.use((req, res) => {
 	const index = join(CAMINHO_FRONTEND, "index.html");
 	if (existsSync(index)) {
@@ -242,15 +234,11 @@ app.use((req, res) => {
 	}
 });
 
-// =============================================
-// Tratamento de erros
-// =============================================
-
 app.use((err, req, res, next) => {
 	console.error("Erro não tratado:", err);
 	res.status(500).json({ erro: "Erro interno do servidor" });
 });
 
-app.listen(PORTA, () => {
-	console.log(`Saberes de Coração — servidor rodando em http://localhost:${PORTA}`);
+app.listen(PORT, () => {
+	console.log(`Saberes de Coração — servidor rodando em http://localhost:${PORT}`);
 });
