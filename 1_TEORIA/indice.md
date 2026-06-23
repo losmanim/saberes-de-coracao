@@ -17,7 +17,7 @@ Conhecimento direto e experiencial da natureza divina
 - [[1_TEORIA/Gnose/Mestres Gnósticos|Mestres Gnósticos]]
 - [[1_TEORIA/Gnose/Curso-Gnose - Índice|Índice do Curso]]
 
-**Projeto relacionado:** [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/Sumario-do-Curso-de-Gnose|Curso completo no projeto]]
+**Projeto relacionado:** [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/Sumario-do-Curso-de-Gnose|Curso completo no projeto]]
 
 ---
 
@@ -27,7 +27,7 @@ Os 7 Princípios de Hermes Trismegisto
 
 - [[1_TEORIA/Hermetismo/correspondencia|Lei da Correspondência]]
 
-**Projeto relacionado:** [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/indice|7 Princípios completos no projeto]]
+**Projeto relacionado:** [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/indice|7 Princípios completos no projeto]]
 
 ---
 

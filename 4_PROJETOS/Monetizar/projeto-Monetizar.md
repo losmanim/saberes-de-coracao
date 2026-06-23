@@ -8,7 +8,7 @@
 
 O projeto original era focado em **monetização de sites**. A filosofia mudou para **compartilhamento livre de conhecimento**.
 
-**Projeto atual:** [[../Saberes-de-Coracao/Saberes, de-Coração/README|Saberes de Coração]]
+**Projeto atual:** [[../Saberes-de-Coracao/README|Saberes de Coração]]
 
 ---
 
@@ -47,9 +47,9 @@ O projeto classificava conteúdos em:
 
 ## Conexões
 
-- [[../Saberes-de-Coracao/Saberes, de-Coração/README|Projeto Atual]]
-- [[../Saberes-de-Coracao/Saberes, de-Coração/compartilhamento|Filosofia de Compartilhamento]]
-- [[../Saberes-de-Coracao/Saberes, de-Coração/Produtos/indice|Produtos (formatos opcionais)]]
+- [[../Saberes-de-Coracao/README|Projeto Atual]]
+- [[../Saberes-de-Coracao/compartilhamento|Filosofia de Compartilhamento]]
+- [[../Saberes-de-Coracao/Apoie/indice|Apoie (formatos opcionais)]]
 - [[../../INDICE|Mapa do Vault]]
 
 ---

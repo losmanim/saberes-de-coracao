@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Apócrifa — Saberes de Coração</title>
+    <meta name="description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos dos primeiros séculos">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📜</div>
+                <span class="logo-text">Biblioteca Apócrifa</span>
+            </a>
+            <div class="header-actions">
+                <a href="index.html" class="btn-icon" title="Início">🏠</a>
+                <a href="biblioteca.html" class="btn-icon" title="Biblioteca completa">📚</a>
+                <button class="btn-icon" id="btnBusca" onclick="toggleBusca()" title="Buscar textos">🔍</button>
+                <button class="btn-icon" id="btnTema" onclick="toggleTema()" title="Alternar tema">🌓</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <h1>📜 Biblioteca Apócrifa</h1>
+            <p>Textos que não entraram no cânon — evangelhos secretos, testamentos dos patriarcas, revelações gnósticas e escritos dos primeiros séculos do cristianismo.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statTextos">—</div>
+                    <div class="hero-stat-label">Textos</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statCategoriasAp">3</div>
+                    <div class="hero-stat-label">Categorias</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statTextosTotal">11</div>
+                    <div class="hero-stat-label">Total de Textos</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num" id="statPaginas">~800</div>
+                    <div class="hero-stat-label">Páginas de Conteúdo</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="busca-container" id="buscaContainer" style="display:none">
+            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar por título, descrição ou tag..." oninput="buscarTextos(this.value)">
+            <div class="busca-info" id="buscaInfo"></div>
+        </div>
+
+        <nav class="pilares" id="categoriasNav">
+            <button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')">📜 Todos</button>
+            <button class="pilar-btn" data-cat="patriarcas" onclick="filtrarCategoria('patriarcas')">🕊️ Patriarcas</button>
+            <button class="pilar-btn" data-cat="infancia" onclick="filtrarCategoria('infancia')">👶 Infância de Jesus</button>
+            <button class="pilar-btn" data-cat="gnosticos" onclick="filtrarCategoria('gnosticos')">🔮 Gnósticos</button>
+        </nav>
+
+        <div id="apocrifosContainer">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Carregando textos apócrifos...</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 class="modal-titulo" id="modalTitulo"></h2>
+                <button class="modal-close" onclick="fecharModalBtn()">✕</button>
+            </div>
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+    </div>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">📜 Saberes de Coração</a>
+                <p>Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos dos primeiros séculos.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegar</h4>
+                <ul>
+                    <li><a href="index.html">🏠 Início</a></li>
+                    <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                    <li><a href="apocrifos.html">📜 Apócrifos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Conteúdo</h4>
+                <ul>
+                    <li><a href="index.html">🜂 Pilares</a></li>
+                    <li><a href="apocrifos.html">🕊️ Patriarcas</a></li>
+                    <li><a href="apocrifos.html">🔮 Gnósticos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Info</h4>
+                <ul>
+                    <li><a href="index.html">📖 Filosofia</a></li>
+                    <li><span style="color:var(--cor-texto-sec)">📄 Domínio Público</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>Saberes de Coração © 2026 — Domínio Público</span>
+            <div class="footer-social">
+                <a href="index.html">🏠</a>
+                <a href="biblioteca.html">📚</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="playerBar" class="player-bar" role="region" aria-label="Player de mídia" hidden>
+        <audio id="playerAudio" preload="metadata"></audio>
+        <div class="player-track-info">
+            <span id="playerIcon" class="player-icon">🎵</span>
+            <span id="playerTrackName" class="player-track-name">—</span>
+        </div>
+        <div class="player-controls">
+            <button class="player-btn" id="playerPrev" title="Anterior (P)" aria-label="Faixa anterior">⏮</button>
+            <button class="player-btn" id="playerPlayPause" title="Tocar/Pausar (Espaço)" aria-label="Tocar ou pausar">▶</button>
+            <button class="player-btn" id="playerNext" title="Próximo (N)" aria-label="Próxima faixa">⏭</button>
+        </div>
+        <div class="player-seek">
+            <span id="playerTimeCurrent" class="player-time">0:00</span>
+            <div class="player-progress-wrap" id="playerProgressWrap">
+                <div class="player-progress-bar" id="playerProgressBar"></div>
+                <input type="range" class="player-seek-slider" id="playerSeekSlider" min="0" max="100" value="0" aria-label="Buscar posição">
+            </div>
+            <span id="playerTimeTotal" class="player-time">0:00</span>
+        </div>
+        <div class="player-volume-wrap">
+            <button class="player-btn" id="playerMute" title="Mudo (M)" aria-label="Mudo">🔊</button>
+            <input type="range" class="player-volume-slider" id="playerVolumeSlider" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+        </div>
+        <button class="player-btn player-close" id="playerClose" title="Fechar player" aria-label="Fechar player">✕</button>
+    </div>
+
+    <script src="js/app.js" defer></script>
+    <script src="js/apocrifos.js" defer></script>
+</body>
+</html>

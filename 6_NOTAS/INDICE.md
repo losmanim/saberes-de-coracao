@@ -11,7 +11,7 @@
 ## Conexões
 
 - [[INDICE|Voltar ao Mapa do Vault]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|Projeto Saberes de Coração]]
+- [[4_PROJETOS/Saberes-de-Coracao/README|Projeto Saberes de Coração]]
 
 ---
 

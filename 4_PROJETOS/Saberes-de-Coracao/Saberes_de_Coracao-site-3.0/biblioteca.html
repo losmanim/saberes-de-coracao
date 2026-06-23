@@ -5,361 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca — Saberes de Coração</title>
-    <meta name="description" content="Biblioteca completa dos Saberes de Coração — Gnose, Hermetismo, Epigenética, Práticas, Mestres e muito mais">
+    <meta name="description" content="Biblioteca completa dos Saberes de Coração — Gnose, Epigenética, Práticas, Mestres e muito mais">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-    <style>
-        :root {
-            --cor-fundo: #0d1117;
-            --cor-card: #161b22;
-            --cor-borda: #30363d;
-            --cor-texto: #c9d1d9;
-            --cor-texto-sec: #8b949e;
-            --cor-destaque: #58a6ff;
-            --cor-espirito: #9b59b6;
-            --cor-praticas: #3498db;
-            --cor-ciencia: #2ecc71;
-            --cor-jornada: #e67e22;
-            --cor-vida: #e74c3c;
-            --cor-midia: #e91e63;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-            --radius: 8px;
-            --shadow: 0 4px 12px rgba(0,0,0,0.3);
-            --transition: 0.2s ease;
-        }
-
-        body.modo-claro {
-            --cor-fundo: #f5f7fa;
-            --cor-card: #ffffff;
-            --cor-borda: #d0d7de;
-            --cor-texto: #24292f;
-            --cor-texto-sec: #57606a;
-            --cor-destaque: #0969da;
-            --shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: var(--font-sans);
-            background: var(--cor-fundo);
-            color: var(--cor-texto);
-            line-height: 1.7;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Header */
-        .header {
-            background: var(--cor-card);
-            border-bottom: 1px solid var(--cor-borda);
-            padding: 0.75rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--cor-texto);
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--cor-espirito), var(--cor-destaque));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .logo-text { font-size: 1.1rem; font-weight: 600; }
-
-        .header-actions { display: flex; gap: 0.4rem; }
-
-        .btn-icon {
-            background: transparent;
-            border: 1px solid var(--cor-borda);
-            color: var(--cor-texto-sec);
-            padding: 0.4rem 0.5rem;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all var(--transition);
-        }
-
-        .btn-icon:hover, .btn-icon:focus {
-            background: var(--cor-card);
-            color: var(--cor-texto);
-            border-color: var(--cor-destaque);
-            outline: none;
-        }
-
-        /* Main */
-        .main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1.5rem;
-            flex: 1;
-            width: 100%;
-        }
-
-        /* Hero */
-        .hero {
-            text-align: center;
-            padding: 2rem 1rem;
-            margin-bottom: 2rem;
-            background: var(--cor-card);
-            border: 1px solid var(--cor-borda);
-            border-radius: var(--radius);
-        }
-
-        .hero h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, var(--cor-espirito), var(--cor-destaque), var(--cor-ciencia));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            color: var(--cor-texto-sec);
-            font-style: italic;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Nav Tabs */
-        .nav-tabs {
-            display: flex;
-            gap: 0.3rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            border-bottom: 1px solid var(--cor-borda);
-            padding-bottom: 0.5rem;
-        }
-
-        .nav-tab {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--cor-texto-sec);
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all var(--transition);
-            white-space: nowrap;
-        }
-
-        .nav-tab:hover, .nav-tab:focus {
-            color: var(--cor-texto);
-            background: var(--cor-card);
-            outline: none;
-        }
-
-        .nav-tab.active {
-            color: var(--cor-destaque);
-            border-color: var(--cor-destaque);
-            font-weight: 600;
-        }
-
-        /* Sections */
-        .section { display: none; }
-        .section.active { display: block; }
-
-        /* Accordion */
-        .accordion { margin-bottom: 0.5rem; }
-
-        .accordion-header {
-            background: var(--cor-card);
-            border: 1px solid var(--cor-borda);
-            border-radius: var(--radius);
-            padding: 1rem 1.2rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all var(--transition);
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--cor-texto);
-            width: 100%;
-            text-align: left;
-        }
-
-        .accordion-header:hover, .accordion-header:focus {
-            border-color: var(--cor-destaque);
-            outline: none;
-        }
-
-        .accordion-header.active {
-            border-radius: var(--radius) var(--radius) 0 0;
-            border-bottom-color: transparent;
-        }
-
-        .accordion-arrow {
-            transition: transform var(--transition);
-            font-size: 0.8rem;
-        }
-
-        .accordion-header.active .accordion-arrow {
-            transform: rotate(180deg);
-        }
-
-        .accordion-content {
-            display: none;
-            background: var(--cor-card);
-            border: 1px solid var(--cor-borda);
-            border-top: none;
-            border-radius: 0 0 var(--radius) var(--radius);
-            padding: 1.2rem;
-        }
-
-        .accordion-content.active { display: block; }
-
-        /* Content styling */
-        .content h3 {
-            color: var(--cor-destaque);
-            margin: 1.2rem 0 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .content h4 {
-            color: var(--cor-texto);
-            margin: 1rem 0 0.4rem;
-            font-size: 1rem;
-        }
-
-        .content p { margin-bottom: 0.8rem; }
-
-        .content ul {
-            padding-left: 1.5rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .content li { margin-bottom: 0.3rem; }
-
-        .content blockquote {
-            border-left: 3px solid var(--cor-destaque);
-            padding-left: 1rem;
-            margin: 1rem 0;
-            font-style: italic;
-            color: var(--cor-texto-sec);
-        }
-
-        .content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0.8rem 0;
-        }
-
-        .content th, .content td {
-            padding: 8px 12px;
-            border: 1px solid var(--cor-borda);
-            text-align: left;
-            font-size: 0.9rem;
-        }
-
-        .content th {
-            background: var(--cor-fundo);
-            font-weight: 600;
-        }
-
-        .content pre {
-            background: var(--cor-fundo);
-            padding: 1rem;
-            border-radius: var(--radius);
-            overflow-x: auto;
-            margin: 0.8rem 0;
-            font-size: 0.85rem;
-        }
-
-        .content code {
-            background: var(--cor-fundo);
-            padding: 0.15rem 0.4rem;
-            border-radius: 3px;
-            font-size: 0.85rem;
-        }
-
-        .pratica-box {
-            background: var(--cor-fundo);
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin: 0.8rem 0;
-            border-left: 3px solid var(--cor-destaque);
-        }
-
-        .pratica-box h4 {
-            color: var(--cor-destaque);
-            margin-bottom: 0.4rem;
-        }
-
-        .tag {
-            display: inline-block;
-            font-size: 0.7rem;
-            padding: 0.15rem 0.4rem;
-            background: var(--cor-fundo);
-            border-radius: 3px;
-            color: var(--cor-texto-sec);
-            margin-right: 0.3rem;
-        }
-
-        .badge {
-            display: inline-block;
-            font-size: 0.7rem;
-            padding: 0.15rem 0.5rem;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .badge-espirito { background: #3d2352; color: #c084fc; }
-        .badge-pratica { background: #1a3a52; color: #60a5fa; }
-        .badge-ciencia { background: #1a4a2e; color: #4ade80; }
-        .badge-jornada { background: #4a2e0a; color: #fb923c; }
-        .badge-vida { background: #4a1a1a; color: #f87171; }
-
-        /* Footer */
-        .footer {
-            background: var(--cor-card);
-            border-top: 1px solid var(--cor-borda);
-            padding: 1rem 1.5rem;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--cor-texto-sec);
-        }
-
-        .footer a { color: var(--cor-destaque); text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
-
-        /* Responsivo */
-        @media (max-width: 600px) {
-            .hero h1 { font-size: 1.5rem; }
-            .nav-tabs { gap: 0.2rem; }
-            .nav-tab { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
-            .accordion-header { padding: 0.8rem 1rem; font-size: 0.9rem; }
-            .content table { font-size: 0.8rem; }
-            .content th, .content td { padding: 6px 8px; }
-        }
-
-        :focus-visible {
-            outline: 2px solid var(--cor-destaque);
-            outline-offset: 2px;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/app.js" defer></script>
 </head>
 
 <body>
@@ -370,7 +19,9 @@
                 <span class="logo-text">Biblioteca — Saberes de Coração</span>
             </a>
             <div class="header-actions">
-                <button class="btn-icon" type="button" onclick="toggleTema()" title="Alternar tema" aria-label="Alternar tema">🌓</button>
+                <a href="index.html" class="btn-icon" title="Início">🏠</a>
+                <a href="apocrifos.html" class="btn-icon" title="Textos apócrifos">📜</a>
+                <button class="btn-icon" type="button" onclick="toggleTema()" title="Alternar tema">🌓</button>
             </div>
         </div>
     </header>
@@ -382,14 +33,13 @@
         </section>
 
         <nav class="nav-tabs" aria-label="Categorias da biblioteca">
-            <button class="nav-tab active" type="button" onclick="mostrarSecao('gnose')">🜂 Gnose</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('hermetismo')">🔮 Hermetismo</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('praticas')">🧘 Práticas</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('ciencia')">🔬 Ciência</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('jornada')">🧭 Jornada</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('mestres')">👁️ Mestres</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('vida')">∞ Vida Verdadeira</button>
-            <button class="nav-tab" type="button" onclick="mostrarSecao('referencias')">📖 Referências</button>
+            <button class="nav-tab active" type="button" onclick="mostrarSecao('gnose', this)">🜂 Gnose</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('praticas', this)">🧘 Práticas</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('ciencia', this)">🔬 Ciência</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('jornada', this)">🧭 Jornada</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('mestres', this)">👁️ Mestres</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('vida', this)">∞ Vida Verdadeira</button>
+            <button class="nav-tab" type="button" onclick="mostrarSecao('referencias', this)">📖 Referências</button>
         </nav>
 
         <!-- GNOSSE -->
@@ -720,105 +370,110 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- HERMETISMO -->
-        <div class="section" id="sec-hermetismo">
             <div class="accordion">
                 <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-                    <span>🔮 Os 7 Princípios Herméticos</span>
+                    <span>📖 Yeshua: o Cristo Gnóstico</span>
                     <span class="accordion-arrow">▼</span>
                 </button>
                 <div class="accordion-content">
                     <div class="content">
-                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#hermetismo</span> <span class="tag">#kybalion</span>
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#gnose</span> <span class="tag">#yeshua</span> <span class="tag">#cristo-gnostico</span>
 
-                        <blockquote>"Os lábios da sabedoria são fechados, exceto aos ouvidos do entendimento." — O Kybalion</blockquote>
+                        <p>Para a Gnose, Yeshua não é apenas o Jesus histórico, mas o <strong>Cristo Cósmico</strong> — o Logos encarnado, o Verbo divino que veio despertar a centelha divina adormecida na humanidade.</p>
 
-                        <h3>1. Mentalismo</h3>
-                        <p><em>"O Todo é Mente; o Universo é Mental."</em></p>
-                        <p>Tudo o que existe é criação de uma Mente Universal. Nossa mente individual é uma fração dessa Mente infinita. Seus pensamentos criam sua realidade — não como "lei da atração" simplificada, mas como reconhecimento de que consciência é a base de toda manifestação.</p>
+                        <h3>Cristo Cósmico vs Yeshua Histórico</h3>
+                        <p>O Cristo (do grego <em>Christós</em>, "ungido") é um princípio eterno, enquanto Yeshua é o ser humano que cristalizou esse princípio em si, tornando-se modelo para toda a humanidade.</p>
 
-                        <h3>2. Correspondência</h3>
-                        <p><em>"Como em cima, assim embaixo; como embaixo, assim em cima."</em></p>
-                        <p>Tudo o que existe no macrocosmo existe no microcosmo. O universo é um espelho infinito onde cada parte reflete o todo. O que está fora está dentro.</p>
+                        <h3>Os Ensinamentos Secretos de Yeshua</h3>
+                        <ul>
+                            <li><strong>Parábolas como veículo gnóstico</strong> — Ensinamentos internos para os iniciados</li>
+                            <li><strong>O Reino Interior</strong> — "O Reino de Deus está dentro de vós"</li>
+                            <li><strong>Transmutação pelo amor</strong> — A Lei Nova do amor incondicional</li>
+                            <li><strong>A ressurreição como despertar</strong> — Não física, mas da consciência</li>
+                        </ul>
 
-                        <h3>3. Vibração</h3>
-                        <p><em>"Nada está em repouso; tudo vibra; tudo se move."</em></p>
-                        <p>Tudo no universo está em constante vibração. Da partícula subatômica à galáxia, do pensamento mais sutil ao objeto mais denso — tudo é vibração em diferentes frequências. Você pode alterar seu estado vibracional através de som, pensamento, respiração e intenção.</p>
+                        <h3>Yeshua e a Revolução da Consciência</h3>
+                        <p>Seus ensinamentos convergem perfeitamente com os Três Fatores: morte do ego (negar a si mesmo), transmutação ("a menos que o grão caia na terra e morra") e sacrifício pela humanidade (dar a vida pelos irmãos).</p>
 
-                        <h3>4. Polaridade</h3>
-                        <p><em>"Tudo é duplo; tudo tem dois polos; tudo tem seu par de opostos."</em></p>
-                        <p>Os opostos são na verdade a mesma coisa em graus diferentes. Calor e frio são temperatura. Amor e medo são emoção. Você pode transformar qualquer estado em seu oposto — não destruindo, mas transmutando.</p>
+                        <h3>O Cristo Interior</h3>
+                        <p>O verdadeiro nascimento de Cristo não é um evento histórico, mas uma experiência interior — o despertar do Filho do Homem dentro de cada ser humano que completa a obra da autotransformação.</p>
 
-                        <h3>5. Ritmo</h3>
-                        <p><em>"Tudo flui e reflui; tudo tem suas marés; tudo sobe e desce."</em></p>
-                        <p>Tudo opera em ciclos e ritmos. As marés, as estações, as emoções, as civilizações. Quando você compreende o ritmo, pode navegar os ciclos em vez de ser arrastado por eles. Não lute contra o refluxo — saiba que o fluxo virá.</p>
-
-                        <h3>6. Causa e Efeito</h3>
-                        <p><em>"Toda causa tem seu efeito; todo efeito tem sua causa."</em></p>
-                        <p>Nada acontece por acaso. O que chamamos de "sorte" ou "azar" são apenas causas que ainda não compreendemos. Você é tanto causa quanto efeito. Suas ações presentes criam seus futuros.</p>
-
-                        <h3>7. Gênero</h3>
-                        <p><em>"O gênero está em tudo; tudo tem seu princípio masculino e feminino."</em></p>
-                        <p>Masculino e feminino não são sexos biológicos apenas — são princípios energéticos presentes em tudo. O equilíbrio entre ambos dentro de si é a chave para a criação consciente e a harmonia interior.</p>
+                        <blockquote>"Eu sou o caminho, a verdade e a vida. Ninguém vem ao Pai senão por mim. Estas coisas vos tenho dito em parábolas; chega a hora em que não vos falarei mais por parábolas, mas abertamente vos falarei acerca do Pai." — Jo 14:6, 16:25</blockquote>
                     </div>
                 </div>
             </div>
 
             <div class="accordion">
                 <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
-                    <span>🪞 Lei da Correspondência — Detalhada</span>
+                    <span>📖 Pistis Sophia e os Mistérios Gnósticos</span>
                     <span class="accordion-arrow">▼</span>
                 </button>
                 <div class="accordion-content">
                     <div class="content">
-                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#correspondencia</span> <span class="tag">#unidade</span>
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#gnose</span> <span class="tag">#pistis-sophia</span> <span class="tag">#misterios</span>
 
-                        <h3>No Corpo Humano</h3>
-                        <table>
-                            <tr><th>Cosmo</th><th>Corpo Humano</th></tr>
-                            <tr><td>Sistema Solar</td><td>Sistema Circulatório</td></tr>
-                            <tr><td>Planetas</td><td>Órgãos</td></tr>
-                            <tr><td>Lua</td><td>Glândula Pineal</td></tr>
-                            <tr><td>Estrelas</td><td>Células</td></tr>
-                            <tr><td>Galáxias</td><td>Cérebro</td></tr>
-                        </table>
+                        <p><em>Pistis Sophia</em> ("Fé-Sabedoria") é um dos mais importantes evangelhos gnósticos, descoberto no século XVIII, que descreve os ensinamentos de Jesus após a ressurreição sobre os mistérios da alma, a queda da centelha divina e o caminho de retorno à Luz.</p>
 
-                        <h3>Nas Emoções</h3>
-                        <table>
-                            <tr><th>Emoção Superior</th><th>Emoção Inferior</th></tr>
-                            <tr><td>Amor divino</td><td>Amor humano</td></tr>
-                            <tr><td>Sabedoria</td><td>Conhecimento</td></tr>
-                            <tr><td>Paz eternal</td><td>Paz momentânea</td></tr>
-                            <tr><td>Força criadora</td><td>Força muscular</td></tr>
-                        </table>
+                        <h3>A Queda de Pistis Sophia</h3>
+                        <p>A alma (Pistis Sophia) caiu das regiões superiores da Luz ao ser atraída pela matéria ilusória. Sua jornada de arrependimento e resgate simboliza o caminho de cada alma que se perde no mundo e busca retornar à sua origem divina.</p>
 
-                        <h3>Correspondências Elementais</h3>
-                        <table>
-                            <tr><th>Grande</th><th>Pequeno</th></tr>
-                            <tr><td>Sol</td><td>Coração</td></tr>
-                            <tr><td>Lua</td><td>Mente</td></tr>
-                            <tr><td>Terra</td><td>Corpo</td></tr>
-                            <tr><td>Ar</td><td>Pulmões</td></tr>
-                            <tr><td>Fogo</td><td>Metabolismo</td></tr>
-                            <tr><td>Água</td><td>Emoções</td></tr>
-                        </table>
-
-                        <h3>Como Usar</h3>
+                        <h3>Os Mistérios da Luz</h3>
                         <ul>
-                            <li><strong>Para Cura:</strong> Se há um padrão em qualquer nível, você pode influenciá-lo em qualquer nível. Cura física? Trabalhe o emocional.</li>
-                            <li><strong>Para Compreensão:</strong> O que está fora está dentro. Problema no mundo? Examine seu interior.</li>
+                            <li><strong>As Regiões da Luz</strong> — Hierarquias celestiais e os éons divinos</li>
+                            <li><strong>Os Arcontes</strong> — Forças que aprisionam a alma na matéria</li>
+                            <li><strong>O Véu da Separação</strong> — A ignorância que mantém a alma cativa</li>
+                            <li><strong>Os Selos e Senhas</strong> — Conhecimentos para atravessar as esferas</li>
+                        </ul>
+
+                        <h3>A Jornada de Arrependimento</h3>
+                        <p>Pistis Sophia entoa treze arrependimentos (odes de arrependimento) que são cantos de transformação. Cada arrependimento corresponde a uma etapa de purificação e compreensão, revelando que o caminho de volta à Luz é pavimentado pelo autoconhecimento doloroso mas libertador.</p>
+
+                        <h3>Cosmologia do Texto</h3>
+                        <p>O universo é composto por múltiplos níveis — do Inefável (o Pai) ao mundo material. A alma desce através destes níveis, acumulando véus de ignorância. O conhecimento (gnosis) dos mistérios permite à alma ascender novamente.</p>
+
+                        <blockquote>"Antes de tudo era a Luz, e a Luz era a Sabedoria, e a Sabedoria era a Vida. Buscai o Conhecimento, pois ele é o resgate da vossa alma imortal." — Pistis Sophia</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>📖 Lição 8 — O Caminho, a Verdade e a Vida</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#caminho</span> <span class="tag">#verdade</span> <span class="tag">#vida</span> <span class="tag">#cristo-interior</span>
+
+                        <blockquote>"Eu sou o Caminho, a Verdade e a Vida. Ninguém vem ao Pai senão por mim." — João 14:6</blockquote>
+
+                        <p>Jesus disse em João 14:6: <em>"Eu sou o Caminho, a Verdade e a Vida. Ninguém vem ao Pai senão por mim."</em> Na superfície (visão exotérica, para as multidões), isso soa como uma porta exclusiva. Mas na <strong>gnosis</strong>, isso é algo bem mais profundo e universal.</p>
+
+                        <h3>O Caminho</h3>
+                        <p>Não é uma estrada de regras morais ou rituais externos. É o processo de despertar, de virar para dentro, de morrer para o ego falso (o "eu" mecânico, preso na matéria, ilusões e desejos) e renascer no Espírito. Na gnose, isso é sair da prisão do mundo material e voltar à Fonte, o Pai-Pléroma (a plenitude divina). É viver consciente, não dormindo na vida horizontal mecânica.</p>
+
+                        <h3>A Verdade</h3>
+                        <p>Não é crença ou doutrina. Gnosis é <strong>conhecimento direto</strong>. Você não "acredita" no divino — você <strong>sabe</strong> por experiência, por revelação interior. É lembrar quem você realmente é: uma centelha divina presa na carne. Como diz o Evangelho de Tomé: <em>"O Reino está dentro de vocês e fora de vocês. Quando conhecerem a si mesmos, serão conhecidos."</em> A verdade liberta porque dissolve as ilusões da separação.</p>
+
+                        <h3>A Vida</h3>
+                        <p>Não a vida biológica que acaba em morte. É a <strong>Vida eterna</strong>, a Zoe (vida divina), a consciência desperta que transcende o ciclo de nascimento-morte. Jesus como portador de gnosis mostra o caminho: não só crer na cruz, mas realizar o Cristo interior.</p>
+
+                        <h3>Visão Gnóstica Pura</h3>
+                        <p>No gnosticismo, o mundo material é uma espécie de erro ou prisão. O verdadeiro Deus (o Inefável, a Fonte) não criou esse caos cheio de sofrimento e ignorância. Jesus/Cristo é o emissário da Luz verdadeira que vem lembrar: <em>"Vocês não são daqui. Despertem."</em></p>
+                        <p>Salvação não vem de sacrifício vicário ou fé cega, mas de <strong>gnosis</strong> — conhecer a si mesmo, conhecer o divino dentro, transcender os arcontes (poderes que mantêm a ilusão). O "ninguém vem ao Pai senão por mim" significa: ninguém desperta sem alinhar com esse princípio crístico interior. Não é exclusivismo — é mecânica da consciência.</p>
+
+                        <h3>Como Aplicar Isso Hoje</h3>
+                        <ul>
+                            <li><strong>Olhe pra dentro:</strong> Pergunte "Quem sou eu realmente?" além do nome, corpo, história, papéis sociais</li>
+                            <li><strong>Desperte a centelha:</strong> Cultive presença, observe o mecânico em você (reações automáticas, mentiras que conta pra si mesmo)</li>
+                            <li><strong>O Caminho é prático:</strong> Une vida cotidiana (o horizontal) com o vertical (busca do Real). Use os eventos da vida como espelho e combustível pra transformação</li>
+                            <li><strong>Sem intermediários finais:</strong> Mestres, livros, igrejas ajudam, mas a gnosis é direta. O Cristo interior é o guia verdadeiro</li>
                         </ul>
 
                         <div class="pratica-box">
-                            <h4>🧘 Meditação da Correspondência</h4>
-                            <p>1. Sente-se em silêncio</p>
-                            <p>2. Escolha um aspecto da natureza</p>
-                            <p>3. Pergunte: "O que isto reflete em mim?"</p>
-                            <p>4. Observe a resposta que surge</p>
-                            <p>5. Pergunte: "O que isto reflete no cosmos?"</p>
-                            <p>6. Integre a compreensão</p>
+                            <h4>🧘 Contemplação: Quem Sou Eu?</h4>
+                            <p>Sente-se em silêncio. Respire profundamente três vezes. Então pergunte a si mesmo, sem esperar uma resposta intelectual: <em>"Quem sou eu realmente — além do nome, corpo, história e papéis sociais?"</em> Permaneça no silêncio por 5 minutos. A resposta não virá em palavras, mas em presença.</p>
                         </div>
                     </div>
                 </div>
@@ -981,6 +636,73 @@
                     </div>
                 </div>
             </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🧘 Kundalini: Fogo do Espírito Santo</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#kundalini</span> <span class="tag">#espirito-santo</span> <span class="tag">#fogo</span>
+
+                        <p>A <strong>Kundalini</strong> é a energia primordial adormecida na base da coluna vertebral, representada como uma serpente enrolada em três voltas e meia. Nas tradições gnósticas, seu despertar é reconhecido como o <strong>fogo do Espírito Santo</strong> que purifica, ilumina e transforma o ser.</p>
+
+                        <h3>A Serpente de Fogo</h3>
+                        <p>Energia criativa primordial (Shakti) que reside no chakra básico (Múládhara). Quando desperta, sobe pelo canal central da coluna (Sushumna), ativando cada centro energético e elevando a consciência a estados superiores de percepção.</p>
+
+                        <h3>O Espírito Santo como Fogo Transmutador</h3>
+                        <ul>
+                            <li><strong>Batismo de Fogo</strong> — Purificação dos egos e defeitos psicológicos</li>
+                            <li><strong>Pentecostes Interior</strong> — Descida do fogo divino sobre a consciência preparada</li>
+                            <li><strong>Transmutação Alquímica</strong> — Transformação da energia criativa em luz espiritual</li>
+                            <li><strong>União dos Opostos</strong> — Casamento interior entre Shiva e Shakti, masculino e feminino</li>
+                        </ul>
+
+                        <h3>Preparação Essencial</h3>
+                        <p>O despertar da Kundalini sem preparação é perigoso. Requer: purificação moral (morte do ego), prática respiratória consistente (pranayama), transmutação sexual e, acima de tudo, <strong>amor incondicional</strong> como base de todo o trabalho.</p>
+
+                        <blockquote>"Ele vos batizará com o Espírito Santo e com fogo. Ele tem a pá em sua mão e limpará sua eira, recolhendo o trigo ao seu celeiro, mas queimará a palha com fogo inextinguível." — Mateus 3:11-12</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🧘 Meditação dos Chakras com Mantras</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-pratica">PRÁTICA</span> <span class="tag">#meditacao</span> <span class="tag">#chakra</span> <span class="tag">#mantra</span>
+
+                        <p>Combinação poderosa de <strong>visualização dos chakras</strong> com a <strong>entoação de mantras</strong> específicos para cada centro energético. O som (mantra) ressoa no chakra correspondente, amplificando a ativação e o equilíbrio do sistema energético.</p>
+
+                        <h3>Mantras e Chakras</h3>
+                        <table>
+                            <tr><th>Chakra</th><th>Mantra (Bija)</th><th>Efeito</th></tr>
+                            <tr><td>Raiz (Múládhara)</td><td>LAM</td><td>Enraizamento, segurança</td></tr>
+                            <tr><td>Sexual (Svádhishthána)</td><td>VAM</td><td>Criatividade, transmutação</td></tr>
+                            <tr><td>Plexo Solar (Manipúra)</td><td>RAM</td><td>Poder, vontade</td></tr>
+                            <tr><td>Coração (Anáhata)</td><td>YAM</td><td>Amor, compaixão</td></tr>
+                            <tr><td>Garganta (Vishúdda)</td><td>HAM</td><td>Expressão, verdade</td></tr>
+                            <tr><td>Terceiro Olho (Ajña)</td><td>OM</td><td>Intuição, percepção</td></tr>
+                            <tr><td>Coroa (Sahasrára)</td><td>— (silêncio)</td><td>Conexão divina</td></tr>
+                        </table>
+
+                        <h3>Prática Guiada</h3>
+                        <ol>
+                            <li>Sente-se com coluna reta, respire profundamente 3 vezes</li>
+                            <li>Visualize o chakra raiz na base da coluna, entoe <strong>LAM</strong></li>
+                            <li>Suba para o chakra sexual, entoe <strong>VAM</strong> e prossiga subindo</li>
+                            <li>Ao chegar na coroa, permaneça em silêncio por 5 minutos</li>
+                            <li>Inverta o percurso, descendo e entoando cada mantra novamente</li>
+                        </ol>
+
+                        <blockquote>"O som é a forma mais sutil da matéria; o mantra é a forma mais densa do espírito. Quando vibramos um bija mantra, não apenas pronunciamos uma sílaba — invocamos uma força cósmica."</blockquote>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- CIENCIA -->
@@ -1068,6 +790,69 @@
                             <li>Clareza mental e tomada de decisão</li>
                             <li>Melhoria na saúde cardiovascular</li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔬 Éter: A Quintessência da Existência</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-ciencia">CIÊNCIA</span> <span class="tag">#eter</span> <span class="tag">#quintessencia</span> <span class="tag">#akasha</span>
+
+                        <p>O <strong>éter</strong> (do grego <em>aithēr</em>, "brilhar") é o quinto elemento, a quintessência — o substrato sutil que permeia todo o universo. Na Índia é chamado de <em>Akasha</em>; na alquimia, de <em>quinta essentia</em>. É o meio fundamental através do qual a vida, a luz e a consciência se manifestam.</p>
+
+                        <h3>O Éter na Filosofia Antiga</h3>
+                        <ul>
+                            <li><strong>Akasha</strong> — O espaço primordial da tradição hindu, o primeiro dos cinco elementos</li>
+                            <li><strong>Quintessência</strong> — O quinto elemento aristotélico, a substância dos corpos celestes</li>
+                            <li><strong>Pneuma</strong> — O sopro vital estoico que conecta todas as coisas</li>
+                            <li><strong>Luz Astral</strong> — O éter dos ocultistas, meio de toda manifestação psíquica</li>
+                        </ul>
+
+                        <h3>O Éter na Ciência</h3>
+                        <p>Da teoria do "luminiferous ether" de Maxwell ao espaço-tempo de Einstein, a ciência buscou o substrato universal. Embora descartado como meio mecânico, o conceito de um campo unificado — seja quântico ou cosmológico — ecoa a ideia antiga do éter como matriz da existência.</p>
+
+                        <h3>O Éter e a Consciência</h3>
+                        <p>O éter não é apenas um conceito físico. Nas tradições de sabedoria, Akasha é também o <em>registro akáshico</em> — a memória do universo onde todos os eventos, pensamentos e emoções são gravados. É o meio sutil que conecta mente e matéria.</p>
+
+                        <blockquote>"O éter não é um meio material, mas a própria substância da qual o mundo é feito em seu nível mais fundamental — o potencial puro que antecede toda forma."</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>🔬 Conhecimento Antigo: Mapas de Sabedoria</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-ciencia">CIÊNCIA</span> <span class="tag">#conhecimento</span> <span class="tag">#mapas</span> <span class="tag">#sabedoria-antiga</span>
+
+                        <p>As civilizações antigas desenvolveram <strong>sistemas sofisticados de conhecimento</strong> que serviam como mapas da realidade — integrando ciência, filosofia, arte e espiritualidade em uma visão unificada do cosmos e do ser humano.</p>
+
+                        <h3>O Conhecimento como Mapa</h3>
+                        <p>Diferente da fragmentação moderna do saber, o conhecimento antigo era holístico. Cada símbolo, mito ou rito continha múltiplas camadas de significado — literal, psicológica, cósmica e divina — acessíveis conforme o nível de compreensão do buscador.</p>
+
+                        <h3>Tradições de Sabedoria</h3>
+                        <ul>
+
+                            <li><strong>Teosofia Perene</strong> — Filosofia primordial comum a todas as tradições</li>
+                            <li><strong>Alquimia</strong> — Ciência da transformação da matéria e do espírito</li>
+                            <li><strong>Astrologia</strong> — Correspondência entre o macrocosmo e o microcosmo</li>
+                        </ul>
+
+                        <h3>A Linguagem dos Símbolos</h3>
+                        <p>Os antigos codificavam seus conhecimentos em símbolos, mitos e arquitetura sagrada. Os hieróglifos egípcios, os mandalas tibetanos, os mantras védicos e os diagramas alquímicos são mapas multidimensionais que comunicam verdades em linguagem simbólica, acessível à intuição direta.</p>
+
+                        <h3>Revivendo o Conhecimento</h3>
+                        <p>Na era moderna, redescobrimos que as tradições antigas continham insights profundos sobre a consciência, a saúde e o cosmos que a ciência atual apenas começa a confirmar — da epigenética à física quântica, da neuroplasticidade ao estudo dos estados ampliados de consciência.</p>
+
+                        <blockquote>"O conhecimento antigo não é obsoleto, pois as verdades fundamentais do universo não mudam — apenas nossa capacidade de compreendê-las se expande."</blockquote>
                     </div>
                 </div>
             </div>
@@ -1177,6 +962,138 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
                     </div>
                 </div>
             </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>👁️ Helena Blavatsky: Doutrina e Legado</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#teosofia</span> <span class="tag">#blavatsky</span> <span class="tag">#doutrina</span>
+
+                        <p>Helena Petrovna Blavatsky (1831–1891) foi a fundadora da Sociedade Teosófica em 1875 e autora de obras monumentais como <em>A Doutrina Secreta</em> (1888) e <em>Ísis Sem Véu</em> (1877). Sua obra é a pedra angular do esoterismo ocidental moderno.</p>
+
+                        <h3>A Doutrina Secreta</h3>
+                        <p>Uma síntese magistral de ciência, religião e filosofia baseada nas <em>Estâncias de Dzyan</em> — textos antigos do Tibete. Blavatsky apresenta a cosmogênese, a evolução da consciência e a antropogênese como processos espirituais interligados, onde o ser humano é um microcosmo em evolução dentro do macrocosmo divino.</p>
+
+                        <h3>Os Pilares da Teosofia</h3>
+                        <ul>
+                            <li><strong>Unidade Fundamental</strong> — Toda a existência é uma só Realidade</li>
+                            <li><strong>Evolução Espiritual</strong> — A consciência evolui através de ciclos inumeráveis</li>
+                            <li><strong>Lei do Carma</strong> — Causa e efeito no plano espiritual</li>
+                            <li><strong>Reencarnação</strong> — A alma retorna em múltiplas existências para aprender e evoluir</li>
+                        </ul>
+
+                        <h3>Os Mahatmas e a Fraternidade</h3>
+                        <p>Blavatsky afirmava estar em contato com Mestres de Sabedoria (Mahatmas) — seres iluminados que guiam a evolução humana. A Sociedade Teosófica foi fundada como uma fraternidade universal sem distinção de raça, credo ou gênero, buscando a verdade onde quer que ela se encontre.</p>
+
+                        <blockquote>"A verdade é mais estranha que a ficção, mas é a verdade, e devemos buscá-la acima de tudo. Não há religião superior à verdade." — Lema da Sociedade Teosófica</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>👁️ Eixo Axial — Mestres da Humanidade</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#mestres</span> <span class="tag">#eixo-axial</span>
+
+                        <p>Karl Jaspers destacou <strong>Sócrates, Buda, Confúcio e Jesus</strong> como os "mestres da humanidade" por sua influência transformadora na consciência coletiva, entre os séculos VIII e II a.C. — um período de transição espiritual global que chamou de <em>Eixo Axial</em>.</p>
+
+                        <p>Os Mestres que propuseram transformações profundas de consciência emergem em momentos críticos da história humana, frequentemente rompendo com as estruturas religiosas, sociais ou mentais dominantes. Muitos foram incompreendidos, perseguidos, mitificados ou distorcidos por instituições e seguidores. Suas mensagens centrais giram em torno do autoconhecimento, da dissolução do ego, da unidade com o divino (ou o Absoluto) e da compaixão/libertação coletiva.</p>
+
+                        <h3>Buda (Siddhartha Gautama, ~séc. V a.C.)</h3>
+                        <p>Ensinou a impermanência, o sofrimento como produto do apego e o Caminho Óctuplo para o Nirvana. Rejeitou o sistema de castas e rituais védicos — sua doutrina é ateísta em essência (não depende de um deus criador). Seu caminho não é "ascensão" vertical, mas <strong>libertação do ciclo de ilusão</strong> (Samsara).</p>
+
+                        <h3>Jesus (Yeshua, ~séc. I)</h3>
+                        <p>Pregou o Reino de Deus interior ("o Reino está dentro de vós"), amor ao próximo (incluindo inimigos), perdão e inversão de valores (os últimos serão os primeiros). Enfatizou a <strong>transformação interna através do amor incondicional</strong>. Foi um judeu reformador radical, executado como agitador.</p>
+
+                        <h3>Confúcio (Kong Zi, ~551-479 a.C.)</h3>
+                        <p>Foco em ética prática, harmonia social, cultivo pessoal (ren) e respeito hierárquico. Via a ascensão espiritual através da harmonia nas relações e do cultivo do caráter. Transformou a consciência chinesa rumo à autodisciplina e governança moral.</p>
+
+                        <h3>Sócrates (~469-399 a.C.)</h3>
+                        <p>"Conhece-te a ti mesmo". Método dialético para questionar dogmas. Buscava a verdade através da razão e do diálogo, vendo a ascensão como movimento da ignorância para o conhecimento. Executado por "corromper a juventude". Representa o nascimento da filosofia ocidental como busca interior.</p>
+
+                        <h3>Lao Tzu (~séc. V ou VI a.C.)</h3>
+                        <p>Propôs o retorno ao Tao — uma entrega ao fluxo natural da existência, rejeitando a ambição egóica. <em>Wu wei</em> (ação sem esforço). Antídoto ao confucionismo formal.</p>
+
+                        <h3>Outros Mestres</h3>
+                        <p><strong>Krishna</strong> (Bhagavad Gita): Karma Yoga, Bhakti (devoção) e Jnana (conhecimento). <strong>Moisés, Zoroastro, Hermes</strong>: fundadores ou reformadores com ênfase em lei, dualismo ético ou mistérios iniciáticos. <strong>Ramana Maharshi</strong> (séc. XX): "Quem sou eu?" — pura autoindagação. <strong>Nisargadatta Maharaj</strong>: "Eu Não Sou Isso" — desmontando ilusões com brutalidade direta.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>👁️ Características, Incômodos e Gnosis Verdadeira</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-espirito">ESPÍRITO</span> <span class="tag">#mestres</span> <span class="tag">#gnosis</span> <span class="tag">#pratica</span>
+
+                        <h3>Características Notáveis</h3>
+                        <p>Todos esses Mestres compartilhavam:</p>
+                        <ul>
+                            <li><strong>Questionamento da ordem estabelecida</strong> — Desafiaram as estruturas de poder e as narrativas convencionais de suas épocas</li>
+                            <li><strong>Disciplina pessoal extrema</strong> — Praticavam o que pregavam, muitas vezes em condições difíceis</li>
+                            <li><strong>Foco no interno, não no externo</strong> — Buscavam transformar a consciência, não acumular poder material</li>
+                            <li><strong>Risco pessoal</strong> — Muitos pagaram preço alto: Sócrates foi executado, Jesus crucificado, Buda enfrentou perseguição</li>
+                        </ul>
+
+                        <h3>A Verdade Incômoda</h3>
+                        <p>Aqui está o que não se diz frequentemente:</p>
+                        <ol>
+                            <li>Seus ensinamentos foram frequentemente distorcidos — instituições religiosas transformaram mensagens radicais em dogmas conservadores</li>
+                            <li>Não havia "certeza universal" — cada tradição propôs um caminho diferente, às vezes contraditórios</li>
+                            <li>A "ascensão espiritual" é vaga — significava coisas distintas: iluminação, salvação, virtude, libertação, retorno ao divino</li>
+                            <li>Muitos seguidores posteriores não praticaram o que pregavam — criaram hierarquias e conflitos em nome de filosofias baseadas na humildade</li>
+                            <li>Alguns desses "caminhos" exigiram renúncia extrema que pode não ser compatível com a vida moderna</li>
+                        </ol>
+
+                        <h3>O Que Persiste de Válido</h3>
+                        <p>Apesar das distorções, o núcleo verdadeiro desses ensinamentos aponta para realidades verificáveis:</p>
+                        <ul>
+                            <li><strong>A mente é moldável</strong> — meditação, reflexão genuína e trabalho interno transformam a percepção</li>
+                            <li><strong>Apego e ego causam sofrimento</strong> — menos óbvio em culturas consumistas, mas verificável na experiência pessoal</li>
+                            <li><strong>A virtude genuína gera paz interior</strong> — não é garantia de sucesso material, mas altera a relação interna com a vida</li>
+                            <li><strong>O questionamento contínuo é essencial</strong> — não a aceitação cega de dogmas</li>
+                        </ul>
+
+                        <h3>Gnosis Verdadeira — Prática Direta</h3>
+                        <p>A transformação real vem da <strong>prática direta, consistente e sem intermediários</strong>. Gnosis verdadeira é experiência própria, não doutrina alheia.</p>
+
+                        <h4>1. Meditação / Observação da mente (base de tudo)</h4>
+                        <p><strong>Objetivo:</strong> Ver como a mente funciona, reduzir identificação com pensamentos e emoções.</p>
+                        <p><strong>Prática simples diária (15-30 min):</strong></p>
+                        <ol>
+                            <li>Sente-se confortável, coluna reta, olhos semicerrados ou fechados</li>
+                            <li>Observe a respiração natural. Quando a mente divagar, note o pensamento sem julgar e volte à respiração</li>
+                            <li>Avance: observe sensações corporais, emoções surgindo e passando. Pergunte: "De onde vem esse pensamento? Quem está observando?"</li>
+                        </ol>
+                        <p><strong>No dia a dia:</strong> Pratique mindfulness informal — enquanto lava louça, dirige ou trabalha, note quando raiva, ansiedade ou desejo surge. Apenas observe sem alimentar.</p>
+
+                        <h4>2. Autoindagação (Self-inquiry) — o coração da gnosis</h4>
+                        <p>Inspirado em Ramana Maharshi, alinhado com gnósticos ("conhece-te a ti mesmo").</p>
+                        <p><strong>Prática:</strong> Várias vezes ao dia, pare e pergunte sinceramente:</p>
+                        <ul>
+                            <li>"Quem sou eu?" ou "O que está consciente agora?"</li>
+                            <li>"Esse medo/raiva é meu ou só um hábito?"</li>
+                            <li>"O que resta quando solto a história que conto sobre mim?"</li>
+                        </ul>
+                        <p>Isso revela a "centelha" além do ego — a consciência que observa tudo.</p>
+
+                        <h4>3. Serviço / Ação sem expectativa (Karma Yoga prático)</h4>
+                        <p>O ego morre mais rápido quando você age pelo outro sem cobrar retorno. Ajude alguém sem contar pra ninguém. Faça seu trabalho com qualidade máxima, como oferenda, sem grudar no resultado.</p>
+
+                        <blockquote>"O verdadeiro Mestre é o silêncio interior; os outros são espelhos. Busque com discernimento."</blockquote>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- VIDA VERDADEIRA -->
@@ -1244,6 +1161,96 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
                     </div>
                 </div>
             </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>∞ Pneuma: O Sopro Vital</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-vida">VIDA VERDADEIRA</span> <span class="tag">#pneuma</span> <span class="tag">#sopro</span> <span class="tag">#espirito</span>
+
+                        <p><strong>Pneuma</strong> (πνεῦμα) é o termo grego para "sopro", "vento" ou "espírito" — a força vital que anima toda a existência. Conceito central na filosofia estoica e no cristianismo primitivo, o pneuma é o elo entre o divino e o material, o sopro de Deus na criação.</p>
+
+                        <h3>Pneuma na Filosofia Estoica</h3>
+                        <p>Os estoicos viam o pneuma como o princípio ativo que permeia e organiza toda a matéria. É uma mistura de ar e fogo — sutil, dinâmico e inteligente — que dá coesão e vida a todas as coisas. O pneuma do indivíduo é uma porção do Pneuma Universal (Logos).</p>
+
+                        <h3>Pneuma no Cristianismo</h3>
+                        <ul>
+                            <li><strong>Espírito Santo (Pneuma Hagion)</strong> — A terceira pessoa da Trindade, o sopro divino</li>
+                            <li><strong>Ressurreição Pneumática</strong> — O corpo espiritual, imortal e sutil</li>
+                            <li><strong>Batismo no Pneuma</strong> — Renascimento espiritual pelo fogo do Espírito</li>
+                            <li><strong>Pentecostes</strong> — Descida do Pneuma sobre os apóstolos como línguas de fogo</li>
+                        </ul>
+
+                        <h3>O Sopro como Prática</h3>
+                        <p>A respiração consciente é a porta de entrada para a experiência do pneuma. Ao inspirar, recebemos não apenas ar, mas o sopro vital do universo. Ao exalar, entregamos nossa essência de volta ao Todo. A meditação na respiração é, em si mesma, uma prática pneumática.</p>
+
+                        <blockquote>"O vento sopra onde quer; ouves a sua voz, mas não sabes de onde vem nem para onde vai. Assim é todo aquele que é nascido do Espírito." — João 3:8</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>∞ Tao: O Caminho</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-vida">VIDA VERDADEIRA</span> <span class="tag">#tao</span> <span class="tag">#caminho</span> <span class="tag">#wu-wei</span>
+
+                        <p><strong>Tao</strong> (道) é o princípio fundamental do qual tudo se origina — o Caminho inominável que está além de todas as definições e que permeia toda a existência. O Tao Te Ching, atribuído a Lao Tsé (século VI a.C.), é o texto central do Taoísmo.</p>
+
+                        <h3>O Tao que não pode ser Nomeado</h3>
+                        <p>O Tao transcende toda conceptualização. Qualquer tentativa de defini-lo o limita. Ele é o vazio fecundo, o silêncio criativo, a origem de todas as coisas que não pode ser contida em palavras ou conceitos. Conhece-se o Tao não pelo estudo, mas pela experiência direta e silenciosa.</p>
+
+                        <h3>Wu Wei — Ação sem Esforço</h3>
+                        <ul>
+                            <li><strong>Agir sem forçar</strong> — Como a água que contorna as pedras sem perder seu curso</li>
+                            <li><strong>Naturalidade espontânea</strong> — Responder ao momento sem planejamento rígido</li>
+                            <li><strong>Eficácia sem luta</strong> — Alcançar resultados pela harmonia, não pelo confronto</li>
+                            <li><strong>Desapego aos resultados</strong> — Agir com excelência sem se prender ao fruto da ação</li>
+                        </ul>
+
+                        <h3>Yin e Yang</h3>
+                        <p>Os opostos complementares que emergem do Tao. Não são forças em conflito, mas polos de uma mesma dança — dia e noite, ativo e receptivo, masculino e feminino. A sabedoria está em equilibrá-los e transcender a ilusão da dualidade.</p>
+
+                        <blockquote>"O Tao que pode ser expresso não é o Tao eterno. O nome que pode ser nomeado não é o nome eterno. Sem nome é a origem do céu e da terra; com nome é a mãe das dez mil coisas." — Tao Te Ching, cap. 1</blockquote>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion">
+                <button class="accordion-header" onclick="toggleAccordion(this)" aria-expanded="false">
+                    <span>∞ Eu Sou: O Poder Criador</span>
+                    <span class="accordion-arrow">▼</span>
+                </button>
+                <div class="accordion-content">
+                    <div class="content">
+                        <span class="badge badge-vida">VIDA VERDADEIRA</span> <span class="tag">#eu-sou</span> <span class="tag">#poder-criador</span> <span class="tag">#presenca</span>
+
+                        <p>"<strong>Eu Sou</strong>" é a expressão máxima da identidade divina — o nome que Deus revelou a Si mesmo na sarça ardente. Mais que um nome, é a afirmação da Presença pura, o reconhecimento de que a consciência individual é una com a Consciência Universal.</p>
+
+                        <h3>O Nome Divino</h3>
+                        <p>Em Êxodo 3:14, Deus declara: <em>"Eu Sou o Que Sou"</em> (hebraico: <em>Ehyeh Asher Ehyeh</em>). Esta não é uma definição, mas a afirmação do Ser puro — a realidade que existe por si mesma, sem causa externa, a base de toda existência.</p>
+
+                        <h3>Eu Sou como Prática</h3>
+                        <ul>
+                            <li><strong>Afirmação de Presença</strong> — "Eu Sou" como lembrete constante da sua verdadeira identidade</li>
+                            <li><strong>Poder Criador</strong> — Toda afirmação "Eu sou..." é um ato criativo no mundo</li>
+                            <li><strong>Desidentificação</strong> — "Eu Sou" liberto de "eu sou isso" ou "eu sou aquilo"</li>
+                            <li><strong>Meditação no Eu Sou</strong> — Silenciar e repousar na mera sensação de ser</li>
+                        </ul>
+
+                        <h3>O Caminho do Eu Sou</h3>
+                        <p>Reconhecer-se como "Eu Sou" é transcender a identificação com o corpo, a mente e os papéis sociais. É despertar para a Presença una que se expressa através de cada ser. Não como conceito, mas como experiência viva e direta do Ser que você sempre foi.</p>
+
+                        <blockquote>"Eu Sou o que Sou. Assim dirás aos filhos de Israel: Eu Sou me enviou a vós." — Êxodo 3:14</blockquote>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- REFERENCIAS -->
@@ -1258,8 +1265,7 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
                         <table>
                             <tr><th>Obra</th><th>Autor</th><th>Tradição</th></tr>
                             <tr><td>A Doutrina Secreta</td><td>Helena Blavatsky</td><td>Teosofia</td></tr>
-                            <tr><td>O Kybalion</td><td>Três Iniciados</td><td>Hermetismo</td></tr>
-                            <tr><td>O Corpus Hermeticum</td><td>Hermes Trismegisto</td><td>Hermetismo</td></tr>
+
                             <tr><td>A Voz do Silêncio</td><td>Helena Blavatsky</td><td>Teosofia</td></tr>
                             <tr><td>O Matrimônio Perfeito</td><td>Samael Aun Weor</td><td>Gnose</td></tr>
                             <tr><td>Tratado de Psicologia Revolucionária</td><td>Samael Aun Weor</td><td>Gnose</td></tr>
@@ -1279,12 +1285,8 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
                     <div class="content">
                         <table>
                             <tr><th>Áudio</th><th>Categoria</th><th>Conexão</th></tr>
-                            <tr><td>A Frequência Proibida de Thoth</td><td>Gnose/Esoterismo</td><td>Hermetismo, Gnose</td></tr>
-                            <tr><td>Alan Watts — Segredo Quântico</td><td>Gnose/Esoterismo</td><td>Jornada</td></tr>
-                            <tr><td>Jesus e as 4 Emoções dos Arcontes</td><td>Gnose/Esoterismo</td><td>Gnose</td></tr>
-                            <tr><td>Metafísica Cristã (Audiolivro)</td><td>Cristianismo Esotérico</td><td>Textos Gnósticos</td></tr>
-                            <tr><td>O Evangelho Perdido de Tomé</td><td>Cristianismo Esotérico</td><td>Textos Gnósticos</td></tr>
-                            <tr><td>Helena Blavatsky — Verdade</td><td>Hermetismo/Teosofia</td><td>Teosofia</td></tr>
+
+
                             <tr><td>Carl Jung — Universo Te Testa</td><td>Consciência</td><td>Jornada</td></tr>
                             <tr><td>Você É o Observador</td><td>Consciência</td><td>Jornada, Meditação</td></tr>
                             <tr><td>Autofagia — Regeneração</td><td>Corpo/Regeneração</td><td>Epigenética</td></tr>
@@ -1314,15 +1316,75 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
     </main>
 
     <footer class="footer" role="contentinfo">
-        <p>Biblioteca dos Saberes — Saberes de Coração © 2026 — Domínio Público — <a href="index.html">Voltar ao Início</a></p>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <a href="index.html" class="footer-logo">📚 Saberes de Coração</a>
+                <p>Biblioteca completa dos Saberes de Coração — Gnose, Epigenética, Práticas, Mestres e muito mais.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navegar</h4>
+                <ul>
+                    <li><a href="index.html">🏠 Início</a></li>
+                    <li><a href="biblioteca.html">📚 Biblioteca</a></li>
+                    <li><a href="apocrifos.html">📜 Apócrifos</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Seções</h4>
+                <ul>
+                    <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
+                    <li><a href="biblioteca.html#sec-praticas">🧘 Práticas</a></li>
+                    <li><a href="biblioteca.html#sec-jornada">🧭 Jornada</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Info</h4>
+                <ul>
+                    <li><a href="index.html">📖 Filosofia</a></li>
+                    <li><span style="color:var(--cor-texto-sec)">📄 Domínio Público</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>Saberes de Coração © 2026 — Domínio Público</span>
+            <div class="footer-social">
+                <a href="index.html">🏠</a>
+                <a href="apocrifos.html">📜</a>
+            </div>
+        </div>
     </footer>
+    <div id="playerBar" class="player-bar" role="region" aria-label="Player de mídia" hidden>
+        <audio id="playerAudio" preload="metadata"></audio>
+        <div class="player-track-info">
+            <span id="playerIcon" class="player-icon">🎵</span>
+            <span id="playerTrackName" class="player-track-name">—</span>
+        </div>
+        <div class="player-controls">
+            <button class="player-btn" id="playerPrev" title="Anterior (P)" aria-label="Faixa anterior">⏮</button>
+            <button class="player-btn" id="playerPlayPause" title="Tocar/Pausar (Espaço)" aria-label="Tocar ou pausar">▶</button>
+            <button class="player-btn" id="playerNext" title="Próximo (N)" aria-label="Próxima faixa">⏭</button>
+        </div>
+        <div class="player-seek">
+            <span id="playerTimeCurrent" class="player-time">0:00</span>
+            <div class="player-progress-wrap" id="playerProgressWrap">
+                <div class="player-progress-bar" id="playerProgressBar"></div>
+                <input type="range" class="player-seek-slider" id="playerSeekSlider" min="0" max="100" value="0" aria-label="Buscar posição">
+            </div>
+            <span id="playerTimeTotal" class="player-time">0:00</span>
+        </div>
+        <div class="player-volume-wrap">
+            <button class="player-btn" id="playerMute" title="Mudo (M)" aria-label="Mudo">🔊</button>
+            <input type="range" class="player-volume-slider" id="playerVolumeSlider" min="0" max="1" step="0.05" value="1" aria-label="Volume">
+        </div>
+        <button class="player-btn player-close" id="playerClose" title="Fechar player" aria-label="Fechar player">✕</button>
+    </div>
 
     <script>
-    function mostrarSecao(id) {
+    function mostrarSecao(id, el) {
         document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
         document.getElementById('sec-' + id).classList.add('active');
-        event.target.classList.add('active');
+        el.classList.add('active');
     }
 
     function toggleAccordion(header) {

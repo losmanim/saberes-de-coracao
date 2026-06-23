@@ -19,7 +19,7 @@ A consciência é fundamental, como espaço, tempo ou massa. Tudo tem um grão m
 ### 3. Visão Experiencial
 Místicos, meditadores profundos e estados alterados relatam a dissolução do "eu" e a fusão com o Todo. O cérebro, quando certos circuitos se desligam, para de gerar a ilusão do "eu separado".
 
-**Referência:** [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 — Despertar da Consciência]]
+**Referência:** [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 — Despertar da Consciência]]
 
 ---
 
@@ -45,16 +45,16 @@ Inconsciente → Busca → Prática → Despertar → Integração
 2. **Morrer** — Dissolver o "eu" psicológico (ego, defeitos, condicionamentos)
 3. **Sacrificar** — Entregar o resultado à humanidade, sem apego
 
-**Fonte:** [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 do Curso de Gnose]]
+**Fonte:** [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 do Curso de Gnose]]
 
 ---
 
 ## Conexões no Vault
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 — Despertar da Consciência]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/licao-4-o-eu-psicologo|Lição 4 — O Eu Psicológico]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/licao-6-em-construcao|Lição 6 — Corpos Sutis]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/viver|Viver — Vida Verdadeira]]
+- [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 — Despertar da Consciência]]
+- [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/licao-4-o-eu-psicologo|Lição 4 — O Eu Psicológico]]
+- [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/licao-6-em-construcao|Lição 6 — Corpos Sutis]]
+- [[4_PROJETOS/Saberes-de-Coracao/viver|Viver — Vida Verdadeira]]
 - [[1_TEORIA/Filosofia/Filosofia|Filosofia]]
 - [[8_VIDEOS/INDICE|Vídeos relacionados]] (Carl Jung, Blavatsky)
 

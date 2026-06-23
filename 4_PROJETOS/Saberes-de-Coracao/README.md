@@ -121,11 +121,11 @@ Se você deseja contribuir com este projeto:
 
 ---
 
-## 📦 Produtos
+## 📦 Apoie
 
-- [[Produtos/indice|Índice de Produtos]] — Ebooks, cursos e materiais
-- [[Produtos/status|Status]] — Estado atual de cada produto
-- [[Produtos/venda|Catálogo]] — Preços e plataformas
+- [[Apoie/indice|Índice de Apoie]] — Ebooks, cursos e materiais
+- [[Apoie/status|Status]] — Estado atual de cada produto
+- [[Apoie/venda|Catálogo]] — Preços e plataformas
 
 ---
 

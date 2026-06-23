@@ -6,8 +6,8 @@
 |-------|-------|
 | **Nome** | Obsidian Vault — Saberes de Coração |
 | **Criação** | 2026 |
-| **Atualização** | 24/05/2026 |
-| **Versão** | 3.2 |
+| **Atualização** | 26/05/2026 |
+| **Versão** | 3.3 |
 
 ---
 
@@ -37,12 +37,12 @@ Obsidian Vault/
 ├── 1_TEORIA/         (teoria espiritual)
 ├── 2_PRATICAS/        (práticas)
 ├── 3_JORNADA/         (jornada)
-├── 4_PROJETOS/        (projetos web)
-├── 5_RECURSOS/        (recursos)
-├── 6_NOTAS/           (notas)
+├── 4_PROJETOS/        (projetos web — Saberes de Coração, Restaurante)
+├── 5_RECURSOS/        (componentes, modelos, cultura)
+├── 6_NOTAS/           (notas pessoais)
 ├── 7_AUDIOS/          (biblioteca de áudios — 28 arquivos)
 ├── 8_VIDEOS/          (biblioteca de vídeos — 9 arquivos)
-├── Arquivos-canvas/   (diagramas visuais)
+├── Arquivos-canvas/   (diagramas visuais — Obsidian Canvas)
 ├── README.md
 ├── INFO.md
 └── INDICE.md
@@ -59,7 +59,7 @@ Obsidian Vault/
 
 ## Links Úteis
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|Projeto Saberes de Coração]]
+- [[4_PROJETOS/Saberes-de-Coracao/README|Projeto Saberes de Coração]]
 - [[1_TEORIA/indice|Índice Teoria]]
 - [[2_PRATICAS/indice|Índice Práticas]]
 - [[3_JORNADA/indice|Índice Jornada]]

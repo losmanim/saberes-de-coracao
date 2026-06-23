@@ -18,7 +18,7 @@ Site para o Restaurante Beira Rio com funcionalidade de pedidos online.
 
 ## Conexões
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|Voltar aos Projetos]]
+- [[4_PROJETOS/Saberes-de-Coracao/README|Voltar aos Projetos]]
 - [[INDICE|Mapa do Vault]]
 
 ---

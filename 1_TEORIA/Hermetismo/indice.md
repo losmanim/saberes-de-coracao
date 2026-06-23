@@ -8,13 +8,13 @@
 
 | # | Princípio | Arquivo |
 |---|-----------|---------|
-| 1 | Mentalismo | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/mentalismo|Projeto]] |
+| 1 | Mentalismo | [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/mentalismo|Projeto]] |
 | 2 | Correspondência | [[correspondencia|Local]] |
-| 3 | Vibração | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/vibracao|Projeto]] |
-| 4 | Polaridade | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/polaridade|Projeto]] |
-| 5 | Ritmo | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/ritmo|Projeto]] |
-| 6 | Causa e Efeito | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/causa-e-efeito|Projeto]] |
-| 7 | Gênero | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/hermetismo/genero|Projeto]] |
+| 3 | Vibração | [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/vibracao|Projeto]] |
+| 4 | Polaridade | [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/polaridade|Projeto]] |
+| 5 | Ritmo | [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/ritmo|Projeto]] |
+| 6 | Causa e Efeito | [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/causa-e-efeito|Projeto]] |
+| 7 | Gênero | [[4_PROJETOS/Saberes-de-Coracao/espirito/hermetismo/genero|Projeto]] |
 
 ---
 

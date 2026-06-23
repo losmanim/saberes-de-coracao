@@ -7,7 +7,7 @@
 ## Componentes Interativos
 
 Os componentes reutilizáveis do projeto estão em:
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/componentes/indice|Biblioteca de Componentes]]
+- [[4_PROJETOS/Saberes-de-Coracao/componentes/indice|Biblioteca de Componentes]]
 
 ### Componentes Disponíveis
 
@@ -29,17 +29,17 @@ As versões do site Saberes de Coração:
 
 | Versão | Localização | Descrição |
 |--------|------------|-----------|
-| **1.0** | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-1.0/index.html|Site 1.0]] | Original com accordion, timeline, quiz |
-| **2.0** | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-2.0/index.html|Site 2.0]] | SEO, favoritos, busca |
-| **3.0** | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/index.html|Site 3.0]] | Cards, modal, multimídia (atual) |
+| **1.0** | [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-1.0/index.html|Site 1.0]] | Original com accordion, timeline, quiz |
+| **2.0** | [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-2.0/index.html|Site 2.0]] | SEO, favoritos, busca |
+| **3.0** | [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/index.html|Site 3.0]] | Cards, modal, multimídia (atual) |
 
 ---
 
 ## Conexões
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|README do Projeto]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/TUTORIAL|Tutorial de uso]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/_indice|Índice unificado do projeto]]
+- [[4_PROJETOS/Saberes-de-Coracao/README|README do Projeto]]
+- [[4_PROJETOS/Saberes-de-Coracao/TUTORIAL|Tutorial de uso]]
+- [[4_PROJETOS/Saberes-de-Coracao/_indice|Índice unificado do projeto]]
 
 ---
 

@@ -22,13 +22,13 @@ Uma coleção de saberes antigos e modernos sobre:
 
 ## Onde Encontrar
 
-O projeto principal está em: [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|Saberes de Coração]]
+O projeto principal está em: [[4_PROJETOS/Saberes-de-Coracao/README|Saberes de Coração]]
 
 Contém:
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/index.html|Site modelo interativo]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Produtos/indice|Ebooks para estudo]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/_indice|Estrutura de saberes organizados]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/componentes/indice|Componentes interativos]]
+- [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/index.html|Site modelo interativo]]
+- [[4_PROJETOS/Saberes-de-Coracao/Apoie/indice|Ebooks para estudo]]
+- [[4_PROJETOS/Saberes-de-Coracao/_indice|Estrutura de saberes organizados]]
+- [[4_PROJETOS/Saberes-de-Coracao/componentes/indice|Componentes interativos]]
 
 ---
 

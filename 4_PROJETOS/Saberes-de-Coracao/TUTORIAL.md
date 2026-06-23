@@ -39,7 +39,7 @@ Saberes de Coração/
 ├── ciencia/           # Epigenética
 ├── vida-verdadeira/    # Vida Verdadeira
 ├── Saberes_de_Coracao-site-3.0/ # Site completo funcional (v3.0)
-├── Produtos/          # Materiais para estudo
+├── Apoie/          # Materiais para estudo
 ├── compartilhamento.md # Filosofia do projeto
 ├── _indice.md         # Índice unificado
 ├── _grafo.md          # Mapa de conexões

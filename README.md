@@ -18,7 +18,7 @@
 | `1_TEORIA/` | Estudos espirituais e filosóficos | [[1_TEORIA/indice]] |
 | `2_PRATICAS/` | Técnicas e exercícios | [[2_PRATICAS/indice]] |
 | `3_JORNADA/` | Transformação da consciência | [[3_JORNADA/indice]] |
-| `4_PROJETOS/` | Projetos web | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README]] |
+| `4_PROJETOS/` | Projetos web | [[4_PROJETOS/Saberes-de-Coracao/README]] |
 | `5_RECURSOS/` | Componentes e modelos | [[5_RECURSOS/indice]] |
 | `6_NOTAS/` | Notas pessoais | [[6_NOTAS/INDICE]] |
 | `7_AUDIOS/` | Biblioteca de áudios (28 arquivos) | [[7_AUDIOS/INDICE]] |
@@ -57,15 +57,15 @@
 
 ## 💻 Projetos
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|**Saberes-de-Coracao**]] — Plataforma principal
+- [[4_PROJETOS/Saberes-de-Coracao/README|**Saberes-de-Coracao**]] — Plataforma principal
 - [[4_PROJETOS/RestauranteBeiraRio|**RestauranteBeiraRio**]] — Site restaurante
 
 ---
 
 ## 🔧 Recursos → [[5_RECURSOS/indice]]
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/componentes/indice|Componentes interativos]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/index.html|Site 3.0]]
+- [[4_PROJETOS/Saberes-de-Coracao/componentes/indice|Componentes interativos]]
+- [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/index.html|Site 3.0]]
 
 ---
 

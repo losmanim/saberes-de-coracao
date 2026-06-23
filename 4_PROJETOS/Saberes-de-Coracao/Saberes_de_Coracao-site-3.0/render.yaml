@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: saberes-de-coracao
+    env: node
+    buildCommand: npm install
+    startCommand: node server/app.js
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: ADMIN_PASS
+        sync: false

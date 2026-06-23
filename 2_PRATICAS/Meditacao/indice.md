@@ -6,7 +6,7 @@
 
 ## Conteúdo Principal
 
-O conteúdo de meditação está organizado no projeto [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/practica/tecnica-meditacao|Saberes de Coração — Prática de Meditação]].
+O conteúdo de meditação está organizado no projeto [[4_PROJETOS/Saberes-de-Coracao/practica/tecnica-meditacao|Saberes de Coração — Prática de Meditação]].
 
 ---
 
@@ -26,7 +26,7 @@ O conteúdo de meditação está organizado no projeto [[4_PROJETOS/Saberes-de-C
 - [[2_PRATICAS/Mantras/mantras]] — Som como suporte meditativo
 - [[1_TEORIA/Gnose/Gnose]] — Autoobservação gnóstica
 - [[1_TEORIA/Epigenetica/Epigenetica]] — Efeitos da meditação na expressão gênica
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/practica/tecnica-meditacao|Site interativo de meditação]]
+- [[4_PROJETOS/Saberes-de-Coracao/practica/tecnica-meditacao|Site interativo de meditação]]
 
 ---
 

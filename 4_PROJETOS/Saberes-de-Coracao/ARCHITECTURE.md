@@ -39,7 +39,7 @@ Esse arquivo é a fonte de verdade para a interface do site 3.0. Ele contém:
 - `ciencia/` — Epigenética e ciência aplicada
 - `viver/` — Conteúdo de integração prática
 - `vida-verdadeira/` — Camino Verdade e projetos relacionados
-- `Produtos/` — materiais de estudo, ebooks e vendas
+- `Apoie/` — materiais de estudo, ebooks e vendas
 
 ## 6. Estrutura do site 3.0
 
@@ -80,4 +80,4 @@ Esses caminhos podem ser criados como links simbólicos localmente para facilita
 
 ## 10. Uso de produtos
 
-`Produtos/` contém materiais editorial e comerciais. Mantenha esse conteúdo separado do fluxo principal de conhecimento livre.
+`Apoie/` contém materiais editorial e comerciais. Mantenha esse conteúdo separado do fluxo principal de conhecimento livre.

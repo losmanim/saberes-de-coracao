@@ -18,7 +18,7 @@
 2. **Morrer** — Dissolver o eu psicológico
 3. **Sacrificar** — Entregar sem apego
 
-**Fonte:** [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 — Despertar da Consciência]]
+**Fonte:** [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/licao-3-o-despertar-da-consciencia|Lição 3 — Despertar da Consciência]]
 
 ---
 
@@ -32,8 +32,8 @@ Inconsciente → Busca → Prática → Despertar → Integração
 
 ## Conexões
 
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/Sumario-do-Curso-de-Gnose|Curso de Gnose completo]]
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/viver|Viver — Vida Verdadeira]]
+- [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/Sumario-do-Curso-de-Gnose|Curso de Gnose completo]]
+- [[4_PROJETOS/Saberes-de-Coracao/viver|Viver — Vida Verdadeira]]
 - [[1_TEORIA/Filosofia/Filosofia|Filosofia]]
 - [[8_VIDEOS/INDICE|Vídeos]] (Carl Jung, Blavatsky)
 - [[7_AUDIOS/INDICE|Áudios]] (Alan Watts, Jung)

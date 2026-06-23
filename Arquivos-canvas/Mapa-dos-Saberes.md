@@ -162,7 +162,7 @@ Gnose (Lição 3-7) → 3 Fatores → Vida Verdadeira → Integração
 | **Site 3.0** | `Saberes_de_Coracao-site-3.0/` | Interface card-based com busca e multimídia |
 | **Database** | `database/dados-unificados.json` | Fonte única de dados (16 saberes, 3 práticas) |
 | **Componentes** | `componentes/` | HTML/JS/CSS interativos por tema |
-| **Ebooks** | `Produtos/ebooks/` | Epigenética, Kundalini, Hermetismo, Viver |
+| **Ebooks** | `Apoie/ebooks/` | Epigenética, Kundalini, Hermetismo, Viver |
 | **Curso Gnose** | `espirito/gnose/curso/` | 7 lições sequenciais |
 | **Áudios** | `7_AUDIOS/` | 28 arquivos em 6 categorias |
 | **Vídeos** | `8_VIDEOS/` | 9 arquivos em 6 categorias |

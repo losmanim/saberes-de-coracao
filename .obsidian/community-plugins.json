@@ -2,5 +2,10 @@
   "obsidian42-brat",
   "opencode-obsidian",
   "terminal",
-  "obsidian-git"
+  "obsidian-git",
+  "table-editor-obsidian",
+  "templater-obsidian",
+  "obsidian-pandoc",
+  "obsidian-enhancing-export",
+  "dataview"
 ]

@@ -124,7 +124,7 @@ GNOSE ────────────────────────�
 | **JSON Principal** | `database/dados-unificados.json` | Site, DB |
 | **Schema SQL** | `database/schema.sql` | MySQL |
 | **APIs PHP** | `Saberes_de_Coracao-site/php/api/` | Backend |
-| **Ebooks** | `Produtos/ebooks/` | PDF/EPUB |
+| **Ebooks** | `Apoie/ebooks/` | PDF/EPUB |
 
 ### Consistência
 
@@ -165,7 +165,7 @@ Regra de Ouro → Cristianismo Primitivo → iCosmica → Teosofia
 
 ### Arquivos Essenciais (Raiz)
 ```
-Saberes,_de-Coração/
+Saberes-de-Coracao/
 ├── _indice.md         ← Este arquivo (v3.2)
 ├── _grafo.md          ← Conexões visuais
 ├── _tags.md           ← Sistema de tags
@@ -178,12 +178,13 @@ Saberes,_de-Coração/
 
 ### Site
 ```
-Saberes_de_Coracao-site/
-├── index.html      ← Página principal (1208 linhas)
-├── css/estilo.css ← Estilos unificados
-├── js/app.js     ← JavaScript (v2.0)
-├── php/api/     ← APIs (não usadas no front-end)
-└── indice.md    ← Documentação técnica
+Saberes_de_Coracao-site-3.0/
+├── index.html      ← Página principal
+├── biblioteca.html ← Biblioteca completa
+├── css/style.css   ← Estilos unificados
+├── js/app.js       ← JavaScript (v3.0)
+├── database/       ← Dados unificados
+└── _archive/       ← Versões anteriores (1.0, 2.0)
 ```
 
 ### Banco de Dados
@@ -223,7 +224,7 @@ ciencia/epigenetica/           → Symlink (externo)
 
 ### O Que NÃO É Redundante
 
-- **Ebooks** (`Produtos/ebooks/*.md`) - Versões expandidas para leitura offline
+- **Ebooks** (`Apoie/ebooks/*.md`) - Versões expandidas para leitura offline
 - **Site interativo** - UI com animações, quiz, calculadora
 - **Database schema** - Estrutura para futura implementação DB
 
@@ -254,7 +255,7 @@ Usar conteúdo do JSON como base
 
 ---
 
-*Para navegação rápida, use este arquivo. Para detalhes de cada tópico, consulte o site em `Saberes_de_Coracao-site-3.0/index.html` ou os ebooks em `Produtos/ebooks/`.*
+*Para navegação rápida, use este arquivo. Para detalhes de cada tópico, consulte o site em `Saberes_de_Coracao-site-3.0/index.html` ou os ebooks em `Apoie/ebooks/`.*
 
 ---
 

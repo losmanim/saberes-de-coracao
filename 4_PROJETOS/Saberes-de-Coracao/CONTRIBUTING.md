@@ -20,7 +20,7 @@ Essa é a versão ativa que deve ser mantida e atualizada.
 - `database/dados-unificados.json` — Fonte única de dados para o site 3.0.
 - `Saberes_de_Coracao-site-3.0/` — Site funcional e canônico.
 - `espirito/`, `practica/`, `ciencia/`, `viver/`, `vida-verdadeira/` — Conteúdos por área temática.
-- `Produtos/` — materiais de produto e ebooks.
+- `Apoie/` — materiais de produto e ebooks.
 
 ## 3. Como contribuir
 

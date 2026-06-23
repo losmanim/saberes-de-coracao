@@ -28,7 +28,7 @@ O projeto Camino Verdade agrega todos os saberes:
 - [[1_TEORIA/Hermetismo/indice|Hermetismo]] — Princípios universais
 - [[1_TEORIA/Teosofia/indice|Teosofia]] — Sabedoria divina
 - [[3_JORNADA/Consciencia/indice|Jornada da Consciência]] — Transformação
-- [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/viver|Viver — Vida Verdadeira]]
+- [[4_PROJETOS/Saberes-de-Coracao/viver|Viver — Vida Verdadeira]]
 
 ---
 

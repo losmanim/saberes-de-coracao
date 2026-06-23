@@ -6,17 +6,17 @@
 
 ## 🗺️ Navegação Rápida
 
-| Pilar | Índice | Conteúdo |
-|-------|--------|----------|
-| 📖 **Teoria** | [[1_TEORIA/indice]] | Gnose, Hermetismo, Teosofia, Epigenética, Filosofia |
-| 🧘 **Práticas** | [[2_PRATICAS/indice]] | Respiração, Mantras, Meditação |
-| 🧭 **Jornada** | [[3_JORNADA/indice]] | Consciência, Transformação |
-| 💻 **Projetos** | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README]] | Saberes de Coração (site, database, ebooks) |
-| 🔧 **Recursos** | [[5_RECURSOS/indice]] | Componentes, Modelos de site |
-| 📝 **Notas** | [[6_NOTAS/INDICE]] | Notas pessoais |
-| 🎵 **Áudios** | [[7_AUDIOS/INDICE]] | 28 arquivos em 6 categorias |
-| 🎬 **Vídeos** | [[8_VIDEOS/INDICE]] | 9 arquivos em 6 categorias |
-| ℹ️ **Info** | [[INFO]] | Metadados do vault |
+| Pilar           | Índice                                                       | Conteúdo                                            |
+| --------------- | ------------------------------------------------------------ | --------------------------------------------------- |
+| 📖 **Teoria**   | [[1_TEORIA/indice]]                                          | Gnose, Hermetismo, Teosofia, Epigenética, Filosofia |
+| 🧘 **Práticas** | [[2_PRATICAS/indice]]                                        | Respiração, Mantras, Meditação                      |
+| 🧭 **Jornada**  | [[3_JORNADA/indice]]                                         | Consciência, Transformação                          |
+| 💻 **Projetos** | [[4_PROJETOS/Saberes-de-Coracao/README]] | Saberes de Coração (site, database, ebooks)         |
+| 🔧 **Recursos** | [[5_RECURSOS/indice]]                                        | Componentes, Modelos de site                        |
+| 📝 **Notas**    | [[6_NOTAS/INDICE]]                                           | Notas pessoais                                      |
+| 🎵 **Áudios**   | [[7_AUDIOS/INDICE]]                                          | 28 arquivos em 6 categorias                         |
+| 🎬 **Vídeos**   | [[8_VIDEOS/INDICE]]                                          | 9 arquivos em 6 categorias                          |
+| ℹ️ **Info**     | [[INFO]]                                                     | Metadados do vault                                  |
 
 ---
 
@@ -69,31 +69,31 @@ Transformação da consciência
 
 ## 💻 Projetos (4_PROJETOS)
 
-### [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/README|Saberes de Coração]]
+### [[4_PROJETOS/Saberes-de-Coracao/README|Saberes de Coração]]
 O projeto principal — plataforma de saberes
 
 | Recurso | Arquivo |
 |---------|---------|
-| Índice unificado | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/_indice]] |
-| Grafo de conexões | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/_grafo]] |
-| Guia didático | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/_guia-didatico]] |
-| Sistema de tags | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/_tags]] |
+| Índice unificado | [[4_PROJETOS/Saberes-de-Coracao/_indice]] |
+| Grafo de conexões | [[4_PROJETOS/Saberes-de-Coracao/_grafo]] |
+| Guia didático | [[4_PROJETOS/Saberes-de-Coracao/_guia-didatico]] |
+| Sistema de tags | [[4_PROJETOS/Saberes-de-Coracao/_tags]] |
 | Canvas prático | [[Arquivos-canvas/Mapa-dos-Sabares]] |
-| Site 3.0 | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/index.html]] |
-| Database JSON | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/database/dados-unificados.json]] |
-| Curso de Gnose | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/curso/Sumario-do-Curso-de-Gnose]] |
-| Gnosis (site) | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/gnosis/index.html]] |
-| Pistis Sophia | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/pistis-sofia/]] |
-| Pindorama | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/gnose/pindorama/index.html]] |
-| Teosofia (site) | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/teosofia/index.html]] |
-| Cristianismo Primitivo | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/cristianismo-primitivo/index.html]] |
-| iCosmica | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/espirito/cristianismo-primitivo/iCosmica/index.html]] |
-| Regra de Ouro | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/viver/regra-de-ouro/index.html]] |
+| Site 3.0 | [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/index.html]] |
+| Database JSON | [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/database/dados-unificados.json]] |
+| Curso de Gnose | [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/curso/Sumario-do-Curso-de-Gnose]] |
+| Gnosis (site) | [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/gnosis/index.html]] |
+| Pistis Sophia | [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/pistis-sofia/]] |
+| Pindorama | [[4_PROJETOS/Saberes-de-Coracao/espirito/gnose/pindorama/index.html]] |
+| Teosofia (site) | [[4_PROJETOS/Saberes-de-Coracao/espirito/teosofia/index.html]] |
+| Cristianismo Primitivo | [[4_PROJETOS/Saberes-de-Coracao/espirito/cristianismo-primitivo/index.html]] |
+| iCosmica | [[4_PROJETOS/Saberes-de-Coracao/espirito/cristianismo-primitivo/iCosmica/index.html]] |
+| Regra de Ouro | [[4_PROJETOS/Saberes-de-Coracao/viver/regra-de-ouro/index.html]] |
 | Rock Brasil | [[5_RECURSOS/cultura/rock-brasil/index.html]] |
-| Componentes | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/componentes/indice]] |
-| Produtos | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Produtos/indice]] |
-| Compartilhamento | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/compartilhamento]] |
-| Tutorial | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/TUTORIAL]] |
+| Componentes | [[4_PROJETOS/Saberes-de-Coracao/componentes/indice]] |
+| Apoie | [[4_PROJETOS/Saberes-de-Coracao/Apoie/indice]] |
+| Compartilhamento | [[4_PROJETOS/Saberes-de-Coracao/compartilhamento]] |
+| Tutorial | [[4_PROJETOS/Saberes-de-Coracao/TUTORIAL]] |
 
 ### Outros Projetos
 - [[4_PROJETOS/RestauranteBeiraRio/indice|Restaurante Beira Rio]]
@@ -104,8 +104,8 @@ O projeto principal — plataforma de saberes
 ## 🔧 Recursos (5_RECURSOS)
 
 - [[5_RECURSOS/indice|Índice de Recursos]]
-- Componentes interativos → [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/componentes/indice]]
-- Modelos de site → [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/index.html]]
+- Componentes interativos → [[4_PROJETOS/Saberes-de-Coracao/componentes/indice]]
+- Modelos de site → [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/index.html]]
 
 ---
 
@@ -154,7 +154,7 @@ Gnose ──→ Práticas ──→ Jornada ──→ Vida Verdadeira
 | Verificar cientificamente | [[1_TEORIA/Epigenetica/indice|Epigenética]] |
 | Ouvir | [[7_AUDIOS/INDICE|Biblioteca de Áudios]] |
 | Assistir | [[8_VIDEOS/INDICE|Biblioteca de Vídeos]] |
-| Navegar o site | [[4_PROJETOS/Saberes-de-Coracao/Saberes, de-Coração/Saberes_de_Coracao-site-3.0/index.html|Site 3.0]] |
+| Navegar o site | [[4_PROJETOS/Saberes-de-Coracao/Saberes_de_Coracao-site-3.0/index.html|Site 3.0]] |
 
 ---
 
