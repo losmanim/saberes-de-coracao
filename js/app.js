@@ -659,30 +659,46 @@ function salvarDadosCache(dados) {
 }
 
 async function carregarDados() {
+    console.log('Iniciando carregamento de dados...');
     const grid = document.getElementById('cardsGrid');
+    console.log('Grid encontrado:', !!grid);
 
     const cache = carregarDadosCache();
     if (cache) {
+        console.log('Usando cache do localStorage');
         dados = cache;
         atualizarEstatisticas();
-        if (grid) renderizarSaberes(dados.saberes);
+        if (grid) {
+            console.log('Renderizando saberes do cache:', dados.saberes?.length);
+            renderizarSaberes(dados.saberes);
+        }
         saberDoDia();
     }
 
     try {
+        console.log('Buscando dados da API /api/dados...');
         const response = await fetch('/api/dados');
+        console.log('Resposta da API:', response.status);
         if (!response.ok) throw new Error('HTTP ' + response.status);
         const novosDados = await response.json();
+        console.log('Dados recebidos:', novosDados.meta?.versao, 'saberes:', novosDados.saberes?.length);
 
         const versaoAtual = localStorage.getItem(DADOS_CACHE_VERSAO_KEY);
         const novaVersao = novosDados.meta && novosDados.meta.versao;
+        console.log('Versões - atual:', versaoAtual, 'nova:', novaVersao);
 
         if (!cache || (novaVersao && novaVersao !== versaoAtual)) {
+            console.log('Atualizando dados...');
             dados = novosDados;
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
-            if (grid) renderizarSaberes(dados.saberes);
+            if (grid) {
+                console.log('Renderizando saberes novos:', dados.saberes?.length);
+                renderizarSaberes(dados.saberes);
+            }
             saberDoDia();
+        } else {
+            console.log('Dados em cache estão atualizados');
         }
     } catch (e) {
         console.error('Erro ao carregar dados da API:', e);
@@ -693,10 +709,14 @@ async function carregarDados() {
                 const jsonResponse = await fetch('/database/dados-unificados.json');
                 if (!jsonResponse.ok) throw new Error('HTTP ' + jsonResponse.status);
                 const dadosJson = await jsonResponse.json();
+                console.log('Dados JSON recebidos:', dadosJson.meta?.versao, 'saberes:', dadosJson.saberes?.length);
                 dados = dadosJson;
                 salvarDadosCache(dadosJson);
                 atualizarEstatisticas();
-                if (grid) renderizarSaberes(dados.saberes);
+                if (grid) {
+                    console.log('Renderizando saberes do JSON:', dados.saberes?.length);
+                    renderizarSaberes(dados.saberes);
+                }
                 saberDoDia();
             } catch (fallbackError) {
                 console.error('Fallback também falhou:', fallbackError);
@@ -729,15 +749,23 @@ function atualizarEstatisticas() {
 // =============================================
 
 function renderizarSaberes(saberes) {
+    console.log('renderizarSaberes chamado com:', saberes?.length, 'saberes');
     const grid = document.getElementById('cardsGrid');
+    console.log('Grid no renderizarSaberes:', !!grid);
+    if (!grid) {
+        console.error('Grid não encontrado!');
+        return;
+    }
     grid.className = 'cards-grid';
 
     if (!saberes || saberes.length === 0) {
+        console.log('Nenhum saber para renderizar');
         grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>';
         esconderSkeleton();
         return;
     }
 
+    console.log('Renderizando', saberes.length, 'saberes');
     const favs = getFavoritos();
     grid.innerHTML = saberes.map(saber => `
             <div class="card" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
@@ -757,6 +785,7 @@ function renderizarSaberes(saberes) {
             </div>
         `).join('');
 
+    console.log('Renderização concluída');
     esconderSkeleton();
     aplicarReveal();
 }
