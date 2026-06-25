@@ -998,7 +998,7 @@
       "categoria_id": 1,
       "titulo": "Personalidade, Essência e Ego",
       "slug": "gnose-personalidade-essencia-ego",
-      "descricao": "A diferença fundamental entre a personalidade (máscara social), a essência (centelha divina) e o ego (defeitos psicológicos)",
+      "descricao": "Na Gnose, distinguem-se três aspectos fundamentais do ser humano: a Personalidade — a máscara social que vestimos para o mundo; a Essência — a centelha divina, o que realmente somos além de todos os papéis; e o Ego — os defeitos psicológicos que fragmentam a consciência. Compreender essa tríade é o primeiro passo para o verdadeiro autoconhecimento e a libertação interior.",
       "nivel": "iniciante",
       "duracao": 20,
       "tags": [
@@ -1038,278 +1038,22 @@
             "desc": "Pergunte-se: 'Quem sou eu realmente?' 'O que resta quando tiro todos os papéis que represento?'"
           }
         ]
-      }
-    },
-    {
-      "id": "gnose-7",
-      "categoria_id": 1,
-      "titulo": "Os 3 Fatores da Revolução da Consciência",
-      "slug": "gnose-tres-fatores-revolucao-consciencia",
-      "descricao": "Nascer, Morrer e Sacrificar-se: os três pilares fundamentais para a auto-realização profunda segundo a Gnose",
-      "nivel": "intermediario",
-      "duracao": 25,
-      "tags": [
-        "gnose",
-        "revolucao",
-        "consciencia",
-        "nascimento",
-        "morte",
-        "sacrificio"
-      ],
-      "fonte": "Samael Aun Weor",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "Os 3 Fatores da Revolução da Consciência são os pilares do trabalho gnóstico: Nascer (criar virtudes), Morrer (eliminar defeitos) e Sacrificar-se pela humanidade (serviço altruísta). Se algum destes for excluído, o resultado será o fracasso.",
-        "conceitos": [
-          {
-            "termo": "Nascer",
-            "def": "Trabalho de eliminação dos defeitos psicológicos, vícios, maus hábitos e conflitos íntimos. É o processo de criar o 'homem novo'."
-          },
-          {
-            "termo": "Morrer",
-            "def": "Sábio manejo das energias capaz de despertar os poderes da Alma e cristalizar o arquétipo do homem perfeito. Morrer para o ego, renascer no Espírito."
-          },
-          {
-            "termo": "Sacrifício pela Humanidade",
-            "def": "Praticar o amor incondicional e desinteressado por nossos semelhantes, seguindo as pegadas dos grandes sábios que dedicaram suas vidas à humanidade."
-          }
-        ],
-        "insight": "A Revolução da Consciência não é uma metáfora — é um processo prático e verificável. Cada defeito eliminado, cada virtude criada, cada ato de serviço genuíno transforma a percepção da realidade.",
-        "citacoes": [
-          "\"É necessário compreendermos a necessidade de trabalharmos com os três Fatores da Revolução da Consciência se é que realmente queremos a Auto-Realização profunda.\" — Samael Aun Weor"
-        ]
-      }
-    },
-    {
-      "id": "gnose-8",
-      "categoria_id": 1,
-      "titulo": "O Eu Psicólogo",
-      "slug": "gnose-eu-psicologo",
-      "descricao": "O 'eu psicológico' é a ilusão de um eu separado e permanente — a raiz de todo sofrimento segundo a visão gnóstica",
-      "nivel": "intermediario",
-      "duracao": 15,
-      "tags": [
-        "gnose",
-        "eu",
-        "psicologia",
-        "ego",
-        "identificacao"
-      ],
-      "fonte": "Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "O 'Eu Psicólogo' é a sensação ilusória de um 'eu' fixo, separado e permanente que controla nossos pensamentos e ações. Na Gnose, este 'eu' não passa de um agregado de egos (defeitos) que se alternam no controle da consciência.",
-        "conceitos": [
-          {
-            "termo": "Eu ilusório",
-            "def": "A crença de que somos um 'eu' fixo e imutável. Na verdade, somos uma sucessão de diferentes 'eus' que se alternam: o eu-ira, o eu-desejo, o eu-medo."
-          },
-          {
-            "termo": "Múltiplos eus",
-            "def": "Não temos um único ego, mas muitos. Cada defeito psicológico é um 'eu' separado que toma controle em diferentes situações."
-          },
-          {
-            "termo": "Testemunha",
-            "def": "A consciência desperta que observa os eus sem se identificar com eles. É o primeiro passo para dissolvê-los."
-          }
-        ],
-        "analogia": "O 'Eu Psicólogo' é como um ator que interpreta todos os papéis de uma peça, um de cada vez. Uma hora é o herói, outra é o vilão. Mas nenhum deles é quem ele realmente é.",
-        "insight": "Quando você percebe que não é seus pensamentos, emoções ou reações — mas sim a consciência que os observa — começa a verdadeira libertação."
-      }
-    },
-    {
-      "id": "gnose-9",
-      "categoria_id": 1,
-      "titulo": "A Máquina Humana",
-      "slug": "gnose-maquina-humana",
-      "descricao": "O ser humano como uma máquina condicionada que age mecanicamente — e como despertar dessa automatização",
-      "nivel": "intermediario",
-      "duracao": 15,
-      "tags": [
-        "gnose",
-        "maquina",
-        "mecanico",
-        "consciencia",
-        "despertar"
-      ],
-      "fonte": "Gurdjieff / Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "O ser humano comum age como uma máquina: reage mecanicamente a estímulos externos e internos sem consciência real. A Gnose propõe o despertar dessa automatização através da auto-observação implacável.",
-        "conceitos": [
-          {
-            "termo": "Funcionamento mecânico",
-            "def": "90% das ações humanas são automáticas: reações condicionadas, hábitos, repetições. Acreditamos que escolhemos, mas na prática apenas reagimos."
-          },
-          {
-            "termo": "Centros",
-            "def": "O ser humano tem centros: intelectual, emocional, motor, instintivo e sexual. Eles funcionam mecanicamente, mas podem ser harmonizados."
-          },
-          {
-            "termo": "Despertar",
-            "def": "O despertar gnóstico é sair do estado de 'sono' mecânico e tornar-se consciente no momento presente, observando a máquina sem se identificar com ela."
-          }
-        ],
-        "insight": "O primeiro passo é aceitar: você é uma máquina. Só quando reconhece a mecanização pode começar a despertar. Enquanto acreditar que já é livre, continuará escravo do automatismo.",
-        "citacoes": [
-          "\"O homem é uma máquina. Todas as suas ações, desejos, pensamentos, sentimentos, crenças e hábitos são o resultado de influências externas e internas. O homem não pode 'fazer' nada. Tudo 'acontece' com ele.\" — Gurdjieff"
-        ]
-      }
-    },
-    {
-      "id": "gnose-10",
-      "categoria_id": 1,
-      "titulo": "O Mundo das Relações",
-      "slug": "gnose-mundo-das-relacoes",
-      "descricao": "As três esferas essenciais da existência: relação com o corpo, com o mundo exterior e consigo mesmo",
-      "nivel": "intermediario",
-      "duracao": 30,
-      "tags": [
-        "gnose",
-        "relacoes",
-        "corpo",
-        "psicossomatica",
-        "auto-observacao"
-      ],
-      "fonte": "Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "O Mundo das Relações na Gnose analisa as interconexões fundamentais do ser humano em três esferas: a relação com o corpo físico, com o mundo exterior e consigo mesmo. A chave é que a transformação interior resolve problemas físicos, sociais e espirituais.",
-        "conceitos": [
-          {
-            "termo": "Relação com o Corpo",
-            "def": "O corpo é veículo que requer cuidado. A causa real das doenças é a atuação dos egos (defeitos psicológicos). Cada defeito gera desequilíbrios específicos."
-          },
-          {
-            "termo": "Relação com o Mundo Exterior",
-            "def": "O convívio social é o campo onde os egos emergem. O sábio não é vítima das circunstâncias, mas senhor de si mesmo. Isolar-se não é solução."
-          },
-          {
-            "termo": "Relação Consigo Mesmo",
-            "def": "A mais importante: contato com o Ser Íntimo, não com os egos. Auto-observação constante e oração para despertar a intuição."
-          }
-        ],
-        "tabela_psicossomatica": [
-          {
-            "defeito": "Ira",
-            "orgaos": "Fígado, pâncreas",
-            "efeito": "Cegueira espiritual e física"
-          },
-          {
-            "defeito": "Gula",
-            "orgaos": "Coração, coluna",
-            "efeito": "Obesidade, problemas cardíacos, desvios de coluna"
-          },
-          {
-            "defeito": "Vaidade",
-            "orgaos": "Sistema endócrino",
-            "efeito": "Esgotamento da energia sexual, debilitação geral"
-          },
-          {
-            "defeito": "Preguiça",
-            "orgaos": "Sistema nervoso",
-            "efeito": "Depressão, falta de ação da vontade"
-          },
-          {
-            "defeito": "Orgulho",
-            "orgaos": "Estômago, coração",
-            "efeito": "Úlceras, problemas cardíacos"
-          },
-          {
-            "defeito": "Luxúria",
-            "orgaos": "Sistema reprodutor",
-            "efeito": "Impotência, desvios energéticos"
-          }
-        ],
-        "insight": "O exterior é reflexo do interior. Se suas relações são caóticas, olhe para dentro. A cura física e emocional começa com a eliminação dos egos e a transmutação das energias.",
-        "principios": [
-          {
-            "num": 1,
-            "nome": "O Corpo como Espelho",
-            "frase": "Cada órgão reflete um estado psicológico",
-            "desc": "A doença física é manifestação de um desequilíbrio interior. Cure o ego, e o corpo responde."
-          },
-          {
-            "num": 2,
-            "nome": "Convívio como Laboratório",
-            "frase": "O outro é seu espelho",
-            "desc": "As relações são o campo de prova do trabalho interior. O que te irrita no outro existe em você."
-          },
-          {
-            "num": 3,
-            "nome": "Interior sobre Exterior",
-            "frase": "Conhece-te a ti mesmo",
-            "desc": "Toda transformação real começa de dentro para fora. Sem trabalho interior, não há cura duradoura."
-          }
-        ]
-      }
-    },
-    {
-      "id": "gnose-11",
-      "categoria_id": 1,
-      "titulo": "O Caminho, a Verdade e a Vida",
-      "slug": "gnose-caminho-verdade-vida",
-      "descricao": "A interpretação gnóstica profunda de João 14:6 — o Logos, o Cristo interior e o despertar da consciência",
-      "nivel": "avancado",
-      "duracao": 25,
-      "tags": [
-        "gnose",
-        "caminho",
-        "verdade",
-        "vida",
-        "cristo",
-        "logos",
-        "joao"
-      ],
-      "fonte": "Evangelho de João / Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "Quando Jesus diz 'Eu sou o Caminho, a Verdade e a Vida. Ninguém vem ao Pai senão por mim' (João 14:6), a Gnose interpreta não como exclusivismo religioso, mas como um estado de ser, uma realização interna do princípio crístico.",
-        "conceitos": [
-          {
-            "termo": "O Caminho",
-            "def": "Não é estrada de regras morais ou rituais externos. É o processo de despertar, virar para dentro, morrer para o ego falso e renascer no Espírito. É sair da prisão do mundo material (demiurgo) e voltar à Fonte (Pleroma)."
-          },
-          {
-            "termo": "A Verdade",
-            "def": "Não é crença ou doutrina. Gnosis é conhecimento direto. Você não 'acredita' no divino — você sabe por experiência. 'O Reino está dentro de vós' (Evangelho de Tomé)."
-          },
-          {
-            "termo": "A Vida",
-            "def": "Não a vida biológica. É a Vida eterna (Zoe), a consciência desperta que transcende o ciclo nascimento-morte. A centelha que volta à Luz."
-          }
-        ],
-        "insight": "'Eu sou' ecoa o nome divino (Ehyeh/\"Eu Sou\" de Êxodo 3:14). Jesus aponta para o Logos — o princípio ordenador, a Luz que ilumina todo homem. O Cristo não é uma pessoa exclusiva, mas um princípio universal acessível a todos que despertam.",
-        "citacoes": [
-          "\"O Reino está dentro de vocês e fora de vocês. Quando conhecerem a si mesmos, serão conhecidos.\" — Evangelho de Tomé",
-          "\"A salvação não vem de sacrifício vicário ou fé cega, mas de gnosis — conhecer a si mesmo, conhecer o divino dentro.\""
-        ],
-        "praticas_diarias": [
-          {
-            "nome": "Olhe para dentro",
-            "desc": "Pergunte 'Quem sou eu realmente?' além do nome, corpo, história, papéis sociais."
-          },
-          {
-            "nome": "Desperte a centelha",
-            "desc": "Cultive presença, observe o mecânico em você (reações automáticas, mentiras que conta para si mesmo)."
-          },
-          {
-            "nome": "Sem intermediários finais",
-            "desc": "Mestres, livros e igrejas ajudam, mas a gnosis é direta. O Cristo interior é o guia verdadeiro."
-          }
-        ],
-        "mapa_exoterico_esoterico": {
-          "exoterico": "Jesus é o único caminho para Deus, fora da Igreja não há salvação, fé cega nos dogmas.",
-          "esoterico": "O 'Eu Sou' aponta para o Logos universal. O Cristo interior é o princípio de despertar acessível a todos. Buda, Sócrates e outros mestres apontam para o mesmo."
+      },
+      "praticas": [
+        {
+          "titulo": "Contemplação do 'Eu Sou'",
+          "instrucoes": "1. Sente-se em silêncio, coluna ereta\n2. Respire profundamente 3 vezes\n3. Repita internamente: 'Eu Sou o Caminho' — sinta o significado\n4. 'Eu Sou a Verdade' — além de crenças, o que é verdadeiro agora?\n5. 'Eu Sou a Vida' — a consciência que anima este corpo\n6. Permaneça em silêncio por 5 minutos\n7. Pergunte: 'Quem é este Eu que sempre esteve aqui?'",
+          "duracao": 10,
+          "frequencia": "diaria"
         }
-      }
+      ]
     },
     {
       "id": "gnose-12",
       "categoria_id": 1,
       "titulo": "Mestres Gnósticos: Samael e a Loja Branca",
       "slug": "gnose-mestres-samael-loja-branca",
-      "descricao": "Os mestres da tradição gnóstica moderna: Samael Aun Weor, Lakshmi, Michael e a Loja Branca",
+      "descricao": "Os Mestres Gnósticos são figuras espirituais que coordenam o despertar da consciência humana. No Movimento Gnóstico Cristão Universal, destacam-se V.M. Samael Aun Weor (fundador, autor de mais de 75 livros sobre esoterismo e a Revolução da Consciência), V.M. Lakshmi (restauradora dos grupos gnósticos mundiais) e V.M. Michael (transmissor da mensagem na Europa). Este saber apresenta quem são, seus ensinamentos e o papel da Loja Branca na evolução espiritual.",
       "nivel": "avancado",
       "duracao": 20,
       "tags": [
@@ -1352,7 +1096,15 @@
           }
         ],
         "insight": "Verdadeiros mestres raramente buscam discípulos em massa, riqueza ou adoração. Eles apontam para a consciência do buscador, não para si mesmos. A transformação real vem da prática direta."
-      }
+      },
+      "praticas": [
+        {
+          "titulo": "Conexão com a Linhagem",
+          "instrucoes": "1. Escolha UM mestre da tradição gnóstica\n2. Leia um texto ou trecho de sua obra (5 min)\n3. Feche os olhos e visualize o mestre à sua frente\n4. Pergunte internamente: 'Que ensinamento específico você tem para mim hoje?'\n5. Escute em silêncio por 5 minutos\n6. Anote o que veio — mesmo que não faça sentido agora\n\nImportante: mestres não dão respostas que você não está pronto para ouvir.",
+          "duracao": 15,
+          "frequencia": "semanal"
+        }
+      ]
     },
     {
       "id": "cristianismo-1",

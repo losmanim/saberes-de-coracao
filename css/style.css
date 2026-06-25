@@ -193,20 +193,33 @@ body::before {
     margin-bottom: 0.3rem;
 }
 
-.saber-dia-titulo {
+.saber-dia-quote {
     font-size: 0.95rem;
-    font-weight: 600;
+    line-height: 1.6;
     color: var(--cor-texto);
-    margin-bottom: 0.15rem;
+    font-style: italic;
+    position: relative;
+    padding-left: 1rem;
+    border-left: 2px solid var(--cor-espirito);
+    margin-bottom: 0.3rem;
 }
 
-.saber-dia-desc {
-    font-size: 0.8rem;
+.saber-dia-quote::before {
+    content: '\201C';
+    font-size: 2rem;
+    color: var(--cor-espirito);
+    opacity: 0.3;
+    position: absolute;
+    top: -0.5rem;
+    left: -0.3rem;
+    pointer-events: none;
+}
+
+.saber-dia-fonte {
+    font-size: 0.75rem;
     color: var(--cor-texto-sec);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    text-align: right;
+    font-style: normal;
 }
 
 .saber-dia-loading {

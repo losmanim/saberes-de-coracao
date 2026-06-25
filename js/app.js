@@ -28,12 +28,14 @@ function saberDoDia() {
     const hoje = new Date().toDateString();
     const salvo = localStorage.getItem(SABER_DIA_KEY);
     let escolha;
+    let citacaoUsar;
 
     if (salvo) {
         try {
             const parsed = JSON.parse(salvo);
             if (parsed.data === hoje && parsed.id) {
                 escolha = dados.saberes.find(s => s.id === parsed.id);
+                citacaoUsar = parsed.citacao;
             }
         } catch {}
     }
@@ -41,17 +43,39 @@ function saberDoDia() {
     if (!escolha) {
         const idx = Math.floor(Math.random() * dados.saberes.length);
         escolha = dados.saberes[idx];
-        localStorage.setItem(SABER_DIA_KEY, JSON.stringify({ data: hoje, id: escolha.id }));
+        citacaoUsar = extrairCitacaoImpactante(escolha);
+        localStorage.setItem(SABER_DIA_KEY, JSON.stringify({ data: hoje, id: escolha.id, citacao: citacaoUsar }));
     }
 
-    if (!escolha) return;
+    if (!escolha || !citacaoUsar) return;
 
     el.innerHTML = `
         <div class="saber-dia-card" onclick="abrirSaber('${escolha.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${escolha.id}')" tabindex="0" role="button" aria-label="Saber do dia: ${escolha.titulo}">
             <div class="saber-dia-label">☀️ Saber do Dia</div>
-            <div class="saber-dia-titulo">${escolha.titulo}</div>
-            <div class="saber-dia-desc">${escolha.descricao}</div>
+            <div class="saber-dia-quote">${citacaoUsar}</div>
+            <div class="saber-dia-fonte">— ${escolha.titulo}</div>
         </div>`;
+}
+
+function extrairCitacaoImpactante(saber) {
+    if (!saber.conteudo) return saber.descricao;
+
+    if (saber.conteudo.citacoes && saber.conteudo.citacoes.length > 0) {
+        const citacoes = saber.conteudo.citacoes.filter(c => c.length > 20 && c.length < 300);
+        if (citacoes.length > 0) {
+            return citacoes[Math.floor(Math.random() * citacoes.length)];
+        }
+    }
+
+    if (saber.conteudo.insight) {
+        const insight = saber.conteudo.insight;
+        if (insight.length < 250) return insight;
+        const frases = insight.split(/[.!?]+/).filter(f => f.trim().length > 20 && f.trim().length < 200);
+        if (frases.length > 0) return frases[Math.floor(Math.random() * frases.length)].trim() + '.';
+        return insight.substring(0, 200).trim() + '...';
+    }
+
+    return saber.descricao;
 }
 
 // =============================================
