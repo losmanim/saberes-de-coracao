@@ -22,6 +22,9 @@
 </head>
 
 <body>
+    <div class="reading-progress" id="readingProgress" aria-hidden="true">
+        <div class="reading-progress-bar" id="readingProgressBar"></div>
+    </div>
     <header class="header" role="banner">
         <div class="header-content">
             <a href="index.html" class="logo" aria-label="Saberes de Coração - Início">
@@ -39,9 +42,17 @@
     </header>
     <main class="main" role="main">
         <section class="hero" aria-label="Introdução">
-            <h1>Saberes de Coração</h1>
-            <p class="hero-subtitle">Gnose · Ciência · Meditação · Filosofia · Vida Verdadeira</p>
-            <p class="hero-quote">"O conhecimento transformador não se acumula — pratica-se, vive-se, transmite-se de coração para coração, através dos tempos."</p>
+            <div class="hero-orbs" aria-hidden="true">
+                <div class="orb"></div>
+                <div class="orb"></div>
+                <div class="orb"></div>
+            </div>
+            <h1 class="reveal">Saberes de Coração</h1>
+            <p class="hero-subtitle reveal reveal-delay-1">Gnose · Ciência · Meditação · Filosofia · Vida Verdadeira</p>
+            <p class="hero-quote reveal reveal-delay-2">"O conhecimento transformador não se acumula — pratica-se, vive-se, transmite-se de coração para coração, através dos tempos."</p>
+            <div class="hero-saber-dia reveal reveal-delay-3" id="saberDoDia" role="complementary" aria-label="Saber do dia">
+                <div class="saber-dia-loading">⋆</div>
+            </div>
             <div class="hero-stats" id="heroStats" aria-label="Estatísticas do projeto">
                 <div class="hero-stat">
                     <div class="hero-stat-num" id="statSaberes">—</div>
@@ -64,6 +75,9 @@
         <nav class="pilares" id="pilaresNav" aria-label="Filtrar por pilar">
             <button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')" aria-pressed="true">
                 🌟 Todos
+            </button>
+            <button class="pilar-btn" data-cat="fav" onclick="filtrarCategoria('fav')" aria-pressed="false" id="btnFav">
+                ❤️ Favoritos
             </button>
             <button class="pilar-btn" data-cat="1" onclick="filtrarCategoria('1')" aria-pressed="false">
                 🜂 Espírito
@@ -93,7 +107,15 @@
             <div class="busca-info" id="buscaInfo" aria-live="polite"></div>
         </div>
         <div class="cards-grid" id="cardsGrid" role="list" aria-label="Lista de saberes">
-            <div class="loading">
+            <div class="skeleton-grid" id="skeletonGrid" aria-label="Carregando">
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+            </div>
+            <div class="loading" id="loadingFallback" style="display:none">
                 <div class="loading-spinner" aria-hidden="true"></div>
                 <p>Carregando saberes...</p>
             </div>
@@ -108,6 +130,12 @@
             <div class="modal-content" id="modalContent"></div>
         </div>
     </div>
+    <aside class="continue-bar" id="continueBar" role="complementary" aria-label="Continuar lendo" hidden>
+        <span>📖 Continuar lendo</span>
+        <span id="continueTitulo" class="continue-titulo"></span>
+        <button class="continue-btn" onclick="abrirSaber(continueSaberId)">Abrir</button>
+        <button class="continue-btn continue-close" onclick="fecharContinue()" aria-label="Descartar">✕</button>
+    </aside>
     <div id="playerBar" class="player-bar" role="region" aria-label="Player de mídia" hidden>
         <audio id="playerAudio" preload="metadata"></audio>
         <div class="player-track-info">

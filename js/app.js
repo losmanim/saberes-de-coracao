@@ -4,6 +4,9 @@
 
 const DADOS_CACHE_KEY = 'saberes_cache';
 const DADOS_CACHE_VERSAO_KEY = 'saberes_cache_versao';
+const FAVORITOS_KEY = 'saberes_favoritos';
+const SABER_DIA_KEY = 'saberes_saber_dia';
+const CONTINUE_KEY = 'saberes_continue';
 
 // =============================================
 // Estado Global
@@ -12,6 +15,194 @@ const DADOS_CACHE_VERSAO_KEY = 'saberes_cache_versao';
 let dados = null;
 let categoriaAtual = 'all';
 let ultimoElementoFocado = null;
+let continueSaberId = null;
+
+// =============================================
+// Saber do Dia
+// =============================================
+
+function saberDoDia() {
+    const el = document.getElementById('saberDoDia');
+    if (!el || !dados || !dados.saberes) return;
+
+    const hoje = new Date().toDateString();
+    const salvo = localStorage.getItem(SABER_DIA_KEY);
+    let escolha;
+
+    if (salvo) {
+        try {
+            const parsed = JSON.parse(salvo);
+            if (parsed.data === hoje && parsed.id) {
+                escolha = dados.saberes.find(s => s.id === parsed.id);
+            }
+        } catch {}
+    }
+
+    if (!escolha) {
+        const idx = Math.floor(Math.random() * dados.saberes.length);
+        escolha = dados.saberes[idx];
+        localStorage.setItem(SABER_DIA_KEY, JSON.stringify({ data: hoje, id: escolha.id }));
+    }
+
+    if (!escolha) return;
+
+    el.innerHTML = `
+        <div class="saber-dia-card" onclick="abrirSaber('${escolha.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${escolha.id}')" tabindex="0" role="button" aria-label="Saber do dia: ${escolha.titulo}">
+            <div class="saber-dia-label">☀️ Saber do Dia</div>
+            <div class="saber-dia-titulo">${escolha.titulo}</div>
+            <div class="saber-dia-desc">${escolha.descricao}</div>
+        </div>`;
+}
+
+// =============================================
+// Favoritos
+// =============================================
+
+function getFavoritos() {
+    try {
+        const raw = localStorage.getItem(FAVORITOS_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+}
+
+function salvarFavoritos(lista) {
+    localStorage.setItem(FAVORITOS_KEY, JSON.stringify(lista));
+}
+
+function isFavorito(id) {
+    return getFavoritos().includes(id);
+}
+
+function toggleFavorito(id, event) {
+    if (event) { event.stopPropagation(); }
+    let favs = getFavoritos();
+    const idx = favs.indexOf(id);
+    if (idx === -1) {
+        favs.push(id);
+    } else {
+        favs.splice(idx, 1);
+    }
+    salvarFavoritos(favs);
+
+    document.querySelectorAll(`.card-fav[data-id="${id}"]`).forEach(btn => {
+        btn.classList.toggle('active', isFavorito(id));
+        btn.textContent = isFavorito(id) ? '❤️' : '🤍';
+    });
+
+    if (categoriaAtual === 'fav' && !isFavorito(id)) {
+        const btn2 = document.querySelector(`.card-fav[data-id="${id}"]`);
+        if (btn2) {
+            const card = btn2.closest('.card');
+            if (card) {
+                card.remove();
+                const grid = document.getElementById('cardsGrid');
+                const remaining = grid.querySelectorAll('.card, .empty-state');
+                if (remaining.length === 0) {
+                    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💔</div><p>Nenhum favorito ainda</p><p style="font-size:0.8rem;color:var(--cor-texto-sec);margin-top:0.5rem">Clique no 🤍 nos cards para adicionar</p></div>';
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// Continuar Lendo
+// =============================================
+
+function salvarContinueLendo(id) {
+    try {
+        localStorage.setItem(CONTINUE_KEY, JSON.stringify({
+            id: id,
+            data: Date.now()
+        }));
+    } catch {}
+}
+
+function mostrarContinueLendo() {
+    const bar = document.getElementById('continueBar');
+    const titulo = document.getElementById('continueTitulo');
+    if (!bar || !titulo) return;
+
+    try {
+        const raw = localStorage.getItem(CONTINUE_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (!saved.id || !dados) return;
+        const saber = dados.saberes.find(s => s.id === saved.id);
+        if (!saber) return;
+
+        continueSaberId = saved.id;
+        titulo.textContent = saber.titulo;
+        bar.removeAttribute('hidden');
+    } catch {}
+}
+
+function fecharContinue() {
+    const bar = document.getElementById('continueBar');
+    if (bar) bar.setAttribute('hidden', '');
+    localStorage.removeItem(CONTINUE_KEY);
+}
+
+// =============================================
+// Compartilhar
+// =============================================
+
+function compartilharSaber(id) {
+    if (!dados) return;
+    const saber = dados.saberes.find(s => s.id === id);
+    if (!saber) return;
+
+    const url = window.location.origin + window.location.pathname;
+    const texto = `📖 ${saber.titulo}\n\n${saber.descricao}\n\nFonte: Saberes de Coração\n${url}`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: saber.titulo,
+            text: saber.descricao,
+            url: url,
+        }).catch(() => {});
+    } else {
+        const temp = document.createElement('textarea');
+        temp.value = texto;
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+            document.execCommand('copy');
+            const status = document.getElementById('adminStatus') || document.createElement('div');
+            if (!status.id) {
+                status.id = 'shareStatus';
+                status.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--cor-card);border:1px solid var(--cor-borda);padding:0.5rem 1rem;border-radius:var(--radius);font-size:0.85rem;z-index:999;color:var(--cor-texto)';
+                document.body.appendChild(status);
+            }
+            status.textContent = '✅ Link copiado!';
+            status.style.display = 'block';
+            setTimeout(() => { status.style.display = 'none'; }, 2500);
+        } catch {}
+        document.body.removeChild(temp);
+    }
+}
+
+// =============================================
+// Atalhos do Teclado
+// =============================================
+
+function mostrarAtalhos() {
+    document.getElementById('modalTitulo').textContent = '⌨️ Atalhos do Teclado';
+    document.getElementById('modalContent').innerHTML = `
+        <div class="atalhos-grid">
+            <div class="atalhos-item"><span class="atalhos-key">?</span> Mostrar atalhos</div>
+            <div class="atalhos-item"><span class="atalhos-key">Esc</span> Fechar modal</div>
+            <div class="atalhos-item"><span class="atalhos-key">Espaço</span> Tocar/Pausar mídia</div>
+            <div class="atalhos-item"><span class="atalhos-key">P</span> Faixa anterior</div>
+            <div class="atalhos-item"><span class="atalhos-key">N</span> Próxima faixa</div>
+            <div class="atalhos-item"><span class="atalhos-key">M</span> Mudo</div>
+            <div class="atalhos-item"><span class="atalhos-key">/</span> Focar busca</div>
+            <div class="atalhos-item"><span class="atalhos-key">D</span> Saber aleatório</div>
+            <div class="atalhos-item"><span class="atalhos-key">T</span> Alternar tema</div>
+        </div>
+        <p style="margin-top:1rem;font-size:0.8rem;color:var(--cor-texto-sec)">Atalhos funcionam quando nenhum input está focado.</p>`;
+    abrirModal();
+}
 
 // =============================================
 // Player de Mídia (áudio/vídeo)
@@ -313,8 +504,12 @@ const Player = {
 };
 
 document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    if (e.key === 'Escape') fecharModalBtn();
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'Escape') { fecharModalBtn(); return; }
+    if (e.key === '?') { e.preventDefault(); mostrarAtalhos(); return; }
+    if (e.key === '/') { e.preventDefault(); toggleBusca(); return; }
+    if (e.key === 'd' || e.key === 'D') { e.preventDefault(); saberAleatorio(); return; }
+    if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTema(); return; }
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -335,11 +530,63 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     await carregarMidiaConfig();
-    carregarDados().then(() => Player.restoreState());
+    observarReveal();
+    carregarDados().then(() => {
+        Player.restoreState();
+        saberDoDia();
+        mostrarContinueLendo();
+    });
 });
 
 window.addEventListener('beforeunload', () => Player.saveState());
 window.addEventListener('pagehide', () => Player.saveState());
+
+// =============================================
+// Reading Progress Bar
+// =============================================
+
+let readingRAF = null;
+
+function atualizarProgressoLeitura() {
+    const bar = document.getElementById('readingProgressBar');
+    if (!bar) return;
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+    bar.style.width = pct + '%';
+}
+
+window.addEventListener('scroll', () => {
+    if (readingRAF) cancelAnimationFrame(readingRAF);
+    readingRAF = requestAnimationFrame(atualizarProgressoLeitura);
+}, { passive: true });
+
+// =============================================
+// Scroll Reveal (Intersection Observer)
+// =============================================
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+function observarReveal() {
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}
+
+// Aplicar reveal nos cards após renderizar
+function aplicarReveal() {
+    const cards = document.querySelectorAll('.cards-grid .card, .midia-grid .midia-card');
+    cards.forEach((card, i) => {
+        card.classList.add('reveal');
+        if (i < 5) card.classList.add('reveal-delay-' + (i + 1));
+    });
+    observarReveal();
+}
 
 // =============================================
 // Cache e Carregamento de Dados
@@ -375,6 +622,7 @@ async function carregarDados() {
         dados = cache;
         atualizarEstatisticas();
         if (grid) renderizarSaberes(dados.saberes);
+        saberDoDia();
     }
 
     try {
@@ -390,6 +638,7 @@ async function carregarDados() {
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
             if (grid) renderizarSaberes(dados.saberes);
+            saberDoDia();
         }
     } catch (e) {
         if (cache) return;
@@ -425,11 +674,14 @@ function renderizarSaberes(saberes) {
 
     if (!saberes || saberes.length === 0) {
         grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>';
+        esconderSkeleton();
         return;
     }
 
+    const favs = getFavoritos();
     grid.innerHTML = saberes.map(saber => `
             <div class="card" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+                <button class="card-fav ${favs.includes(saber.id) ? 'active' : ''}" data-id="${saber.id}" onclick="toggleFavorito('${saber.id}', event)" onkeydown="event.stopPropagation()" aria-label="${favs.includes(saber.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(saber.id) ? '❤️' : '🤍'}</button>
                 <div class="card-header">
                     <span class="card-titulo">${saber.titulo}</span>
                     <span class="card-nivel ${saber.nivel}">${saber.nivel}</span>
@@ -444,6 +696,14 @@ function renderizarSaberes(saberes) {
                 </div>
             </div>
         `).join('');
+
+    esconderSkeleton();
+    aplicarReveal();
+}
+
+function esconderSkeleton() {
+    const sk = document.getElementById('skeletonGrid');
+    if (sk) sk.style.display = 'none';
 }
 
 // =============================================
@@ -464,6 +724,13 @@ function filtrarCategoria(cat) {
 
     if (cat === 'midia') {
         renderizarMidia();
+        return;
+    }
+
+    if (cat === 'fav') {
+        const favs = getFavoritos();
+        const filtrados = dados.saberes.filter(s => favs.includes(s.id));
+        renderizarSaberes(filtrados);
         return;
     }
 
@@ -516,6 +783,8 @@ function renderizarMidia() {
     }
 
     grid.innerHTML = html;
+    esconderSkeleton();
+    aplicarReveal();
 }
 
 // =============================================
@@ -661,6 +930,9 @@ function abrirSaber(id) {
     const saber = dados.saberes.find(s => s.id === id);
     if (!saber) return;
 
+    salvarContinueLendo(id);
+    mostrarContinueLendo();
+
     document.getElementById('modalTitulo').textContent = saber.titulo;
 
     let html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
@@ -695,6 +967,11 @@ function abrirSaber(id) {
     if (saber.categoria_id === 6) {
         html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link" style="margin-top:1rem">📖 Texto completo em Apócrifos</a>`;
     }
+
+    html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn-share" onclick="compartilharSaber('${saber.id}')" aria-label="Compartilhar">📤 Compartilhar</button>
+        <button class="btn-share" onclick="toggleFavorito('${saber.id}', event); this.textContent = isFavorito('${saber.id}') ? '❤️ Favoritado' : '🤍 Favoritar'" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
+    </div>`;
 
     document.getElementById('modalContent').innerHTML = html;
     abrirModal();
