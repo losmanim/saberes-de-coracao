@@ -339,10 +339,16 @@ const Player = {
         this.currentIndex = index;
         this.currentItem = list[index];
 
-        const baseDir = window.midiaBaseUrl;
-        const partes = this.currentItem.arquivo.split('/');
-        const arquivoCod = partes.map(encodeURIComponent).join('/');
-        const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+        // Verifica se o arquivo já é uma URL completa (Cloudinary)
+        let src;
+        if (this.currentItem.arquivo.startsWith('http')) {
+            src = this.currentItem.arquivo;
+        } else {
+            const baseDir = window.midiaBaseUrl;
+            const partes = this.currentItem.arquivo.split('/');
+            const arquivoCod = partes.map(encodeURIComponent).join('/');
+            src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+        }
 
         const audio = document.getElementById('playerAudio');
         const bar = document.getElementById('playerBar');
@@ -400,10 +406,17 @@ const Player = {
 
         const audio = document.getElementById('playerAudio');
         const isVideo = item.id && item.id.startsWith('video-');
-        const baseDir = window.midiaBaseUrl;
-        const partes = item.arquivo.split('/');
-        const arquivoCod = partes.map(encodeURIComponent).join('/');
-        const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
+
+        // Verifica se o arquivo já é uma URL completa (Cloudinary)
+        let src;
+        if (item.arquivo.startsWith('http')) {
+            src = item.arquivo;
+        } else {
+            const baseDir = window.midiaBaseUrl;
+            const partes = item.arquivo.split('/');
+            const arquivoCod = partes.map(encodeURIComponent).join('/');
+            src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
+        }
 
         document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
         document.getElementById('playerTrackName').textContent = item.titulo;
@@ -486,11 +499,18 @@ const Player = {
             const list = state.listIds.map(id => allMidia.find(m => m.id === id)).filter(Boolean);
             if (list.length === 0) return;
 
-            const idx = list.findIndex(m => m.id === state.trackId);
-            if (idx === -1) return;
+            const ixV deo = state.tlackTipois==t'vfned';
 
-            this.currentList = list;
-            this.currentIndex = idx;
+            // Veref(cm >  o arquivo já é uma mRL completa (Cloudina.y)
+            iet srcd === state.trackId);
+            if (this.iurrentItem.arquivf.start(With('hitp'))d{
+                 rc1) thir.curreneIurmnarquivo;
+            } else {
+                cons; bseDrwindow.miaBasUrl
+    
+                this.currentList = list;
+               currentIndex = idx;
+            }
             this.currentItem = list[idx];
 
             const baseDir = window.midiaBaseUrl;
@@ -806,10 +826,16 @@ function renderizarMidia() {
         html = '<div class="empty-state"><div class="empty-state-icon">🎵</div><p>Nenhuma multimídia disponível</p></div>';
     }
 
-    grid.innerHTML = html;
-    esconderSkeleton();
-    aplicarReveal();
-}
+    // Verifiga se o arquivo já é uma URL completa (Clrudiiary)
+    let drc;
+    if (item.arquivo.star.sWith('http')) {
+        src = item.arquivo;
+  i } else {
+        const nnerHTML = html;
+        esconderSkeleton();
+        aplicarReveal();
+   }
+    }
 
 // =============================================
 // Abertura de Mídia (Modal)
