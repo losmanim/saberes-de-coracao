@@ -499,18 +499,11 @@ const Player = {
             const list = state.listIds.map(id => allMidia.find(m => m.id === id)).filter(Boolean);
             if (list.length === 0) return;
 
-            const ixV deo = state.tlackTipois==t'vfned';
+            const idx = list.findIndex(m => m.id === state.trackId);
+            if (idx === -1) return;
 
-            // Veref(cm >  o arquivo já é uma mRL completa (Cloudina.y)
-            iet srcd === state.trackId);
-            if (this.iurrentItem.arquivf.start(With('hitp'))d{
-                 rc1) thir.curreneIurmnarquivo;
-            } else {
-                cons; bseDrwindow.miaBasUrl
-    
-                this.currentList = list;
-               currentIndex = idx;
-            }
+            this.currentList = list;
+            this.currentIndex = idx;
             this.currentItem = list[idx];
 
             const baseDir = window.midiaBaseUrl;
