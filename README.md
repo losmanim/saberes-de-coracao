@@ -8,7 +8,7 @@ Plataforma interativa dedicada à exploração do conhecimento em suas múltipla
 
 ## Visão
 
-Saberes de Coração não é uma religião, nem um culto. É um **mapa de sabedoria** que convida à experiência direta, à prática e à transmissão de coração para coração. A plataforma busca integrar diferentes tradições e conhecimentos — Gnose, Hermetismo, Teosofia, Taoísmo, Estoicismo, Cristianismo Primitivo, Ciência Moderna, Práticas Contemplativas e Filosofia da Mente — em um único espaço de aprendizado transformador.
+Saberes de Coração não é uma religião, nem um culto. É um **mapa de sabedoria** que convida à experiência direta, à prática e à transmissão de coração para coração. A plataforma busca integrar diferentes tradições e conhecimentos — Gnose, Teosofia, Taoísmo, Estoicismo, Cristianismo Primitivo, Ciência Moderna, Práticas Contemplativas e Filosofia da Mente — em um único espaço de aprendizado transformador.
 
 ## Filosofia
 
@@ -27,11 +27,11 @@ O conteúdo é organizado em seis pilares fundamentais, cada um representando um
 
 | Pilar | Descrição | Cor |
 |-------|-----------|-----|
-| **Espírito** 🜂 | Conhecimento Gnóstico — Gnose, Hermetismo, Teosofia, Cristianismo Primitivo. Estudos sobre a natureza da consciência, tradições espirituais e o desenvolvimento interior. | Roxo |
+| **Espírito** 🜂 | Conhecimento Gnóstico — Gnose, Teosofia, Cristianismo Primitivo. Estudos sobre a natureza da consciência, tradições espirituais e o desenvolvimento interior. | Roxo |
 | **Práticas** 🧠 | Trabalho Interior — Meditação, Kundalini, Respiração, Autoobservação. Métodos e exercícios para aplicação do conhecimento no dia a dia. | Azul |
 | **Ciência** 🔬 | Conhecimento Baseado em Evidências — Epigenética, Éter, Física Quântica. Saberes fundamentados em pesquisa, observação e evidências científicas. | Verde |
 | **Jornada** 🧭 | Transformação — Jornada da Consciência, Autoconhecimento. Reflexões sobre o caminho individual de crescimento e evolução da consciência. | Laranja |
-| **Vida Verdadeira** ∞ | Integração — Tao, Pneuma, Hermetismo. A integração de todos os saberes em uma existência autêntica, plena e alinhada. | Vermelho |
+| **Vida Verdadeira** ∞ | Integração — Tao, Pneuma. A integração de todos os saberes em uma existência autêntica, plena e alinhada. | Vermelho |
 | **Apócrifos** 📜 | Textos Gnósticos — Evangelhos, Testamentos, Revelações. Escritos gnósticos dos primeiros séculos, preservados em Nag Hammadi. | Dourado |
 
 ---
@@ -69,7 +69,6 @@ O conteúdo é organizado em seis pilares fundamentais, cada um representando um
 ### Tradições Espirituais
 
 - **Gnose**: Conhecimento direto e experimental do divino, incluindo cosmologia gnóstica (Pleroma, Kenoma, Demiurgo)
-- **Hermetismo**: Princípios herméticos como a Lei da Correspondência ("como em cima, como embaixo")
 - **Teosofia**: Saberes sobre a natureza do ser humano e do cosmos
 - **Cristianismo Primitivo**: Visões gnósticas dos primeiros séculos da era cristã
 
