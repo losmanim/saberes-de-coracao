@@ -1,6 +1,21 @@
+// =============================================
+// Constantes
+// =============================================
+
+const DADOS_CACHE_KEY = 'saberes_cache';
+const DADOS_CACHE_VERSAO_KEY = 'saberes_cache_versao';
+
+// =============================================
+// Estado Global
+// =============================================
+
 let dados = null;
 let categoriaAtual = 'all';
 let ultimoElementoFocado = null;
+
+// =============================================
+// Player de Mídia (áudio/vídeo)
+// =============================================
 
 const Player = {
     currentList: [],
@@ -115,13 +130,16 @@ const Player = {
         const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
 
         const audio = document.getElementById('playerAudio');
-        audio.src = src;
-        audio.load();
+        const bar = document.getElementById('playerBar');
+
         audio.onerror = () => {
-            alert('Arquivo de mídia não encontrado: ' + src);
+            alert('Arquivo não encontrado: ' + src);
+            this.close();
         };
 
-        const bar = document.getElementById('playerBar');
+        audio.src = src;
+        audio.load();
+
         bar.removeAttribute('hidden');
         document.body.classList.add('player-active');
 
@@ -132,7 +150,10 @@ const Player = {
         audio.volume = vol !== null ? parseFloat(vol) : 1;
         document.getElementById('playerVolumeSlider').value = audio.volume;
 
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+            this.isPlaying = false;
+            this.updatePlayBtn();
+        });
     },
 
     togglePlay() {
@@ -169,18 +190,21 @@ const Player = {
         const arquivoCod = partes.map(encodeURIComponent).join('/');
         const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
 
-        audio.src = src;
         document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
         document.getElementById('playerTrackName').textContent = item.titulo;
         document.getElementById('playerProgressBar').style.width = '0%';
         document.getElementById('playerSeekSlider').value = 0;
         document.getElementById('playerTimeCurrent').textContent = '0:00';
 
-        audio.load();
         audio.onerror = () => {
-            alert('Arquivo não encontrado: ' + audio.src);
+            alert('Arquivo não encontrado: ' + src);
         };
-        audio.play().catch(() => {});
+        audio.src = src;
+        audio.load();
+        audio.play().catch(() => {
+            this.isPlaying = false;
+            this.updatePlayBtn();
+        });
     },
 
     close() {
@@ -317,22 +341,67 @@ window.addEventListener('DOMContentLoaded', async () => {
 window.addEventListener('beforeunload', () => Player.saveState());
 window.addEventListener('pagehide', () => Player.saveState());
 
+// =============================================
+// Cache e Carregamento de Dados
+// =============================================
+
+function carregarDadosCache() {
+    try {
+        const raw = localStorage.getItem(DADOS_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.saberes) return null;
+        return parsed;
+    } catch {
+        return null;
+    }
+}
+
+function salvarDadosCache(dados) {
+    try {
+        localStorage.setItem(DADOS_CACHE_KEY, JSON.stringify(dados));
+        if (dados.meta && dados.meta.versao) {
+            localStorage.setItem(DADOS_CACHE_VERSAO_KEY, dados.meta.versao);
+        }
+    } catch {
+    }
+}
+
 async function carregarDados() {
+    const grid = document.getElementById('cardsGrid');
+
+    const cache = carregarDadosCache();
+    if (cache) {
+        dados = cache;
+        atualizarEstatisticas();
+        if (grid) renderizarSaberes(dados.saberes);
+    }
+
     try {
         const response = await fetch('/api/dados');
         if (!response.ok) throw new Error('HTTP ' + response.status);
-        dados = await response.json();
-        atualizarEstatisticas();
-        if (document.getElementById('cardsGrid')) {
-            renderizarSaberes(dados.saberes);
+        const novosDados = await response.json();
+
+        const versaoAtual = localStorage.getItem(DADOS_CACHE_VERSAO_KEY);
+        const novaVersao = novosDados.meta && novosDados.meta.versao;
+
+        if (!cache || (novaVersao && novaVersao !== versaoAtual)) {
+            dados = novosDados;
+            salvarDadosCache(novosDados);
+            atualizarEstatisticas();
+            if (grid) renderizarSaberes(dados.saberes);
         }
     } catch (e) {
-        const grid = document.getElementById('cardsGrid');
+        if (cache) return;
         if (grid) {
             grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Certifique-se de que o servidor Express está rodando.</small></p></div>';
         }
     }
 }
+
+// =============================================
+// Estatísticas
+// =============================================
 
 function atualizarEstatisticas() {
     if (!dados) return;
@@ -345,6 +414,10 @@ function atualizarEstatisticas() {
     if (el('statPraticas')) el('statPraticas').textContent = nPraticas;
     if (el('statMidia')) el('statMidia').textContent = nMidia;
 }
+
+// =============================================
+// Renderização de Saberes (Grid de Cards)
+// =============================================
 
 function renderizarSaberes(saberes) {
     const grid = document.getElementById('cardsGrid');
@@ -373,6 +446,10 @@ function renderizarSaberes(saberes) {
         `).join('');
 }
 
+// =============================================
+// Filtragem por Categoria
+// =============================================
+
 function filtrarCategoria(cat) {
     categoriaAtual = cat;
 
@@ -397,6 +474,10 @@ function filtrarCategoria(cat) {
         renderizarSaberes(filtrados);
     }
 }
+
+// =============================================
+// Renderização de Mídia
+// =============================================
 
 function renderizarMidia() {
     const grid = document.getElementById('cardsGrid');
@@ -437,6 +518,10 @@ function renderizarMidia() {
     grid.innerHTML = html;
 }
 
+// =============================================
+// Abertura de Mídia (Modal)
+// =============================================
+
 function abrirMidia(tipo, id) {
     const lista = tipo === 'audio' ? dados.midia.audios : dados.midia.videos;
     const item = lista ? lista.find(m => m.id === id) : null;
@@ -454,13 +539,14 @@ function abrirMidia(tipo, id) {
     if (tipo === 'video') {
         html += `
             <div class="player-container" style="margin-bottom:1rem">
-                <video controls autoplay style="width:100%;max-height:70vh;border-radius:var(--radius);background:#000">
+                <video controls style="width:100%;max-height:70vh;border-radius:var(--radius);background:#000">
                     <source src="${src}" type="video/${src.endsWith('.mkv') ? 'x-matroska' : 'mp4'}">
                     Seu navegador não suporta vídeo.
                 </video>
             </div>`;
     } else {
         Player.open(tipo, id);
+        html += `<div class="pratica-box" style="text-align:center"><p style="margin:0;font-size:0.9rem">🎧 Reproduzindo <strong>${item.titulo}</strong> na barra inferior</p><p style="margin:0.3rem 0 0;font-size:0.8rem;color:var(--cor-texto-sec)">Use os controles na barra para pausar, ajustar volume ou navegar</p></div>`;
     }
 
     if (item.saberes_relacionados && item.saberes_relacionados.length > 0) {
@@ -479,6 +565,10 @@ function abrirMidia(tipo, id) {
     document.getElementById('modalContent').innerHTML = html;
     abrirModal();
 }
+
+// =============================================
+// Busca
+// =============================================
 
 function buscarSaberes(termo) {
     const info = document.getElementById('buscaInfo');
@@ -503,6 +593,70 @@ function buscarSaberes(termo) {
     renderizarSaberes(filtrados);
 }
 
+const contentHandlers = {
+    definicao: (v) => `<h3>Definição</h3><p>${v}</p>`,
+    analogia: (v) => `<h3>📝 Analogia</h3><p>${v}</p>`,
+    insight: (v) => `<h3>💡 Insight</h3><p>${v}</p>`,
+    ascensao: (v) => `<h3>A Ascensão da Kundalini</h3><p>${v}</p>`,
+    ruido_moderno: (v) => `<h3>O Ruído Moderno</h3><p>${v}</p>`,
+    instrucoes_passos: (v) => `<h3>Passo a Passo</h3><p>${v.replace(/\n/g, '<br>')}</p>`,
+
+    conceitos: (v) => `<h3>Conceitos</h3><ul>${v.map(i => `<li><strong>${i.termo}:</strong> ${i.def}</li>`).join('')}</ul>`,
+    principios: (v) => `<h3>Os Sete Princípios</h3><ul>${v.map(p => `<li><strong>${p.num}. ${p.nome}</strong> — "${p.frase}"<br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${p.desc}</span></li>`).join('')}</ul>`,
+    mundos: (v) => `<h3>Os Três Mundos</h3><ul>${v.map(m => `<li><strong>${m.simbolo} ${m.nome}</strong><br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${m.desc}</span></li>`).join('')}</ul>`,
+    textos: (v) => `<h3>Textos da Biblioteca de Nag Hammadi</h3><ul>${v.map(t => `<li><strong>${t.nome}</strong>: ${t.desc}</li>`).join('')}</ul>`,
+    fatores: (v) => `<h3>Fatores que Influenciam</h3><ul>${v.map(f => `<li><strong>${f.icone} ${f.nome}</strong>: ${f.desc}</li>`).join('')}</ul>`,
+    mecanismos: (v) => `<h3>Os Três Mecanismos Epigenéticos</h3><ul>${v.map(m => `<li><strong>${m.icone} ${m.nome}</strong>: ${m.desc}</li>`).join('')}</ul>`,
+    personagens: (v) => `<h3>Personagens do Drama Cósmico</h3><ul>${v.map(p => `<li><strong>${p.nome}:</strong> ${p.descricao}</li>`).join('')}</ul>`,
+    misterios: (v) => `<h3>Os Mistérios</h3><ul>${v.map(m => `<li><strong>${m.nome}:</strong> ${m.desc}</li>`).join('')}</ul>`,
+    caracteristicas: (v) => `<h3>Características das Primeiras Comunidades</h3><ul>${v.map(c => `<li><strong>${c.nome}:</strong> ${c.desc}</li>`).join('')}</ul>`,
+    desafios: (v) => `<h3>Desafios e Expansão</h3><ul>${v.map(d => `<li><strong>${d.nome}:</strong> ${d.desc}</li>`).join('')}</ul>`,
+    controversias: (v) => `<h3>Controvérsias e Legado</h3><ul>${v.map(ct => `<li><strong>${ct.tema}:</strong> ${ct.desc}</li>`).join('')}</ul>`,
+    mitos_desmistificados: (v) => `<h3>Mitos Desmistificados</h3><ul>${v.map(m => `<li><strong>${m.mito}</strong> → ${m.verdade}</li>`).join('')}</ul>`,
+    tres_fatores: (v) => `<h3>Os 3 Fatores da Revolução da Consciência</h3><ul>${v.map(f => `<li><strong>${f.fator}:</strong> ${f.descricao}</li>`).join('')}</ul>`,
+    dimensoes: (v) => `<h3>As Dimensões do Pneuma</h3><ul>${v.map(d => `<li><strong>${d.nome}:</strong> ${d.desc}</li>`).join('')}</ul>`,
+    praticas_diarias: (v) => `<h3>Práticas Diárias</h3><ul>${v.map(pd => `<li><strong>${pd.nome}:</strong> ${pd.desc}</li>`).join('')}</ul>`,
+    tres_filtros: (v) => `<h3>Os 3 Filtros da Percepção</h3><ul>${v.map(f => `<li><strong>${f.nome}:</strong> ${f.desc}</li>`).join('')}</ul>`,
+
+    aplicacoes: (v) => `<h3>Lei da Correspondência</h3><table style="width:100%;border-collapse:collapse;margin-top:0.5rem;">${v.map(a => `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda);font-weight:600">${a.maior}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${a.menor}</td></tr>`).join('')}</table>`,
+
+    citacoes: (v) => `<h3>Citações</h3><blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0;">${v.join('<br>')}</blockquote>`,
+
+    parabolas: (v) => `<h3>Parábolas</h3>${v.map(p => `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)"><h4 style="color:var(--cor-destaque);margin-bottom:0.3rem">${p.nome}</h4><p><em>"${p.texto}"</em></p><p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Sentido:</strong> ${p.sentido}</p></div>`).join('')}`,
+    ensinamentos_chave: (v) => `<h3>Ensinamentos Chave</h3>${v.map(e => `<div class="pratica-box"><h4>${e.tema}</h4><p>${e.ensino}</p></div>`).join('')}`,
+    ciencia_moderna: (v) => `<h3>Ciência Moderna e o Éter</h3>${v.map(cm => `<div class="pratica-box"><h4>${cm.topico}</h4><p>${cm.desc}</p></div>`).join('')}`,
+    correntes: (v) => `<h3>As Grandes Correntes Filosóficas</h3>${v.map(cr => `<div class="pratica-box"><h4>${cr.nome}</h4><p>${cr.desc}</p></div>`).join('')}`,
+    perspectivas: (v) => `<h3>Perspectivas sobre o Sentido</h3>${v.map(p => `<div class="pratica-box"><h4>${p.nome}</h4><p>${p.desc}</p></div>`).join('')}`,
+    ferramentas_praticas: (v) => `<h3>Ferramentas Práticas</h3>${v.map(fp => `<div class="pratica-box"><h4>${fp.nome}</h4><p>${fp.desc}</p></div>`).join('')}`,
+    praticas_acesso: (v) => `<h3>Práticas de Acesso ao Éter</h3><ul>${v.map(pa => `<li><strong>${pa.nome}</strong>${pa.proporcao ? ' (' + pa.proporcao + ')' : ''}: ${pa.desc}</li>`).join('')}</ul>`,
+
+    estrutura_cosmica: (v) => `<h3>Estrutura Cósmica</h3>${Object.entries(v).map(([key, val]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${val}</p>`).join('')}`,
+    nag_hammadi: (v) => `<h3>Nag Hammadi (1945)</h3><p>${v.descricao}</p>${v.textos ? `<ul>${v.textos.map(t => `<li><strong>${t.nome}:</strong> ${t.desc}</li>`).join('')}</ul>` : ''}`,
+    alquimia_interior: (v) => `<h3>${v.nome}</h3>${v.operacoes ? `<ul>${v.operacoes.map(op => `<li><strong>${op.etapa}:</strong> ${op.desc}</li>`).join('')}</ul>` : ''}`,
+    mapa_exoterico_esoterico: (v) => `<h3>Exotérico vs. Esotérico</h3><div class="pratica-box"><h4>Exotérico (Público)</h4><p>${v.exoterico}</p></div><div class="pratica-box"><h4>Esotérico (Reservado)</h4><p>${v.esoterico}</p></div>`,
+    ponte_ciencia_teosofia: (v) => `<h3>Ponte entre Ciência e Teosofia</h3><div class="pratica-box"><h4>Ciência</h4><p>${v.ciencia}</p></div><div class="pratica-box"><h4>Teosofia</h4><p>${v.teosofia}</p></div><div class="pratica-box"><h4>Ponte</h4><p>${v.ponte}</p></div>`,
+    conexao_heartmath: (v) => `<h3>Conexão com HeartMath/GCI</h3><p>${v.descricao}</p><p style="margin-top:0.5rem;font-style:italic;color:var(--cor-texto-sec)">${v.pratica}</p>`,
+
+    if_no_meaning: (v) => `<h3>${v.titulo}</h3><p>${v.reflexao}</p>${v.citacao ? `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${v.citacao}</blockquote>` : ''}`,
+    tool_musica: (v) => `<h3>Pneuma na Música (Tool)</h3><p>${v.analise}</p>${v.citacao ? `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0;color:var(--cor-texto-sec)">${v.citacao}</blockquote>` : ''}`,
+    felicidade_como_verbo: (v) => `<h3>Felicidade como Verbo</h3><p>${v.tese}</p><p style="margin-top:0.5rem">${v.mecanica}</p>${v.citacao ? `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${v.citacao}</blockquote>` : ''}`,
+
+    quatro_mapas: (v) => `<h3>Os 4 Mapas de Sabedoria</h3>${v.map(m => `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)"><h4 style="color:var(--cor-destaque)">${m.nome}</h4><p>${m.ensinamento}</p><p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Prática:</strong> ${m.pratica}</p></div>`).join('')}`,
+
+    dicotomia: (v) => `<h3>Ser vs. Ter</h3>${v.map(d => `<div class="pratica-box"><h4>${d.polo === 'SER' ? '🜁' : '🜂'} ${d.polo}</h4><ul>${d.caracteristicas.map(car => `<li>${car}</li>`).join('')}</ul></div>`).join('')}`,
+    filtros_da_percepcao: (v) => `<h3>Filtros da Percepção</h3>${v.map(fp => `<div class="pratica-box"><h4>${fp.nome}</h4><p><strong>Mecanismo:</strong> ${fp.mecanismo}</p><p style="margin-top:0.3rem"><strong>Transcendência:</strong> ${fp.transcendencia}</p></div>`).join('')}`,
+    integracao_pratica: (v) => `<h3>Integração Prática no Dia a Dia</h3>${Object.entries(v).map(([periodo, passos]) => `<div class="pratica-box"><h4>${periodo.charAt(0).toUpperCase() + periodo.slice(1)}</h4>${passos.map(p => `<p>${p}</p>`).join('')}</div>`).join('')}`,
+
+    chakras(v) {
+        if (!v[0] || !v[0].ordem) return '';
+        return `<h3>Os 8 Chakras da Meditação</h3><table style="width:100%;border-collapse:collapse;margin:0.8rem 0"><tr><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">#</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Chakra</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Sílaba</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Função</th></tr>${v.map(ch => `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.ordem}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.nome}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.silaba}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.funcao}</td></tr>`).join('')}</table>`;
+    },
+};
+
+// =============================================
+// Abertura de Saber (Modal de Conteúdo)
+// =============================================
+
 function abrirSaber(id) {
     const saber = dados.saberes.find(s => s.id === id);
     if (!saber) return;
@@ -513,306 +667,10 @@ function abrirSaber(id) {
     html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
 
     if (saber.conteudo) {
-        const c = saber.conteudo;
-
-        if (c.definicao) {
-            html += `<h3>Definição</h3><p>${c.definicao}</p>`;
-        }
-        if (c.analogia) {
-            html += `<h3>📝 Analogia</h3><p>${c.analogia}</p>`;
-        }
-        if (c.insight) {
-            html += `<h3>💡 Insight</h3><p>${c.insight}</p>`;
-        }
-        if (c.conceitos) {
-            html += `<h3>Conceitos</h3><ul>`;
-            c.conceitos.forEach(item => {
-                html += `<li><strong>${item.termo}:</strong> ${item.def}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.principios) {
-            html += `<h3>Os Sete Princípios</h3><ul>`;
-            c.principios.forEach(p => {
-                html += `<li><strong>${p.num}. ${p.nome}</strong> — "${p.frase}"<br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${p.desc}</span></li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mundos) {
-            html += `<h3>Os Três Mundos</h3><ul>`;
-            c.mundos.forEach(m => {
-                html += `<li><strong>${m.simbolo} ${m.nome}</strong><br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${m.desc}</span></li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.textos) {
-            html += `<h3>Textos da Biblioteca de Nag Hammadi</h3><ul>`;
-            c.textos.forEach(t => {
-                html += `<li><strong>${t.nome}</strong>: ${t.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.aplicacoes) {
-            html += `<h3>Lei da Correspondência</h3><table style="width:100%; border-collapse: collapse; margin-top:0.5rem;">`;
-            c.aplicacoes.forEach(a => {
-                html += `<tr><td style="padding:6px 8px; border:1px solid var(--cor-borda); font-weight:600">${a.maior}</td><td style="padding:6px 8px; border:1px solid var(--cor-borda)">${a.menor}</td></tr>`;
-            });
-            html += `</table>`;
-        }
-        if (c.fatores) {
-            html += `<h3>Fatores que Influenciam</h3><ul>`;
-            c.fatores.forEach(f => {
-                html += `<li><strong>${f.icone} ${f.nome}</strong>: ${f.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mecanismos) {
-            html += `<h3>Os Três Mecanismos Epigenéticos</h3><ul>`;
-            c.mecanismos.forEach(m => {
-                html += `<li><strong>${m.icone} ${m.nome}</strong>: ${m.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.citacoes) {
-            html += `<h3>Citações</h3><blockquote style="border-left: 3px solid var(--cor-destaque); padding-left: 1rem; font-style: italic; margin: 0.5rem 0;">${c.citacoes.join('<br>')}</blockquote>`;
-        }
-        if (c.parabolas) {
-            html += `<h3>Parábolas</h3>`;
-            c.parabolas.forEach(p => {
-                html += `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)">`;
-                html += `<h4 style="color:var(--cor-destaque);margin-bottom:0.3rem">${p.nome}</h4>`;
-                html += `<p><em>"${p.texto}"</em></p>`;
-                html += `<p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Sentido:</strong> ${p.sentido}</p>`;
-                html += `</div>`;
-            });
-        }
-        if (c.ensinamentos_chave) {
-            html += `<h3>Ensinamentos Chave</h3>`;
-            c.ensinamentos_chave.forEach(e => {
-                html += `<div class="pratica-box"><h4>${e.tema}</h4><p>${e.ensino}</p></div>`;
-            });
-        }
-        if (c.estrutura_cosmica) {
-            html += `<h3>Estrutura Cósmica</h3>`;
-            for (const [key, val] of Object.entries(c.estrutura_cosmica)) {
-                const nome = key.charAt(0).toUpperCase() + key.slice(1);
-                html += `<p><strong>${nome}:</strong> ${val}</p>`;
-            }
-        }
-        if (c.personagens) {
-            html += `<h3>Personagens do Drama Cósmico</h3><ul>`;
-            c.personagens.forEach(p => {
-                html += `<li><strong>${p.nome}:</strong> ${p.descricao}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.misterios) {
-            html += `<h3>Os Mistérios</h3><ul>`;
-            c.misterios.forEach(m => {
-                html += `<li><strong>${m.nome}:</strong> ${m.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.caracteristicas) {
-            html += `<h3>Características das Primeiras Comunidades</h3><ul>`;
-            c.caracteristicas.forEach(c => {
-                html += `<li><strong>${c.nome}:</strong> ${c.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.desafios) {
-            html += `<h3>Desafios e Expansão</h3><ul>`;
-            c.desafios.forEach(d => {
-                html += `<li><strong>${d.nome}:</strong> ${d.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.nag_hammadi) {
-            html += `<h3>Nag Hammadi (1945)</h3>`;
-            html += `<p>${c.nag_hammadi.descricao}</p>`;
-            if (c.nag_hammadi.textos) {
-                html += `<ul>`;
-                c.nag_hammadi.textos.forEach(t => {
-                    html += `<li><strong>${t.nome}:</strong> ${t.desc}</li>`;
-                });
-                html += `</ul>`;
-            }
-        }
-        if (c.controversias) {
-            html += `<h3>Controvérsias e Legado</h3><ul>`;
-            c.controversias.forEach(ct => {
-                html += `<li><strong>${ct.tema}:</strong> ${ct.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mitos_desmistificados) {
-            html += `<h3>Mitos Desmistificados</h3><ul>`;
-            c.mitos_desmistificados.forEach(m => {
-                html += `<li><strong>${m.mito}</strong> → ${m.verdade}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.tres_fatores) {
-            html += `<h3>Os 3 Fatores da Revolução da Consciência</h3><ul>`;
-            c.tres_fatores.forEach(f => {
-                html += `<li><strong>${f.fator}:</strong> ${f.descricao}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.ascensao) {
-            html += `<h3>A Ascensão da Kundalini</h3><p>${c.ascensao}</p>`;
-        }
-        if (c.chakras && c.chakras[0] && c.chakras[0].ordem) {
-            html += `<h3>Os 8 Chakras da Meditação</h3>`;
-            html += `<table style="width:100%;border-collapse:collapse;margin:0.8rem 0">`;
-            html += `<tr><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">#</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Chakra</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Sílaba</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Função</th></tr>`;
-            c.chakras.forEach(ch => {
-                html += `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.ordem}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.nome}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.silaba}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.funcao}</td></tr>`;
-            });
-            html += `</table>`;
-        }
-        if (c.instrucoes_passos) {
-            html += `<h3>Passo a Passo</h3><p>${c.instrucoes_passos.replace(/\n/g, '<br>')}</p>`;
-        }
-        if (c.ciencia_moderna) {
-            html += `<h3>Ciência Moderna e o Éter</h3>`;
-            c.ciencia_moderna.forEach(cm => {
-                html += `<div class="pratica-box"><h4>${cm.topico}</h4><p>${cm.desc}</p></div>`;
-            });
-        }
-        if (c.alquimia_interior) {
-            html += `<h3>${c.alquimia_interior.nome}</h3>`;
-            if (c.alquimia_interior.operacoes) {
-                html += `<ul>`;
-                c.alquimia_interior.operacoes.forEach(op => {
-                    html += `<li><strong>${op.etapa}:</strong> ${op.desc}</li>`;
-                });
-                html += `</ul>`;
-            }
-        }
-        if (c.praticas_acesso) {
-            html += `<h3>Práticas de Acesso ao Éter</h3><ul>`;
-            c.praticas_acesso.forEach(pa => {
-                html += `<li><strong>${pa.nome}</strong>${pa.proporcao ? ' (' + pa.proporcao + ')' : ''}: ${pa.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mapa_exoterico_esoterico) {
-            html += `<h3>Exotérico vs. Esotérico</h3>`;
-            html += `<div class="pratica-box"><h4>Exotérico (Público)</h4><p>${c.mapa_exoterico_esoterico.exoterico}</p></div>`;
-            html += `<div class="pratica-box"><h4>Esotérico (Reservado)</h4><p>${c.mapa_exoterico_esoterico.esoterico}</p></div>`;
-        }
-        if (c.quatro_mapas) {
-            html += `<h3>Os 4 Mapas de Sabedoria</h3>`;
-            c.quatro_mapas.forEach(m => {
-                html += `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)">`;
-                html += `<h4 style="color:var(--cor-destaque)">${m.nome}</h4>`;
-                html += `<p>${m.ensinamento}</p>`;
-                html += `<p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Prática:</strong> ${m.pratica}</p>`;
-                html += `</div>`;
-            });
-        }
-        if (c.ruido_moderno) {
-            html += `<h3>O Ruído Moderno</h3><p>${c.ruido_moderno}</p>`;
-        }
-        if (c.correntes) {
-            html += `<h3>As Grandes Correntes Filosóficas</h3>`;
-            c.correntes.forEach(cr => {
-                html += `<div class="pratica-box"><h4>${cr.nome}</h4><p>${cr.desc}</p></div>`;
-            });
-        }
-        if (c.ponte_ciencia_teosofia) {
-            html += `<h3>Ponte entre Ciência e Teosofia</h3>`;
-            html += `<div class="pratica-box"><h4>Ciência</h4><p>${c.ponte_ciencia_teosofia.ciencia}</p></div>`;
-            html += `<div class="pratica-box"><h4>Teosofia</h4><p>${c.ponte_ciencia_teosofia.teosofia}</p></div>`;
-            html += `<div class="pratica-box"><h4>Ponte</h4><p>${c.ponte_ciencia_teosofia.ponte}</p></div>`;
-        }
-        if (c.perspectivas) {
-            html += `<h3>Perspectivas sobre o Sentido</h3>`;
-            c.perspectivas.forEach(p => {
-                html += `<div class="pratica-box"><h4>${p.nome}</h4><p>${p.desc}</p></div>`;
-            });
-        }
-        if (c.if_no_meaning) {
-            html += `<h3>${c.if_no_meaning.titulo}</h3>`;
-            html += `<p>${c.if_no_meaning.reflexao}</p>`;
-            if (c.if_no_meaning.citacao) {
-                html += `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${c.if_no_meaning.citacao}</blockquote>`;
-            }
-        }
-        if (c.dimensoes) {
-            html += `<h3>As Dimensões do Pneuma</h3><ul>`;
-            c.dimensoes.forEach(d => {
-                html += `<li><strong>${d.nome}:</strong> ${d.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.tool_musica) {
-            html += `<h3>Pneuma na Música (Tool)</h3>`;
-            html += `<p>${c.tool_musica.analise}</p>`;
-            if (c.tool_musica.citacao) {
-                html += `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0;color:var(--cor-texto-sec)">${c.tool_musica.citacao}</blockquote>`;
-            }
-        }
-        if (c.praticas_diarias) {
-            html += `<h3>Práticas Diárias</h3><ul>`;
-            c.praticas_diarias.forEach(pd => {
-                html += `<li><strong>${pd.nome}:</strong> ${pd.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.conexao_heartmath) {
-            html += `<h3>Conexão com HeartMath/GCI</h3>`;
-            html += `<p>${c.conexao_heartmath.descricao}</p>`;
-            html += `<p style="margin-top:0.5rem;font-style:italic;color:var(--cor-texto-sec)">${c.conexao_heartmath.pratica}</p>`;
-        }
-        if (c.dicotomia) {
-            html += `<h3>Ser vs. Ter</h3>`;
-            c.dicotomia.forEach(d => {
-                const icone = d.polo === 'SER' ? '🜁' : '🜂';
-                html += `<div class="pratica-box"><h4>${icone} ${d.polo}</h4><ul>`;
-                d.caracteristicas.forEach(car => {
-                    html += `<li>${car}</li>`;
-                });
-                html += `</ul></div>`;
-            });
-        }
-        if (c.felicidade_como_verbo) {
-            html += `<h3>Felicidade como Verbo</h3>`;
-            html += `<p>${c.felicidade_como_verbo.tese}</p>`;
-            html += `<p style="margin-top:0.5rem">${c.felicidade_como_verbo.mecanica}</p>`;
-            if (c.felicidade_como_verbo.citacao) {
-                html += `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${c.felicidade_como_verbo.citacao}</blockquote>`;
-            }
-        }
-        if (c.tres_filtros) {
-            html += `<h3>Os 3 Filtros da Percepção</h3><ul>`;
-            c.tres_filtros.forEach(f => {
-                html += `<li><strong>${f.nome}:</strong> ${f.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.ferramentas_praticas) {
-            html += `<h3>Ferramentas Práticas</h3>`;
-            c.ferramentas_praticas.forEach(fp => {
-                html += `<div class="pratica-box"><h4>${fp.nome}</h4><p>${fp.desc}</p></div>`;
-            });
-        }
-        if (c.filtros_da_percepcao) {
-            html += `<h3>Filtros da Percepção</h3>`;
-            c.filtros_da_percepcao.forEach(fp => {
-                html += `<div class="pratica-box"><h4>${fp.nome}</h4>`;
-                html += `<p><strong>Mecanismo:</strong> ${fp.mecanismo}</p>`;
-                html += `<p style="margin-top:0.3rem"><strong>Transcendência:</strong> ${fp.transcendencia}</p>`;
-                html += `</div>`;
-            });
-        }
-        if (c.integracao_pratica) {
-            html += `<h3>Integração Prática no Dia a Dia</h3>`;
-            for (const [periodo, passos] of Object.entries(c.integracao_pratica)) {
-                html += `<div class="pratica-box"><h4>${periodo.charAt(0).toUpperCase() + periodo.slice(1)}</h4>`;
-                passos.forEach(p => { html += `<p>${p}</p>`; });
-                html += `</div>`;
+        for (const [key, val] of Object.entries(saber.conteudo)) {
+            const handler = contentHandlers[key];
+            if (handler) {
+                html += handler(val);
             }
         }
     }
@@ -834,9 +692,17 @@ function abrirSaber(id) {
         }
     }
 
+    if (saber.categoria_id === 6) {
+        html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link" style="margin-top:1rem">📖 Texto completo em Apócrifos</a>`;
+    }
+
     document.getElementById('modalContent').innerHTML = html;
     abrirModal();
 }
+
+// =============================================
+// Modal (Abrir/Fechar/Gerenciamento de Foco)
+// =============================================
 
 function abrirModal() {
     ultimoElementoFocado = document.activeElement;
@@ -877,6 +743,10 @@ function fecharModalBtn() {
     }
 }
 
+// =============================================
+// Utilitários (Busca, Tema, Aleatório)
+// =============================================
+
 function toggleBusca() {
     const container = document.getElementById('buscaContainer');
     const isVisible = container.style.display !== 'none';
@@ -900,6 +770,10 @@ function saberAleatorio() {
 
 // =============================================
 // Autenticação
+// =============================================
+
+// =============================================
+// Autenticação (Login/Logout)
 // =============================================
 
 function getToken() {
@@ -984,7 +858,9 @@ function atualizarBotaoAdmin() {
 }
 
 // =============================================
-// Admin — CRUD de saberes via API
+// =============================================
+// Admin — CRUD de Saberes via API
+// =============================================
 // =============================================
 
 function toggleAdmin() {

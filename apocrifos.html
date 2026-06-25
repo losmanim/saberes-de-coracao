@@ -6,6 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Apócrifa — Saberes de Coração</title>
     <meta name="description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos dos primeiros séculos">
+    <meta name="author" content="Saberes de Coração">
+    <meta property="og:title" content="Biblioteca Apócrifa — Saberes de Coração">
+    <meta property="og:description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos dos primeiros séculos">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Saberes de Coração">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Biblioteca Apócrifa — Saberes de Coração">
+    <meta name="twitter:description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -146,5 +155,12 @@
 
     <script src="js/app.js" defer></script>
     <script src="js/apocrifos.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
 </body>
 </html>

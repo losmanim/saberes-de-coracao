@@ -161,20 +161,40 @@ body::before {
 }
 
 .hero h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
     background: linear-gradient(135deg, var(--cor-espirito), var(--cor-destaque), var(--cor-ciencia));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.02em;
 }
 
-.hero p {
+.hero-subtitle {
+    color: var(--cor-texto-sec);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+    word-spacing: 2px;
+    opacity: 0.8;
+}
+
+.hero-quote {
     color: var(--cor-texto-sec);
     font-size: 1rem;
-    max-width: 600px;
-    margin: 0 auto 1rem;
+    max-width: 640px;
+    margin: 0 auto 1.2rem;
     font-style: italic;
+    line-height: 1.7;
+}
+
+.hero-quote::before {
+    content: '\201C';
+    font-size: 2rem;
+    color: var(--cor-destaque);
+    opacity: 0.4;
+    display: block;
+    margin-bottom: -0.5rem;
 }
 
 .hero-stats {
@@ -430,6 +450,25 @@ body::before {
     background: var(--cor-fundo);
     border-radius: 3px;
     color: var(--cor-texto-sec);
+}
+
+.card-apocrifo-link {
+    display: block;
+    text-align: center;
+    padding: 0.4rem;
+    margin: 0.6rem 0 0.4rem;
+    background: var(--cor-apocrifo);
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    border-radius: var(--radius);
+    transition: filter var(--transition);
+    letter-spacing: 0.3px;
+}
+
+.card-apocrifo-link:hover {
+    filter: brightness(1.2);
 }
 
 /* Multimídia */

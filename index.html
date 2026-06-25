@@ -7,6 +7,16 @@
     <title>Saberes de Coração</title>
     <meta name="description" content="Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira">
     <meta name="theme-color" content="#0d1117">
+    <meta name="author" content="Saberes de Coração">
+    <meta name="keywords" content="gnose, teosofia, epigenética, meditação, sabedoria, espiritualidade, filosofia, conhecimento">
+    <meta property="og:title" content="Saberes de Coração">
+    <meta property="og:description" content="Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Saberes de Coração">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Saberes de Coração">
+    <meta name="twitter:description" content="Plataforma de saberes ancestrais — conhecimento direto e experiencial da natureza divina">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -30,7 +40,8 @@
     <main class="main" role="main">
         <section class="hero" aria-label="Introdução">
             <h1>Saberes de Coração</h1>
-            <p>"O verdadeiro conhecimento deve ser passado de coração, com boa vontade, em empatia ativa, elevando o campo."</p>
+            <p class="hero-subtitle">Gnose · Ciência · Meditação · Filosofia · Vida Verdadeira</p>
+            <p class="hero-quote">"O conhecimento transformador não se acumula — pratica-se, vive-se, transmite-se de coração para coração, através dos tempos."</p>
             <div class="hero-stats" id="heroStats" aria-label="Estatísticas do projeto">
                 <div class="hero-stat">
                     <div class="hero-stat-num" id="statSaberes">—</div>
@@ -141,7 +152,7 @@
                 <h4>Conteúdo</h4>
                 <ul>
                     <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
-                    <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
+
                     <li><a href="biblioteca.html#sec-praticas">🧘 Práticas</a></li>
                     <li><a href="biblioteca.html#sec-ciencia">🔬 Ciência</a></li>
                 </ul>
@@ -163,6 +174,13 @@
         </div>
     </footer>
     <script src="js/app.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
 </body>
 
 </html>

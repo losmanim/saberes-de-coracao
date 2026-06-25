@@ -10,8 +10,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('tema') === 'claro') {
         document.body.classList.add('modo-claro');
     }
-    carregarDados();
+    carregarDados().then(() => {
+        if (location.hash) {
+            const id = location.hash.replace('#', '');
+            setTimeout(() => abrirAccordionPorId(id), 500);
+        }
+    });
 });
+
+function abrirAccordionPorId(id) {
+    const header = document.querySelector(`.accordion-header[data-id="${id}"]`);
+    if (!header) return;
+    header.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(() => {
+        if (!header.classList.contains('active')) {
+            header.click();
+        }
+    }, 300);
+}
 
 async function carregarDados() {
     const container = document.getElementById('apocrifosContainer');
