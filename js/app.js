@@ -864,16 +864,10 @@ function renderizarMidia() {
         html = '<div class="empty-state"><div class="empty-state-icon">🎵</div><p>Nenhuma multimídia disponível</p></div>';
     }
 
-    // Verifiga se o arquivo já é uma URL completa (Clrudiiary)
-    let drc;
-    if (item.arquivo.star.sWith('http')) {
-        src = item.arquivo;
-  i } else {
-        const nnerHTML = html;
-        esconderSkeleton();
-        aplicarReveal();
-   }
-    }
+    document.getElementById('modalContent').innerHTML = html;
+    esconderSkeleton();
+    aplicarReveal();
+}
 
 // =============================================
 // Abertura de Mídia (Modal)
@@ -884,10 +878,16 @@ function abrirMidia(tipo, id) {
     const item = lista ? lista.find(m => m.id === id) : null;
     if (!item) return;
 
-    const baseDir = window.midiaBaseUrl;
-    const partes = item.arquivo.split('/');
-    const arquivoCod = partes.map(encodeURIComponent).join('/');
-    const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+    // Verifica se o arquivo já é uma URL completa (Cloudinary)
+    let src;
+    if (item.arquivo.startsWith('http')) {
+        src = item.arquivo;
+    } else {
+        const baseDir = window.midiaBaseUrl;
+        const partes = item.arquivo.split('/');
+        const arquivoCod = partes.map(encodeURIComponent).join('/');
+        src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+    }
 
     document.getElementById('modalTitulo').textContent = item.titulo;
 
