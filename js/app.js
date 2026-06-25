@@ -685,9 +685,25 @@ async function carregarDados() {
             saberDoDia();
         }
     } catch (e) {
-        if (cache) return;
-        if (grid) {
-            grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Certifique-se de que o servidor Express está rodando.</small></p></div>';
+        console.error('Erro ao carregar dados da API:', e);
+        // Fallback: tentar carregar JSON diretamente
+        if (!cache) {
+            try {
+                console.log('Tentando fallback para JSON direto...');
+                const jsonResponse = await fetch('/database/dados-unificados.json');
+                if (!jsonResponse.ok) throw new Error('HTTP ' + jsonResponse.status);
+                const dadosJson = await jsonResponse.json();
+                dados = dadosJson;
+                salvarDadosCache(dadosJson);
+                atualizarEstatisticas();
+                if (grid) renderizarSaberes(dados.saberes);
+                saberDoDia();
+            } catch (fallbackError) {
+                console.error('Fallback também falhou:', fallbackError);
+                if (grid) {
+                    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Tentativa de fallback: ' + fallbackError.message + '</small></p></div>';
+                }
+            }
         }
     }
 }
