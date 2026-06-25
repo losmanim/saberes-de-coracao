@@ -179,7 +179,27 @@ app.get("/api/midia", async (req, res) => {
 app.get("/api/dados", async (req, res) => {
 	try {
 		const dados = await lerDados();
-		res.json(dados);
+		// Remove conteudo detalhado para reduzir tamanho
+		const dadosLite = {
+			...dados,
+			saberes: dados.saberes.map(s => ({
+				...s,
+				conteudo: undefined
+			}))
+		};
+		res.json(dadosLite);
+	} catch (erro) {
+		console.error(erro);
+		res.status(500).json({ erro: "Erro ao ler dados" });
+	}
+});
+
+app.get("/api/saberes/:id/conteudo", async (req, res) => {
+	try {
+		const dados = await lerDados();
+		const saber = (dados.saberes || []).find(s => s.id === req.params.id);
+		if (!saber) return res.status(404).json({ erro: "Saber não encontrado" });
+		res.json({ conteudo: saber.conteudo });
 	} catch (erro) {
 		console.error(erro);
 		res.status(500).json({ erro: "Erro ao ler dados" });

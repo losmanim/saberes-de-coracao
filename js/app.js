@@ -976,7 +976,7 @@ const contentHandlers = {
 // Abertura de Saber (Modal de Conteúdo)
 // =============================================
 
-function abrirSaber(id) {
+async function abrirSaber(id) {
     const saber = dados.saberes.find(s => s.id === id);
     if (!saber) return;
 
@@ -987,6 +987,26 @@ function abrirSaber(id) {
 
     let html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
     html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+
+    // Lazy loading do conteúdo
+    if (!saber.conteudo) {
+        html += `<div id="loading-conteudo" style="text-align:center;padding:2rem"><div class="skeleton" style="height:100px;margin-bottom:1rem"></div><p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p></div>`;
+        document.getElementById('modalContent').innerHTML = html;
+        abrirModal();
+
+        try {
+            const res = await fetch(`/api/saberes/${id}/conteudo`);
+            if (!res.ok) throw new Error('Erro ao carregar conteúdo');
+            const data = await res.json();
+            saber.conteudo = data.conteudo;
+
+            html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
+            html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+        } catch (e) {
+            document.getElementById('loading-conteudo').innerHTML = `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo: ${e.message}</p>`;
+            return;
+        }
+    }
 
     if (saber.conteudo) {
         for (const [key, val] of Object.entries(saber.conteudo)) {
