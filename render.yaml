@@ -3,7 +3,7 @@ services:
     name: saberes-de-coracao
     env: node
     buildCommand: npm install
-    startCommand: node server/app.js
+    startCommand: node app.js
     envVars:
       - key: NODE_VERSION
         value: 22

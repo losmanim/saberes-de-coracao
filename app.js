@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const ADMIN_PASS = process.env.ADMIN_PASS || "admin123";
-const CAMINHO_FRONTEND = resolve(__dirname, "..");
+const CAMINHO_FRONTEND = resolve(__dirname, ".");
 const CAMINHO_DADOS = resolve(__dirname, "./data/dados-unificados.json");
 
 const app = express();
