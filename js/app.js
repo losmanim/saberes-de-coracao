@@ -864,7 +864,9 @@ function renderizarMidia() {
         html = '<div class="empty-state"><div class="empty-state-icon">🎵</div><p>Nenhuma multimídia disponível</p></div>';
     }
 
+    document.getElementById('modalTitulo').textContent = '🎵 Multimídia';
     document.getElementById('modalContent').innerHTML = html;
+    abrirModal();
     esconderSkeleton();
     aplicarReveal();
 }
