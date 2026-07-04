@@ -7,6 +7,9 @@ const DADOS_CACHE_VERSAO_KEY = 'saberes_cache_versao';
 const FAVORITOS_KEY = 'saberes_favoritos';
 const SABER_DIA_KEY = 'saberes_saber_dia';
 const CONTINUE_KEY = 'saberes_continue';
+const ABERTOS_KEY = 'saberes_abertos';
+
+const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
 
 // =============================================
 // Estado Global
@@ -103,8 +106,10 @@ function toggleFavorito(id, event) {
     const idx = favs.indexOf(id);
     if (idx === -1) {
         favs.push(id);
+        mostrarToast('❤️ Adicionado aos favoritos', 'sucesso');
     } else {
         favs.splice(idx, 1);
+        mostrarToast('💔 Removido dos favoritos');
     }
     salvarFavoritos(favs);
 
@@ -168,6 +173,44 @@ function fecharContinue() {
 }
 
 // =============================================
+// Rastreio de Saberes Abertos
+// =============================================
+
+function getSaberesAbertos() {
+    try { return JSON.parse(localStorage.getItem(ABERTOS_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function marcarSaberAberto(id) {
+    const abertos = getSaberesAbertos();
+    if (!abertos.includes(id)) {
+        abertos.push(id);
+        localStorage.setItem(ABERTOS_KEY, JSON.stringify(abertos));
+    }
+}
+
+// =============================================
+// Toast Notifications
+// =============================================
+
+function mostrarToast(mensagem, tipo) {
+    const container = document.getElementById('toastContainer') || (() => {
+        const c = document.createElement('div');
+        c.id = 'toastContainer';
+        c.className = 'toast-container';
+        document.body.appendChild(c);
+        return c;
+    })();
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    if (tipo === 'sucesso') toast.style.color = '#7ee787';
+    else if (tipo === 'erro') toast.style.color = '#f85149';
+    toast.textContent = mensagem;
+    container.appendChild(toast);
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 2500);
+}
+
+// =============================================
 // Compartilhar
 // =============================================
 
@@ -192,15 +235,7 @@ function compartilharSaber(id) {
         temp.select();
         try {
             document.execCommand('copy');
-            const status = document.getElementById('adminStatus') || document.createElement('div');
-            if (!status.id) {
-                status.id = 'shareStatus';
-                status.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--cor-card);border:1px solid var(--cor-borda);padding:0.5rem 1rem;border-radius:var(--radius);font-size:0.85rem;z-index:999;color:var(--cor-texto)';
-                document.body.appendChild(status);
-            }
-            status.textContent = '✅ Link copiado!';
-            status.style.display = 'block';
-            setTimeout(() => { status.style.display = 'none'; }, 2500);
+            mostrarToast('✅ Link copiado!', 'sucesso');
         } catch {}
         document.body.removeChild(temp);
     }
@@ -725,6 +760,21 @@ async function carregarDados() {
 // Estatísticas
 // =============================================
 
+function animarContagem(el, alvo) {
+    if (!el) return;
+    const dur = 600;
+    const inicio = performance.now();
+    const inicial = parseInt(el.dataset.valorInicial) || 0;
+    function atualizar(agora) {
+        const progresso = Math.min((agora - inicio) / dur, 1);
+        const eased = 1 - Math.pow(1 - progresso, 3);
+        const valor = Math.floor(inicial + eased * (alvo - inicial));
+        el.textContent = valor;
+        if (progresso < 1) requestAnimationFrame(atualizar);
+    }
+    requestAnimationFrame(atualizar);
+}
+
 function atualizarEstatisticas() {
     if (!dados) return;
     const nSaberes = dados.saberes ? dados.saberes.length : 0;
@@ -732,9 +782,9 @@ function atualizarEstatisticas() {
     const nMidia = (dados.midia ? (dados.midia.audios ? dados.midia.audios.length : 0) : 0) +
         (dados.midia ? (dados.midia.videos ? dados.midia.videos.length : 0) : 0);
     const el = id => document.getElementById(id);
-    if (el('statSaberes')) el('statSaberes').textContent = nSaberes;
-    if (el('statPraticas')) el('statPraticas').textContent = nPraticas;
-    if (el('statMidia')) el('statMidia').textContent = nMidia;
+    animarContagem(el('statSaberes'), nSaberes);
+    animarContagem(el('statPraticas'), nPraticas);
+    animarContagem(el('statMidia'), nMidia);
 }
 
 // =============================================
@@ -760,11 +810,17 @@ function renderizarSaberes(saberes) {
 
     console.log('Renderizando', saberes.length, 'saberes');
     const favs = getFavoritos();
-    grid.innerHTML = saberes.map(saber => `
-            <div class="card" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+    const abertos = getSaberesAbertos();
+    const cardsHtml = saberes.map(saber => {
+        const isNovo = !abertos.includes(saber.id);
+        const isVisited = abertos.includes(saber.id);
+        const catIcon = CAT_EMOJIS[saber.categoria_id] || '📖';
+        return `
+            <div class="card ${isVisited ? 'visited' : ''}" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+                ${isNovo ? '<span class="card-novo">✨ Novo</span>' : ''}
                 <button class="card-fav ${favs.includes(saber.id) ? 'active' : ''}" data-id="${saber.id}" onclick="toggleFavorito('${saber.id}', event)" onkeydown="event.stopPropagation()" aria-label="${favs.includes(saber.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(saber.id) ? '❤️' : '🤍'}</button>
                 <div class="card-header">
-                    <span class="card-titulo">${saber.titulo}</span>
+                    <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${saber.titulo}</span>
                     <span class="card-nivel ${saber.nivel}">${saber.nivel}</span>
                 </div>
                 <p class="card-desc">${saber.descricao}</p>
@@ -775,8 +831,10 @@ function renderizarSaberes(saberes) {
                 <div class="card-tags">
                     ${saber.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
                 </div>
-            </div>
-        `).join('');
+            </div>`;
+    }).join('');
+
+    grid.innerHTML = cardsHtml;
 
     console.log('Renderização concluída');
     esconderSkeleton();
@@ -1010,6 +1068,18 @@ const contentHandlers = {
         if (!v[0] || !v[0].ordem) return '';
         return `<h3>Os 8 Chakras da Meditação</h3><table style="width:100%;border-collapse:collapse;margin:0.8rem 0"><tr><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">#</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Chakra</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Sílaba</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Função</th></tr>${v.map(ch => `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.ordem}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.nome}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.silaba}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.funcao}</td></tr>`).join('')}</table>`;
     },
+
+    // Handlers órfãos adicionados
+    texto_integral: (v) => `<h3>📜 Texto Integral</h3><div class="texto-integral">${v.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}</div>`,
+    mantras: (v) => `<h3>🔮 Mantras</h3>${v.map(m => `<div class="pratica-box"><h4>${m.nome}</h4><p><strong>Origem:</strong> ${m.origem}</p><p>${m.desc}</p>${m.quando ? `<p style="margin-top:0.3rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>🕐 ${m.quando}</em></p>` : ''}</div>`).join('')}`,
+    beneficios: (v) => `<h3>✅ Benefícios</h3><ul>${v.map(b => `<li>${b}</li>`).join('')}</ul>`,
+    sintese: (v) => `<h3>📋 Síntese</h3><ul>${v.map(s => `<li>${s}</li>`).join('')}</ul>`,
+    obras: (v) => `<h3>📚 Obras</h3>${v.map(o => `<div class="content-card"><h4>${o.titulo}</h4><p>${o.desc}</p></div>`).join('')}`,
+    visoes: (v) => `<h3>👁️ Visões da Jornada</h3>${v.map(vis => `<div class="pratica-box"><h4>${vis.nome}</h4><p>${vis.desc}</p></div>`).join('')}`,
+    aviso: (v) => `<div class="pratica-box" style="border-left-color:var(--cor-jornada)"><h4 style="color:var(--cor-jornada)">⚠️ Aviso</h4><p>${v}</p></div>`,
+    tecnica: (v) => `<h3>🔬 Técnica</h3><div class="pratica-box"><p>${v}</p></div>`,
+    dado: (v) => `<div class="pratica-box" style="border-left-color:var(--cor-ciencia);text-align:center"><p style="font-size:1.1rem;font-weight:600;color:var(--cor-ciencia);margin:0">${v}</p></div>`,
+    desc: (v) => `<p style="color:var(--cor-texto-sec);font-style:italic">${v}</p>`,
 };
 
 // =============================================
@@ -1020,6 +1090,7 @@ async function abrirSaber(id) {
     const saber = dados.saberes.find(s => s.id === id);
     if (!saber) return;
 
+    marcarSaberAberto(id);
     salvarContinueLendo(id);
     mostrarContinueLendo();
 
@@ -1076,6 +1147,23 @@ async function abrirSaber(id) {
 
     if (saber.categoria_id === 6) {
         html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link" style="margin-top:1rem">📖 Texto completo em Apócrifos</a>`;
+    }
+
+    // Próximo Saber
+    const saberIdx = dados.saberes.findIndex(s => s.id === id);
+    const nextSaber = saberIdx !== -1 ? dados.saberes.slice(saberIdx + 1).find(s => s.categoria_id === saber.categoria_id) || dados.saberes.find((s, i) => i !== saberIdx && s.categoria_id === saber.categoria_id) : null;
+    if (nextSaber && nextSaber.id !== id) {
+        html += `<div class="next-saber-wrap">
+            <h3>📌 Continuar Jornada</h3>
+            <div class="next-saber-card" onclick="fecharModalBtn();setTimeout(()=>abrirSaber('${nextSaber.id}'),300)" tabindex="0" role="button" aria-label="Próximo: ${nextSaber.titulo}">
+                <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
+                <div class="next-saber-info">
+                    <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
+                    <div class="next-saber-titulo">${nextSaber.titulo}</div>
+                </div>
+                <div class="next-saber-arrow">→</div>
+            </div>
+        </div>`;
     }
 
     html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
