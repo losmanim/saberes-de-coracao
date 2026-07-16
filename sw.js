@@ -101,7 +101,10 @@ async function cacheFirst(request, cacheName) {
     const response = await fetch(request);
     if (response.ok) {
       const copy = response.clone();
-      caches.open(cacheName || CACHE).then((cache) => cache.put(request, copy));
+      // Ignorar requisições chrome-extension e outros protocolos não-HTTP(S)
+      if (request.url.startsWith('http://') || request.url.startsWith('https://')) {
+        caches.open(cacheName || CACHE).then((cache) => cache.put(request, copy)).catch(() => {});
+      }
     }
     return response;
   } catch {

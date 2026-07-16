@@ -404,7 +404,15 @@ function salvarDadosCache(dados) {
 
 async function carregarDados() {
     console.log('Iniciando carregamento de dados...');
-    const grid = document.getElementById('cardsGrid');
+    let grid = document.getElementById('cardsGrid');
+    
+    // Retry se grid não encontrado (timing issue)
+    if (!grid) {
+        console.warn('Grid não encontrado na primeira tentativa, aguardando DOM...');
+        await new Promise(r => setTimeout(r, 100));
+        grid = document.getElementById('cardsGrid');
+    }
+    
     console.log('Grid encontrado:', !!grid);
 
     const cache = carregarDadosCache();
