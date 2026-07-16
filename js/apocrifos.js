@@ -45,20 +45,22 @@ async function carregarDados() {
     const res = await fetch('/api/dados');
     if (!res.ok) throw new Error('HTTP ' + res.status);
     dados = await res.json();
-    apocrifos_textos = apocrifos_dados.saberes.filter(s => s.categoria_id === 6);
+    apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6);
     atualizarStats();
     renderizarBotoesCategoria();
     renderizarTextos(apocrifos_textos);
   } catch (e) {
+    console.error('Erro ao carregar apócrifos:', e);
     container.innerHTML = window.DOMPurify ? DOMPurify.sanitize(`
       <div class="empty-state">
         <div class="empty-state-icon">⚠️</div>
-        <p>Erro ao carregar apocrifos_dados.</p>
+        <p>Erro ao carregar dados.</p>
         <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">
-          ${e.message}<br>
-          <small>Certifique-se de que o servidor Express esta rodando.</small>
+          ${e.message || 'Erro de conexão'}<br>
+          <small>Tente recarregar a página ou verifique sua conexão.</small>
         </p>
-      </div>`) : `<div class="empty-state"><p>Erro ao carregar apocrifos_dados.</p></div>`;
+        <button onclick="location.reload()" class="pilar-btn" style="margin-top:1rem">🔄 Recarregar</button>
+      </div>`) : `<div class="empty-state"><p>Erro ao carregar dados.</p></div>`;
   }
 }
 

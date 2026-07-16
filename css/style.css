@@ -2319,6 +2319,43 @@ a:focus-visible,
     pointer-events: none;
 }
 
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem 1rem;
+    margin-top: 1rem;
+}
+
+.pagination-btn {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: var(--cor-destaque);
+    color: #fff;
+    border-color: var(--cor-destaque);
+}
+
+.pagination-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pagination-info {
+    color: var(--cor-texto-sec);
+    font-size: 0.9rem;
+}
+
 .btn-icon {
     position: relative;
 }

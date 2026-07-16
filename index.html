@@ -24,6 +24,46 @@
     <meta name="twitter:title" content="Saberes de Coração">
     <meta name="twitter:description" content="Plataforma de saberes ancestrais — conhecimento direto e experiencial da natureza divina">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Saberes de Coração",
+        "description": "Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira",
+        "url": "https://saberes-de-coracao.onrender.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://saberes-de-coracao.onrender.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Saberes de Coração",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://saberes-de-coracao.onrender.com/icons/icon.svg"
+            }
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Saberes de Coração",
+        "description": "Plataforma educacional dedicada à exploração do conhecimento em suas múltiplas dimensões — espiritual, prática, científica, existencial e social",
+        "url": "https://saberes-de-coracao.onrender.com",
+        "sameAs": [],
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "BR"
+        }
+    }
+    </script>
+    
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -126,6 +166,11 @@
                 <p>Carregando saberes...</p>
             </div>
         </div>
+        <div class="pagination" id="pagination" hidden>
+            <button class="pagination-btn" id="prevPage" onclick="mudarPagina(-1)" aria-label="Página anterior">← Anterior</button>
+            <span class="pagination-info" id="paginationInfo">Página 1 de 1</span>
+            <button class="pagination-btn" id="nextPage" onclick="mudarPagina(1)" aria-label="Próxima página">Próxima →</button>
+        </div>
     </main>
     <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
         <div class="modal" onclick="event.stopPropagation()">
@@ -207,7 +252,6 @@
             </div>
         </div>
     </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js"></script>
     <script src="js/player.js" defer></script>
     <script src="js/content.js" defer></script>

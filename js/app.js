@@ -41,6 +41,10 @@ let dados = null;
 let categoriaAtual = 'all';
 let ultimoElementoFocado = null;
 let continueSaberId = null;
+let paginaAtual = 1;
+let itensPorPagina = 24;
+let totalPaginas = 1;
+let todosSaberes = [];
 
 // =============================================
 // Saber do Dia
@@ -212,6 +216,35 @@ function marcarSaberAberto(id) {
 }
 
 // =============================================
+// Error Handler Global
+// =============================================
+
+function tratarErro(erro, contexto = 'Operação') {
+    console.error(`[${contexto}] Erro:`, erro);
+    
+    let mensagem = 'Ocorreu um erro inesperado.';
+    
+    if (erro instanceof TypeError) {
+        mensagem = 'Erro de processamento de dados.';
+    } else if (erro instanceof SyntaxError) {
+        mensagem = 'Erro ao interpretar os dados recebidos.';
+    } else if (erro.message) {
+        if (erro.message.includes('fetch')) {
+            mensagem = 'Erro de conexão. Verifique sua internet.';
+        } else if (erro.message.includes('HTTP 4')) {
+            mensagem = 'Recurso não encontrado ou dados inválidos.';
+        } else if (erro.message.includes('HTTP 5')) {
+            mensagem = 'Erro no servidor. Tente novamente mais tarde.';
+        } else {
+            mensagem = erro.message;
+        }
+    }
+    
+    mostrarToast(`❌ ${mensagem}`, 'erro');
+    return mensagem;
+}
+
+// =============================================
 // Toast Notifications
 // =============================================
 
@@ -227,9 +260,10 @@ function mostrarToast(mensagem, tipo) {
     toast.className = 'toast';
     if (tipo === 'sucesso') toast.style.color = '#7ee787';
     else if (tipo === 'erro') toast.style.color = '#f85149';
+    else if (tipo === 'aviso') toast.style.color = '#d29922';
     toast.textContent = mensagem;
     container.appendChild(toast);
-    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 2500);
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
 }
 
 // =============================================
@@ -260,6 +294,66 @@ function compartilharSaber(id) {
             mostrarToast('✅ Link copiado!', 'sucesso');
         } catch {}
         document.body.removeChild(temp);
+    }
+}
+
+// =============================================
+// Paginação
+// =============================================
+
+function atualizarPaginacao() {
+    const pagination = document.getElementById('pagination');
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const paginationInfo = document.getElementById('paginationInfo');
+
+    if (!pagination) return;
+
+    const saberesFiltrados = obterSaberesFiltrados();
+    totalPaginas = Math.ceil(saberesFiltrados.length / itensPorPagina);
+
+    if (totalPaginas <= 1) {
+        pagination.hidden = true;
+        return;
+    }
+
+    pagination.hidden = false;
+    prevBtn.disabled = paginaAtual === 1;
+    nextBtn.disabled = paginaAtual === totalPaginas;
+    paginationInfo.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+}
+
+function mudarPagina(delta) {
+    const saberesFiltrados = obterSaberesFiltrados();
+    totalPaginas = Math.ceil(saberesFiltrados.length / itensPorPagina);
+    
+    const novaPagina = paginaAtual + delta;
+    if (novaPagina < 1 || novaPagina > totalPaginas) return;
+
+    paginaAtual = novaPagina;
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const saberesPagina = saberesFiltrados.slice(inicio, fim);
+
+    renderizarSaberes(saberesPagina);
+    atualizarPaginacao();
+    
+    // Scroll para o topo da grid
+    document.getElementById('cardsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function obterSaberesFiltrados() {
+    if (!dados || !dados.saberes) return [];
+    
+    todosSaberes = dados.saberes.map(normalizarSaber);
+
+    if (categoriaAtual === 'all') {
+        return todosSaberes;
+    } else if (categoriaAtual === 'fav') {
+        const favs = getFavoritos();
+        return todosSaberes.filter(s => favs.includes(s.id));
+    } else {
+        return todosSaberes.filter(s => String(s.categoria_id) === categoriaAtual);
     }
 }
 
@@ -445,15 +539,30 @@ async function carregarDados() {
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
             if (grid) {
-                console.log('Renderizando saberes novos:', dados.saberes?.length);
-                renderizarSaberes(dados.saberes);
+                console.log('Dados carregados:', dados.saberes?.length, 'saberes');
+                // Aplicar paginação
+                const saberesFiltrados = obterSaberesFiltrados();
+                const inicio = (paginaAtual - 1) * itensPorPagina;
+                const fim = inicio + itensPorPagina;
+                const saberesPagina = saberesFiltrados.slice(inicio, fim);
+                renderizarSaberes(saberesPagina);
+                atualizarPaginacao();
             }
             saberDoDia();
         } else {
             console.log('Dados em cache estão atualizados');
+            // Aplicar paginação mesmo do cache
+            if (grid) {
+                const saberesFiltrados = obterSaberesFiltrados();
+                const inicio = (paginaAtual - 1) * itensPorPagina;
+                const fim = inicio + itensPorPagina;
+                const saberesPagina = saberesFiltrados.slice(inicio, fim);
+                renderizarSaberes(saberesPagina);
+                atualizarPaginacao();
+            }
         }
     } catch (e) {
-        console.error('Erro ao carregar dados da API:', e);
+        tratarErro(e, 'Carregar dados');
         // Fallback: tentar carregar JSON diretamente
         if (!cache) {
             try {
@@ -466,12 +575,19 @@ async function carregarDados() {
                 salvarDadosCache(dadosJson);
                 atualizarEstatisticas();
                 if (grid) {
-                    console.log('Renderizando saberes do JSON:', dados.saberes?.length);
-                    renderizarSaberes(dados.saberes);
+                    console.log('Dados carregados via fallback:', dados.saberes?.length, 'saberes');
+                    // Aplicar paginação no fallback
+                    const saberesFiltrados = obterSaberesFiltrados();
+                    const inicio = (paginaAtual - 1) * itensPorPagina;
+                    const fim = inicio + itensPorPagina;
+                    const saberesPagina = saberesFiltrados.slice(inicio, fim);
+                    renderizarSaberes(saberesPagina);
+                    atualizarPaginacao();
                 }
                 saberDoDia();
+                mostrarToast('✅ Dados carregados via fallback', 'sucesso');
             } catch (fallbackError) {
-                console.error('Fallback também falhou:', fallbackError);
+                tratarErro(fallbackError, 'Fallback JSON');
                 if (grid) {
                     $(grid, '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Tentativa de fallback: ' + fallbackError.message + '</small></p></div>');
                 }
@@ -577,6 +693,7 @@ function esconderSkeleton() {
 
 function filtrarCategoria(cat) {
     categoriaAtual = cat;
+    paginaAtual = 1; // Resetar para página 1 ao mudar categoria
 
     document.querySelectorAll('.pilar-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -592,19 +709,13 @@ function filtrarCategoria(cat) {
         return;
     }
 
-    if (cat === 'fav') {
-        const favs = getFavoritos();
-        const filtrados = dados.saberes.filter(s => favs.includes(s.id));
-        renderizarSaberes(filtrados);
-        return;
-    }
-
-    if (cat === 'all') {
-        renderizarSaberes(dados.saberes);
-    } else {
-        const filtrados = dados.saberes.filter(s => s.categoria_id === parseInt(cat));
-        renderizarSaberes(filtrados);
-    }
+    const saberesFiltrados = obterSaberesFiltrados();
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const saberesPagina = saberesFiltrados.slice(inicio, fim);
+    
+    renderizarSaberes(saberesPagina);
+    atualizarPaginacao();
 }
 
 // =============================================
@@ -762,14 +873,17 @@ async function abrirSaber(id) {
 
         try {
             const res = await fetch(`/api/saberes/${id}/conteudo`);
-            if (!res.ok) throw new Error('Erro ao carregar conteúdo');
+            if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             saber.conteudo = data.conteudo;
 
             html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
             html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
         } catch (e) {
-            $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo: ${e.message}</p>`);
+            tratarErro(e, 'Carregar conteúdo');
+            if (document.getElementById('loading-conteudo')) {
+                $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo. Tente novamente.</p>`);
+            }
             return;
         }
     }
