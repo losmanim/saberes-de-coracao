@@ -37,31 +37,40 @@ function abrirAccordionPorId(id) {
 let apocrifos_dados = {};
 let apocrifos_textos = [];
 let apocrifos_categoria = 'all';
-let apocrifos_apocrifos_fontScale = 100;
+let apocrifos_fontScale = 100;
+let ultimoElementoFocado = null;
 
 async function carregarDados() {
   const container = document.getElementById('apocrifosContainer');
-  try {
-    const res = await fetch('/api/dados');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    dados = await res.json();
-    apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6);
-    atualizarStats();
-    renderizarBotoesCategoria();
-    renderizarTextos(apocrifos_textos);
-  } catch (e) {
-    console.error('Erro ao carregar apócrifos:', e);
+  
+  // Wait for app.js to load data if not already loaded
+  if (!dados) {
+    const maxWait = 10000;
+    const startTime = Date.now();
+    while (!dados && Date.now() - startTime < maxWait) {
+      await new Promise(r => setTimeout(r, 100));
+    }
+  }
+  
+  if (!dados || !dados.saberes) {
+    console.error('Dados não carregados pelo app.js');
     container.innerHTML = window.DOMPurify ? DOMPurify.sanitize(`
       <div class="empty-state">
         <div class="empty-state-icon">⚠️</div>
         <p>Erro ao carregar dados.</p>
         <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">
-          ${e.message || 'Erro de conexão'}<br>
-          <small>Tente recarregar a página ou verifique sua conexão.</small>
+          Dados não disponíveis<br>
+          <small>Tente recarregar a página.</small>
         </p>
         <button onclick="location.reload()" class="pilar-btn" style="margin-top:1rem">🔄 Recarregar</button>
       </div>`) : `<div class="empty-state"><p>Erro ao carregar dados.</p></div>`;
+    return;
   }
+  
+  apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6);
+  atualizarStats();
+  renderizarBotoesCategoria();
+  renderizarTextos(apocrifos_textos);
 }
 
 function atualizarStats() {
