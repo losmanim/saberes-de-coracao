@@ -257,10 +257,13 @@ function toggleTema() {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModalBtn(); });
-document.getElementById('modalOverlay').addEventListener('keydown', function(e) {
-  if (e.key !== 'Tab') return;
-  const modal = this.querySelector('.modal');
-  const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+const modalOverlayApocrifos = document.getElementById('modalOverlay');
+if (modalOverlayApocrifos) {
+  modalOverlayApocrifos.addEventListener('keydown', function(e) {
+    if (e.key !== 'Tab') return;
+    const modal = this.querySelector('.modal');
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
   if (focusable.length === 0) return;
   const first = focusable[0], last = focusable[focusable.length - 1];
   if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }

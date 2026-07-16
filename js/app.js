@@ -538,7 +538,9 @@ async function carregarDados() {
             dados = novosDados;
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
-            if (grid) {
+            // Buscar grid novamente após carregar dados
+            const gridAtualizado = document.getElementById('cardsGrid');
+            if (gridAtualizado) {
                 console.log('Dados carregados:', dados.saberes?.length, 'saberes');
                 // Aplicar paginação
                 const saberesFiltrados = obterSaberesFiltrados();
@@ -551,8 +553,11 @@ async function carregarDados() {
             saberDoDia();
         } else {
             console.log('Dados em cache estão atualizados');
-            // Aplicar paginação mesmo do cache
-            if (grid) {
+            // Buscar grid novamente para cache atualizado
+            const gridAtualizado = document.getElementById('cardsGrid');
+            if (gridAtualizado) {
+                console.log('Renderizando do cache:', dados.saberes?.length, 'saberes');
+                // Aplicar paginação mesmo do cache
                 const saberesFiltrados = obterSaberesFiltrados();
                 const inicio = (paginaAtual - 1) * itensPorPagina;
                 const fim = inicio + itensPorPagina;
@@ -574,7 +579,9 @@ async function carregarDados() {
                 dados = dadosJson;
                 salvarDadosCache(dadosJson);
                 atualizarEstatisticas();
-                if (grid) {
+                // Buscar grid novamente no fallback
+                const gridFallback = document.getElementById('cardsGrid');
+                if (gridFallback) {
                     console.log('Dados carregados via fallback:', dados.saberes?.length, 'saberes');
                     // Aplicar paginação no fallback
                     const saberesFiltrados = obterSaberesFiltrados();
@@ -955,18 +962,21 @@ function abrirModal() {
     document.querySelector('.modal-close').focus();
 }
 
-document.getElementById('modalOverlay').addEventListener('keydown', function(e) {
-    if (e.key !== 'Tab') return;
-    const modal = this.querySelector('.modal');
-    const focusable = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    if (focusable.length === 0) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
+// Event listener para trap de foco no modal (só quando o elemento existir)
+const modalOverlay = document.getElementById('modalOverlay');
+if (modalOverlay) {
+    modalOverlay.addEventListener('keydown', function(e) {
+        if (e.key !== 'Tab') return;
+        const modal = this.querySelector('.modal');
+        const focusable = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
     } else if (!e.shiftKey && document.activeElement === last) {
         e.preventDefault();
         first.focus();
