@@ -1129,3 +1129,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+// =============================================
+// Exportar funções para window (onclick handlers)
+// =============================================
+window.abrirSaber = abrirSaber;
+window.fecharModal = fecharModal;
+window.filtrarCategoria = filtrarCategoria;
+window.toggleFavorito = toggleFavorito;
+window.toggleBusca = toggleBusca;
+window.buscarSaberes = buscarSaberes;
+window.saberAleatorio = saberAleatorio;
+window.toggleTema = toggleTema;
+window.mostrarAtalhos = mostrarAtalhos;
