@@ -80,7 +80,7 @@ Tempo: 3-6 meses. Integração com todo o projeto Saberes de Coração.
 
 | Lição | Conexão no Projeto |
 |-------|-------------------|
-| Lição 1 | [[../../hermetismo/]] — Mentalismo |
+| Lição 1 | [[../../teosofia/]] — Unidade |
 | Lição 2 | [[../../teosofia/]] — Os corpos do ser |
 | Lição 3 | [[../../../jornada/]] — Jornada da Consciência |
 | Lição 4 | [[../../../practica/tecnica-meditacao]] — Observação |

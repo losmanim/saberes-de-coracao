@@ -1,223 +1,266 @@
-let todosTextos = [];
+const CATEGORIA_RULES = [
+  { id: 'gnosticos', label: 'Gnostico', icon: '🔮', match: t => t.tags.some(tag => ['gnostico','pistis-sophia','pistis','sophia','nag-hammadi'].includes(tag)) || /gnostico|pistis|sophia|valentino|felipe/i.test(t.titulo) },
+  { id: 'apocalipticos', label: 'Apocaliptico', icon: '🔥', match: t => t.tags.includes('apocalipse') || t.tags.includes('enoch') || t.tags.includes('enoque') || /apocalipse|enoch|enoque/i.test(t.titulo) },
+  { id: 'patriarcas', label: 'Patriarcas', icon: '🕊️', match: t => t.tags.includes('testamento') || /testamento.*(aser|benjamim|dan|gad|issacar|jose|juda|levi|ruben|zebulom|abraham|simeao|nephtali|moises)/i.test(t.titulo) || /patriarcas|adao e eva|jubileus|melquisedeque|asenath|caverna dos tesouros|diluvio|gilgamesh/i.test(t.titulo) },
+  { id: 'infancia', label: 'Infancia de Jesus', icon: '👶', match: t => /infancia/i.test(t.titulo) || /pseudo-mateus|pseudo-tome|proto-evangelho|jose carpinteiro|passagem.*virgem.*maria/i.test(t.titulo) },
+  { id: 'paixao', label: 'Paixao e Pilatos', icon: '⚖️', match: t => /pilatos|herodes|tiberio|vinganca|salvador|julgamento|condenacao|sentenca|declaracoes.*jose.*arimateia|nicodemus|descida.*cristo.*inferno/i.test(t.titulo) || t.tags.includes('carta') && /pilatos|herodes|tiberio/i.test(t.titulo) },
+  { id: 'cartas', label: 'Cartas e Epistolas', icon: '✉️', match: t => t.tags.includes('carta') || t.tags.includes('epistola') || /carta|epistola|correspondencia|abgaro|clemente/i.test(t.titulo) },
+  { id: 'oracoes', label: 'Oracoes e Salmos', icon: '🙏', match: t => t.tags.includes('oracao') || t.tags.includes('salmo') || /oracao|salmo|essenios/i.test(t.titulo) },
+  { id: 'atos', label: 'Atos', icon: '📖', match: t => t.tags.includes('atos') || /atos.*(paulo|tecla|joao|pedro|tome)/i.test(t.titulo) },
+  { id: 'patristica', label: 'Patristica', icon: '⛪', match: t => /didache|pastor.*hermas|aristeides|policarpo|discurso.*domingo|apologia|clemente|justino|taciano|inacio|didaque/i.test(t.titulo) && !t.tags.includes('carta') },
+];
 
-const CATEGORIAS_TEXTO = {
-    'patriarcas': ['apoc-1', 'apoc-2', 'apoc-3', 'apoc-8', 'apoc-9'],
-    'infancia': ['apoc-4', 'apoc-7', 'apoc-11'],
-    'gnosticos': ['apoc-5', 'apoc-6', 'apoc-10'],
-};
+function categoriaInfo(texto) {
+  for (const cat of CATEGORIA_RULES) {
+    if (cat.match(texto)) return cat;
+  }
+  return { id: 'geral', label: 'Geral', icon: '📜' };
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('tema') === 'claro') {
-        document.body.classList.add('modo-claro');
+  if (localStorage.getItem('tema') === 'claro') document.body.classList.add('modo-claro');
+  carregarDados().then(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      setTimeout(() => abrirAccordionPorId(id), 500);
     }
-    carregarDados();
+  });
 });
 
+function abrirAccordionPorId(id) {
+  const header = document.querySelector(`.accordion-header[data-id="${id}"]`);
+  if (!header) return;
+  header.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => { if (!header.classList.contains('active')) header.click(); }, 300);
+}
+
+let dados = {};
+let todosTextos = [];
+let categoriaAtual = 'all';
+let fontScale = 100;
+
 async function carregarDados() {
-    const container = document.getElementById('apocrifosContainer');
-    try {
-        const res = await fetch('/api/dados');
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        dados = await res.json();
-        todosTextos = dados.saberes.filter(s => s.categoria_id === 6);
-        document.getElementById('statTextos').textContent = todosTextos.length;
-        renderizarTextos(todosTextos);
-    } catch (e) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon">⚠️</div>
-                <p>Erro ao carregar dados.</p>
-                <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">
-                    ${e.message}<br>
-                    <small>Certifique-se de que o servidor Express está rodando.</small>
-                </p>
-            </div>`;
-    }
+  const container = document.getElementById('apocrifosContainer');
+  try {
+    const res = await fetch('/api/dados');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    dados = await res.json();
+    todosTextos = dados.saberes.filter(s => s.categoria_id === 6);
+    atualizarStats();
+    renderizarBotoesCategoria();
+    renderizarTextos(todosTextos);
+  } catch (e) {
+    container.innerHTML = window.DOMPurify ? DOMPurify.sanitize(`
+      <div class="empty-state">
+        <div class="empty-state-icon">⚠️</div>
+        <p>Erro ao carregar dados.</p>
+        <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">
+          ${e.message}<br>
+          <small>Certifique-se de que o servidor Express esta rodando.</small>
+        </p>
+      </div>`) : `<div class="empty-state"><p>Erro ao carregar dados.</p></div>`;
+  }
+}
+
+function atualizarStats() {
+  const cats = new Set(todosTextos.map(t => categoriaInfo(t).id));
+  const totalChar = todosTextos.reduce((s, t) => s + (t.conteudo?.texto_integral?.length || 0), 0);
+  document.getElementById('statTextos').textContent = todosTextos.length;
+  document.getElementById('statCategoriasAp').textContent = cats.size;
+  document.getElementById('statTextosTotal').textContent = todosTextos.length;
+  const pages = Math.max(1, Math.round(totalChar / 3000));
+  document.getElementById('statPaginas').textContent = `~${pages}`;
+}
+
+function renderizarBotoesCategoria() {
+  const nav = document.getElementById('categoriasNav');
+  const catCounts = {};
+  const catInfo = {};
+  for (const t of todosTextos) {
+    const ci = categoriaInfo(t);
+    catCounts[ci.id] = (catCounts[ci.id] || 0) + 1;
+    catInfo[ci.id] = ci;
+  }
+  const sorted = Object.entries(catCounts)
+    .filter(([id]) => id !== 'geral')
+    .sort((a, b) => b[1] - a[1]);
+
+  let html = `<button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')">📜 Todos (${todosTextos.length})</button>`;
+  for (const [id, count] of sorted) {
+    const info = catInfo[id];
+    html += `<button class="pilar-btn" data-cat="${id}" onclick="filtrarCategoria('${id}')">${info.icon} ${info.label} (${count})</button>`;
+  }
+  nav.innerHTML = html;
 }
 
 function renderizarTextos(textos) {
-    const container = document.getElementById('apocrifosContainer');
-
-    if (!textos || textos.length === 0) {
-        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📜</div><p>Nenhum texto encontrado</p></div>';
-        return;
-    }
-
-    container.innerHTML = textos.map(texto => {
-        const catLabel = categoriaLabel(texto.id);
-        return `
-            <div class="accordion">
-                <button class="accordion-header" onclick="toggleAccordion(this)" data-id="${texto.id}">
-                    <span>${texto.titulo}</span>
-                    <span style="display:flex;align-items:center;gap:0.5rem">
-                        <span class="badge badge-apocrifo">${catLabel}</span>
-                        <span class="accordion-arrow">▼</span>
-                    </span>
-                </button>
-                <div class="accordion-content">
-                    <div class="content">
-                        <p><strong>${texto.descricao}</strong></p>
-                        <div style="margin-top:1rem">
-                            ${texto.conteudo && texto.conteudo.insight ? `
-                                <div class="pratica-box" style="margin-bottom:1rem">
-                                    <h4 style="margin-bottom:0.3rem">💡 Insight</h4>
-                                    <p>${texto.conteudo.insight}</p>
-                                </div>
-                            ` : ''}
-                            <button class="pilar-btn active" style="background:var(--cor-destaque);color:#fff;border:none;margin-top:0.5rem" onclick="abrirTextoCompleto('${texto.id}')">
-                                📖 Ler texto completo
-                            </button>
-                        </div>
-                        <div class="card-tags" style="margin-top:0.8rem">
-                            ${(texto.tags || []).map(t => `<span class="tag">#${t}</span>`).join('')}
-                        </div>
-                    </div>
-                </div>
-            </div>`;
-    }).join('');
-}
-
-function categoriaLabel(id) {
-    if (CATEGORIAS_TEXTO.patriarcas.includes(id)) return 'Patriarcas';
-    if (CATEGORIAS_TEXTO.infancia.includes(id)) return 'Infância de Jesus';
-    if (CATEGORIAS_TEXTO.gnosticos.includes(id)) return 'Gnósticos';
-    return 'Apócrifo';
+  const container = document.getElementById('apocrifosContainer');
+  if (!textos || textos.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📜</div><p>Nenhum texto encontrado</p></div>';
+    return;
+  }
+  let html = textos.map(texto => {
+    const cat = categoriaInfo(texto);
+    return `
+      <div class="accordion">
+        <button class="accordion-header" onclick="toggleAccordion(this)" data-id="${texto.id}">
+          <span>${texto.titulo}</span>
+          <span style="display:flex;align-items:center;gap:0.5rem">
+            <span class="badge badge-apocrifo">${cat.icon} ${cat.label}</span>
+            <span class="accordion-arrow">▼</span>
+          </span>
+        </button>
+        <div class="accordion-content">
+          <div class="content">
+            <p><strong>${texto.descricao || ''}</strong></p>
+            <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap">
+              <button class="pilar-btn active" style="background:var(--cor-destaque);color:#fff;border:none;flex:1;min-width:150px" onclick="abrirTextoCompleto('${texto.id}')">
+                📖 Ler texto completo
+              </button>
+              <button class="pilar-btn" style="border:1px solid var(--cor-borda)" onclick="compartilharTexto('${texto.id}')">
+                🔗 Compartilhar
+              </button>
+            </div>
+            <div class="card-tags" style="margin-top:0.8rem">
+              ${(texto.tags || []).map(t => `<span class="tag">#${t}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+  container.innerHTML = html;
 }
 
 function toggleAccordion(header) {
-    const content = header.nextElementSibling;
-    const isActive = header.classList.contains('active');
-
-    header.classList.toggle('active');
-    content.classList.toggle('active');
-
-    if (!isActive) {
-        setTimeout(() => content.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-    }
+  const content = header.nextElementSibling;
+  const isActive = header.classList.contains('active');
+  header.classList.toggle('active');
+  content.classList.toggle('active');
+  if (!isActive) setTimeout(() => content.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
 }
 
 function filtrarCategoria(cat) {
-    categoriaAtual = cat;
-
-    document.querySelectorAll('.pilar-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.dataset.cat === cat) btn.classList.add('active');
-    });
-
-    if (cat === 'all') {
-        renderizarTextos(todosTextos);
-        return;
-    }
-
-    const ids = CATEGORIAS_TEXTO[cat] || [];
-    const filtrados = todosTextos.filter(t => ids.includes(t.id));
-    renderizarTextos(filtrados);
+  categoriaAtual = cat;
+  document.querySelectorAll('.pilar-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.dataset.cat === cat) btn.classList.add('active');
+  });
+  if (cat === 'all') { renderizarTextos(todosTextos); return; }
+  const filtrados = todosTextos.filter(t => categoriaInfo(t).id === cat);
+  renderizarTextos(filtrados);
 }
 
 function buscarTextos(termo) {
-    const info = document.getElementById('buscaInfo');
-    if (!termo.trim()) {
-        info.textContent = '';
-        filtrarCategoria(categoriaAtual);
-        return;
-    }
-
-    const t = termo.toLowerCase();
-    let filtrados = todosTextos.filter(s =>
-        s.titulo.toLowerCase().includes(t) ||
-        s.descricao.toLowerCase().includes(t) ||
-        (s.tags || []).some(tag => tag.toLowerCase().includes(t))
-    );
-
-    if (categoriaAtual !== 'all') {
-        const ids = CATEGORIAS_TEXTO[categoriaAtual] || [];
-        filtrados = filtrados.filter(s => ids.includes(s.id));
-    }
-
-    info.textContent = filtrados.length + ' resultado' + (filtrados.length !== 1 ? 's' : '') + ' encontrado' + (filtrados.length !== 1 ? 's' : '');
-    renderizarTextos(filtrados);
+  const info = document.getElementById('buscaInfo');
+  const container = document.getElementById('apocrifosContainer');
+  if (!termo.trim()) {
+    info.textContent = '';
+    filtrarCategoria(categoriaAtual);
+    container.classList.remove('buscando');
+    return;
+  }
+  container.classList.add('buscando');
+  const t = termo.toLowerCase();
+  let filtrados = todosTextos.filter(s =>
+    s.titulo.toLowerCase().includes(t) ||
+    s.descricao.toLowerCase().includes(t) ||
+    (s.tags || []).some(tag => tag.toLowerCase().includes(t))
+  );
+  if (categoriaAtual !== 'all') {
+    filtrados = filtrados.filter(s => categoriaInfo(s).id === categoriaAtual);
+  }
+  info.textContent = filtrados.length + ' resultado' + (filtrados.length !== 1 ? 's' : '') + ' encontrado' + (filtrados.length !== 1 ? 's' : '');
+  renderizarTextos(filtrados);
 }
 
 function abrirTextoCompleto(id) {
-    const texto = todosTextos.find(t => t.id === id);
-    if (!texto) return;
-
-    document.getElementById('modalTitulo').textContent = texto.titulo;
-
-    const conteudo = texto.conteudo || {};
-    let html = `<p style="font-size:1.05rem;margin-bottom:1rem"><strong>${texto.descricao}</strong></p>`;
-
-    if (conteudo.insight) {
-        html += `<div class="pratica-box" style="margin-bottom:1rem"><h4 style="margin-bottom:0.3rem">💡 Insight</h4><p>${conteudo.insight}</p></div>`;
-    }
-
-    if (conteudo.texto_integral) {
-        html += `<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral">`;
-        const paragrafos = conteudo.texto_integral.split('\n').filter(p => p.trim());
-        html += paragrafos.map(p => {
-            const trimmed = p.trim();
-            if (/^cap[ií]tulo\s/i.test(trimmed)) {
-                return `<h3>${trimmed}</h3>`;
-            }
-            if (trimmed.length < 60 && trimmed === trimmed.toUpperCase() && trimmed.length > 3) {
-                return `<h4>${trimmed}</h4>`;
-            }
-            return `<p>${trimmed}</p>`;
-        }).join('');
-        html += `</div>`;
-    }
-
-    if (texto.tags && texto.tags.length > 0) {
-        html += `<div class="card-tags" style="margin-top:1.5rem;border-top:1px solid var(--cor-borda);padding-top:1rem">`;
-        html += texto.tags.map(t => `<span class="tag">#${t}</span>`).join('');
-        html += `</div>`;
-    }
-
-    document.getElementById('modalContent').innerHTML = html;
-    ultimoElementoFocado = document.activeElement;
-    document.getElementById('modalOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-    document.querySelector('.modal-close').focus();
+  const texto = todosTextos.find(t => t.id === id);
+  if (!texto) return;
+  document.getElementById('modalTitulo').textContent = texto.titulo;
+  const conteudo = texto.conteudo || {};
+  let html = `<div class="texto-toolbar">
+    <button class="btn-icon" onclick="ajustarFonte(-10)" title="Diminuir fonte">A-</button>
+    <button class="btn-icon" onclick="ajustarFonte(10)" title="Aumentar fonte">A+</button>
+    <button class="btn-icon" onclick="ajustarFonte(0)" title="Resetar fonte">A</button>
+    <button class="btn-icon" onclick="window.print()" title="Imprimir">🖨️</button>
+  </div>`;
+  if (texto.descricao) {
+    html += `<p style="font-size:1.05rem;margin-bottom:1rem"><strong>${texto.descricao}</strong></p>`;
+  }
+  if (conteudo.texto_integral) {
+    html += `<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:${fontScale}%">`;
+    const paragrafos = conteudo.texto_integral.split('\n').filter(p => p.trim());
+    html += paragrafos.map(p => {
+      const trimmed = p.trim();
+      if (/^cap[ií]tulo\s/i.test(trimmed)) return `<h3>${trimmed}</h3>`;
+      if (trimmed.length < 60 && trimmed === trimmed.toUpperCase() && trimmed.length > 3) return `<h4>${trimmed}</h4>`;
+      return `<p>${trimmed}</p>`;
+    }).join('');
+    html += `</div>`;
+  }
+  if (texto.tags && texto.tags.length > 0) {
+    html += `<div class="card-tags" style="margin-top:1.5rem;border-top:1px solid var(--cor-borda);padding-top:1rem">`;
+    html += texto.tags.map(t => `<span class="tag">#${t}</span>`).join('');
+    html += `</div>`;
+  }
+  document.getElementById('modalContent').innerHTML = html;
+  ultimoElementoFocado = document.activeElement;
+  document.getElementById('modalOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  document.querySelector('.modal-close').focus();
+  salvarProgressoLeitura(id);
 }
 
-function fecharModal(e) {
-    if (e.target.id === 'modalOverlay') fecharModalBtn();
+function ajustarFonte(delta) {
+  if (delta === 0) fontScale = 100;
+  else fontScale = Math.max(60, Math.min(200, fontScale + delta));
+  const el = document.getElementById('textoIntegral');
+  if (el) el.style.fontSize = fontScale + '%';
 }
 
+function salvarProgressoLeitura(id) {
+  try {
+    const progressos = JSON.parse(localStorage.getItem('progresso_leitura') || '{}');
+    progressos[id] = { id, data: new Date().toISOString() };
+    localStorage.setItem('progresso_leitura', JSON.stringify(progressos));
+  } catch (e) {}
+}
+
+function compartilharTexto(id) {
+  const url = window.location.origin + '/apocrifos.html#' + id;
+  if (navigator.share) {
+    navigator.share({ title: 'Texto Apocrifo', url }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(url).then(() => alert('Link copiado!'));
+  }
+}
+
+function fecharModal(e) { if (e.target.id === 'modalOverlay') fecharModalBtn(); }
 function fecharModalBtn() {
-    document.getElementById('modalOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-    if (ultimoElementoFocado) ultimoElementoFocado.focus();
+  document.getElementById('modalOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  if (ultimoElementoFocado) ultimoElementoFocado.focus();
 }
 
 function toggleBusca() {
-    const c = document.getElementById('buscaContainer');
-    const isVisible = c.style.display !== 'none';
-    c.style.display = isVisible ? 'none' : 'block';
-    if (!isVisible) document.getElementById('buscaInput').focus();
+  const c = document.getElementById('buscaContainer');
+  const isVisible = c.style.display !== 'none';
+  c.style.display = isVisible ? 'none' : 'block';
+  if (!isVisible) document.getElementById('buscaInput').focus();
 }
 
 function toggleTema() {
-    document.body.classList.toggle('modo-claro');
-    localStorage.setItem('tema', document.body.classList.contains('modo-claro') ? 'claro' : 'escuro');
+  document.body.classList.toggle('modo-claro');
+  localStorage.setItem('tema', document.body.classList.contains('modo-claro') ? 'claro' : 'escuro');
 }
 
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') fecharModalBtn();
-});
-
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModalBtn(); });
 document.getElementById('modalOverlay').addEventListener('keydown', function(e) {
-    if (e.key !== 'Tab') return;
-    const modal = this.querySelector('.modal');
-    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-    if (focusable.length === 0) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-    }
+  if (e.key !== 'Tab') return;
+  const modal = this.querySelector('.modal');
+  const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+  if (focusable.length === 0) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });

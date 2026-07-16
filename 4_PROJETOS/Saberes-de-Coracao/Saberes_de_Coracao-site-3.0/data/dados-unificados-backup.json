@@ -1,7 +1,7 @@
 {
   "meta": {
-    "versao": "4.5",
-    "atualizado": "2026-06-22",
+    "versao": "4.6",
+    "atualizado": "2026-06-25",
     "descricao": "Dados unificados do Projeto Saberes de Coração - Fonte única para site, banco de dados, ebooks e multimídia"
   },
   "categorias": [
@@ -998,7 +998,7 @@
       "categoria_id": 1,
       "titulo": "Personalidade, Essência e Ego",
       "slug": "gnose-personalidade-essencia-ego",
-      "descricao": "A diferença fundamental entre a personalidade (máscara social), a essência (centelha divina) e o ego (defeitos psicológicos)",
+      "descricao": "Na Gnose, distinguem-se três aspectos fundamentais do ser humano: a Personalidade — a máscara social que vestimos para o mundo; a Essência — a centelha divina, o que realmente somos além de todos os papéis; e o Ego — os defeitos psicológicos que fragmentam a consciência. Compreender essa tríade é o primeiro passo para o verdadeiro autoconhecimento e a libertação interior.",
       "nivel": "iniciante",
       "duracao": 20,
       "tags": [
@@ -1038,278 +1038,22 @@
             "desc": "Pergunte-se: 'Quem sou eu realmente?' 'O que resta quando tiro todos os papéis que represento?'"
           }
         ]
-      }
-    },
-    {
-      "id": "gnose-7",
-      "categoria_id": 1,
-      "titulo": "Os 3 Fatores da Revolução da Consciência",
-      "slug": "gnose-tres-fatores-revolucao-consciencia",
-      "descricao": "Nascer, Morrer e Sacrificar-se: os três pilares fundamentais para a auto-realização profunda segundo a Gnose",
-      "nivel": "intermediario",
-      "duracao": 25,
-      "tags": [
-        "gnose",
-        "revolucao",
-        "consciencia",
-        "nascimento",
-        "morte",
-        "sacrificio"
-      ],
-      "fonte": "Samael Aun Weor",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "Os 3 Fatores da Revolução da Consciência são os pilares do trabalho gnóstico: Nascer (criar virtudes), Morrer (eliminar defeitos) e Sacrificar-se pela humanidade (serviço altruísta). Se algum destes for excluído, o resultado será o fracasso.",
-        "conceitos": [
-          {
-            "termo": "Nascer",
-            "def": "Trabalho de eliminação dos defeitos psicológicos, vícios, maus hábitos e conflitos íntimos. É o processo de criar o 'homem novo'."
-          },
-          {
-            "termo": "Morrer",
-            "def": "Sábio manejo das energias capaz de despertar os poderes da Alma e cristalizar o arquétipo do homem perfeito. Morrer para o ego, renascer no Espírito."
-          },
-          {
-            "termo": "Sacrifício pela Humanidade",
-            "def": "Praticar o amor incondicional e desinteressado por nossos semelhantes, seguindo as pegadas dos grandes sábios que dedicaram suas vidas à humanidade."
-          }
-        ],
-        "insight": "A Revolução da Consciência não é uma metáfora — é um processo prático e verificável. Cada defeito eliminado, cada virtude criada, cada ato de serviço genuíno transforma a percepção da realidade.",
-        "citacoes": [
-          "\"É necessário compreendermos a necessidade de trabalharmos com os três Fatores da Revolução da Consciência se é que realmente queremos a Auto-Realização profunda.\" — Samael Aun Weor"
-        ]
-      }
-    },
-    {
-      "id": "gnose-8",
-      "categoria_id": 1,
-      "titulo": "O Eu Psicólogo",
-      "slug": "gnose-eu-psicologo",
-      "descricao": "O 'eu psicológico' é a ilusão de um eu separado e permanente — a raiz de todo sofrimento segundo a visão gnóstica",
-      "nivel": "intermediario",
-      "duracao": 15,
-      "tags": [
-        "gnose",
-        "eu",
-        "psicologia",
-        "ego",
-        "identificacao"
-      ],
-      "fonte": "Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "O 'Eu Psicólogo' é a sensação ilusória de um 'eu' fixo, separado e permanente que controla nossos pensamentos e ações. Na Gnose, este 'eu' não passa de um agregado de egos (defeitos) que se alternam no controle da consciência.",
-        "conceitos": [
-          {
-            "termo": "Eu ilusório",
-            "def": "A crença de que somos um 'eu' fixo e imutável. Na verdade, somos uma sucessão de diferentes 'eus' que se alternam: o eu-ira, o eu-desejo, o eu-medo."
-          },
-          {
-            "termo": "Múltiplos eus",
-            "def": "Não temos um único ego, mas muitos. Cada defeito psicológico é um 'eu' separado que toma controle em diferentes situações."
-          },
-          {
-            "termo": "Testemunha",
-            "def": "A consciência desperta que observa os eus sem se identificar com eles. É o primeiro passo para dissolvê-los."
-          }
-        ],
-        "analogia": "O 'Eu Psicólogo' é como um ator que interpreta todos os papéis de uma peça, um de cada vez. Uma hora é o herói, outra é o vilão. Mas nenhum deles é quem ele realmente é.",
-        "insight": "Quando você percebe que não é seus pensamentos, emoções ou reações — mas sim a consciência que os observa — começa a verdadeira libertação."
-      }
-    },
-    {
-      "id": "gnose-9",
-      "categoria_id": 1,
-      "titulo": "A Máquina Humana",
-      "slug": "gnose-maquina-humana",
-      "descricao": "O ser humano como uma máquina condicionada que age mecanicamente — e como despertar dessa automatização",
-      "nivel": "intermediario",
-      "duracao": 15,
-      "tags": [
-        "gnose",
-        "maquina",
-        "mecanico",
-        "consciencia",
-        "despertar"
-      ],
-      "fonte": "Gurdjieff / Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "O ser humano comum age como uma máquina: reage mecanicamente a estímulos externos e internos sem consciência real. A Gnose propõe o despertar dessa automatização através da auto-observação implacável.",
-        "conceitos": [
-          {
-            "termo": "Funcionamento mecânico",
-            "def": "90% das ações humanas são automáticas: reações condicionadas, hábitos, repetições. Acreditamos que escolhemos, mas na prática apenas reagimos."
-          },
-          {
-            "termo": "Centros",
-            "def": "O ser humano tem centros: intelectual, emocional, motor, instintivo e sexual. Eles funcionam mecanicamente, mas podem ser harmonizados."
-          },
-          {
-            "termo": "Despertar",
-            "def": "O despertar gnóstico é sair do estado de 'sono' mecânico e tornar-se consciente no momento presente, observando a máquina sem se identificar com ela."
-          }
-        ],
-        "insight": "O primeiro passo é aceitar: você é uma máquina. Só quando reconhece a mecanização pode começar a despertar. Enquanto acreditar que já é livre, continuará escravo do automatismo.",
-        "citacoes": [
-          "\"O homem é uma máquina. Todas as suas ações, desejos, pensamentos, sentimentos, crenças e hábitos são o resultado de influências externas e internas. O homem não pode 'fazer' nada. Tudo 'acontece' com ele.\" — Gurdjieff"
-        ]
-      }
-    },
-    {
-      "id": "gnose-10",
-      "categoria_id": 1,
-      "titulo": "O Mundo das Relações",
-      "slug": "gnose-mundo-das-relacoes",
-      "descricao": "As três esferas essenciais da existência: relação com o corpo, com o mundo exterior e consigo mesmo",
-      "nivel": "intermediario",
-      "duracao": 30,
-      "tags": [
-        "gnose",
-        "relacoes",
-        "corpo",
-        "psicossomatica",
-        "auto-observacao"
-      ],
-      "fonte": "Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "O Mundo das Relações na Gnose analisa as interconexões fundamentais do ser humano em três esferas: a relação com o corpo físico, com o mundo exterior e consigo mesmo. A chave é que a transformação interior resolve problemas físicos, sociais e espirituais.",
-        "conceitos": [
-          {
-            "termo": "Relação com o Corpo",
-            "def": "O corpo é veículo que requer cuidado. A causa real das doenças é a atuação dos egos (defeitos psicológicos). Cada defeito gera desequilíbrios específicos."
-          },
-          {
-            "termo": "Relação com o Mundo Exterior",
-            "def": "O convívio social é o campo onde os egos emergem. O sábio não é vítima das circunstâncias, mas senhor de si mesmo. Isolar-se não é solução."
-          },
-          {
-            "termo": "Relação Consigo Mesmo",
-            "def": "A mais importante: contato com o Ser Íntimo, não com os egos. Auto-observação constante e oração para despertar a intuição."
-          }
-        ],
-        "tabela_psicossomatica": [
-          {
-            "defeito": "Ira",
-            "orgaos": "Fígado, pâncreas",
-            "efeito": "Cegueira espiritual e física"
-          },
-          {
-            "defeito": "Gula",
-            "orgaos": "Coração, coluna",
-            "efeito": "Obesidade, problemas cardíacos, desvios de coluna"
-          },
-          {
-            "defeito": "Vaidade",
-            "orgaos": "Sistema endócrino",
-            "efeito": "Esgotamento da energia sexual, debilitação geral"
-          },
-          {
-            "defeito": "Preguiça",
-            "orgaos": "Sistema nervoso",
-            "efeito": "Depressão, falta de ação da vontade"
-          },
-          {
-            "defeito": "Orgulho",
-            "orgaos": "Estômago, coração",
-            "efeito": "Úlceras, problemas cardíacos"
-          },
-          {
-            "defeito": "Luxúria",
-            "orgaos": "Sistema reprodutor",
-            "efeito": "Impotência, desvios energéticos"
-          }
-        ],
-        "insight": "O exterior é reflexo do interior. Se suas relações são caóticas, olhe para dentro. A cura física e emocional começa com a eliminação dos egos e a transmutação das energias.",
-        "principios": [
-          {
-            "num": 1,
-            "nome": "O Corpo como Espelho",
-            "frase": "Cada órgão reflete um estado psicológico",
-            "desc": "A doença física é manifestação de um desequilíbrio interior. Cure o ego, e o corpo responde."
-          },
-          {
-            "num": 2,
-            "nome": "Convívio como Laboratório",
-            "frase": "O outro é seu espelho",
-            "desc": "As relações são o campo de prova do trabalho interior. O que te irrita no outro existe em você."
-          },
-          {
-            "num": 3,
-            "nome": "Interior sobre Exterior",
-            "frase": "Conhece-te a ti mesmo",
-            "desc": "Toda transformação real começa de dentro para fora. Sem trabalho interior, não há cura duradoura."
-          }
-        ]
-      }
-    },
-    {
-      "id": "gnose-11",
-      "categoria_id": 1,
-      "titulo": "O Caminho, a Verdade e a Vida",
-      "slug": "gnose-caminho-verdade-vida",
-      "descricao": "A interpretação gnóstica profunda de João 14:6 — o Logos, o Cristo interior e o despertar da consciência",
-      "nivel": "avancado",
-      "duracao": 25,
-      "tags": [
-        "gnose",
-        "caminho",
-        "verdade",
-        "vida",
-        "cristo",
-        "logos",
-        "joao"
-      ],
-      "fonte": "Evangelho de João / Tradição Gnóstica",
-      "licenca": "Domínio Público",
-      "conteudo": {
-        "definicao": "Quando Jesus diz 'Eu sou o Caminho, a Verdade e a Vida. Ninguém vem ao Pai senão por mim' (João 14:6), a Gnose interpreta não como exclusivismo religioso, mas como um estado de ser, uma realização interna do princípio crístico.",
-        "conceitos": [
-          {
-            "termo": "O Caminho",
-            "def": "Não é estrada de regras morais ou rituais externos. É o processo de despertar, virar para dentro, morrer para o ego falso e renascer no Espírito. É sair da prisão do mundo material (demiurgo) e voltar à Fonte (Pleroma)."
-          },
-          {
-            "termo": "A Verdade",
-            "def": "Não é crença ou doutrina. Gnosis é conhecimento direto. Você não 'acredita' no divino — você sabe por experiência. 'O Reino está dentro de vós' (Evangelho de Tomé)."
-          },
-          {
-            "termo": "A Vida",
-            "def": "Não a vida biológica. É a Vida eterna (Zoe), a consciência desperta que transcende o ciclo nascimento-morte. A centelha que volta à Luz."
-          }
-        ],
-        "insight": "'Eu sou' ecoa o nome divino (Ehyeh/\"Eu Sou\" de Êxodo 3:14). Jesus aponta para o Logos — o princípio ordenador, a Luz que ilumina todo homem. O Cristo não é uma pessoa exclusiva, mas um princípio universal acessível a todos que despertam.",
-        "citacoes": [
-          "\"O Reino está dentro de vocês e fora de vocês. Quando conhecerem a si mesmos, serão conhecidos.\" — Evangelho de Tomé",
-          "\"A salvação não vem de sacrifício vicário ou fé cega, mas de gnosis — conhecer a si mesmo, conhecer o divino dentro.\""
-        ],
-        "praticas_diarias": [
-          {
-            "nome": "Olhe para dentro",
-            "desc": "Pergunte 'Quem sou eu realmente?' além do nome, corpo, história, papéis sociais."
-          },
-          {
-            "nome": "Desperte a centelha",
-            "desc": "Cultive presença, observe o mecânico em você (reações automáticas, mentiras que conta para si mesmo)."
-          },
-          {
-            "nome": "Sem intermediários finais",
-            "desc": "Mestres, livros e igrejas ajudam, mas a gnosis é direta. O Cristo interior é o guia verdadeiro."
-          }
-        ],
-        "mapa_exoterico_esoterico": {
-          "exoterico": "Jesus é o único caminho para Deus, fora da Igreja não há salvação, fé cega nos dogmas.",
-          "esoterico": "O 'Eu Sou' aponta para o Logos universal. O Cristo interior é o princípio de despertar acessível a todos. Buda, Sócrates e outros mestres apontam para o mesmo."
+      },
+      "praticas": [
+        {
+          "titulo": "Contemplação do 'Eu Sou'",
+          "instrucoes": "1. Sente-se em silêncio, coluna ereta\n2. Respire profundamente 3 vezes\n3. Repita internamente: 'Eu Sou o Caminho' — sinta o significado\n4. 'Eu Sou a Verdade' — além de crenças, o que é verdadeiro agora?\n5. 'Eu Sou a Vida' — a consciência que anima este corpo\n6. Permaneça em silêncio por 5 minutos\n7. Pergunte: 'Quem é este Eu que sempre esteve aqui?'",
+          "duracao": 10,
+          "frequencia": "diaria"
         }
-      }
+      ]
     },
     {
       "id": "gnose-12",
       "categoria_id": 1,
       "titulo": "Mestres Gnósticos: Samael e a Loja Branca",
       "slug": "gnose-mestres-samael-loja-branca",
-      "descricao": "Os mestres da tradição gnóstica moderna: Samael Aun Weor, Lakshmi, Michael e a Loja Branca",
+      "descricao": "Os Mestres Gnósticos são figuras espirituais que coordenam o despertar da consciência humana. No Movimento Gnóstico Cristão Universal, destacam-se V.M. Samael Aun Weor (fundador, autor de mais de 75 livros sobre esoterismo e a Revolução da Consciência), V.M. Lakshmi (restauradora dos grupos gnósticos mundiais) e V.M. Michael (transmissor da mensagem na Europa). Este saber apresenta quem são, seus ensinamentos e o papel da Loja Branca na evolução espiritual.",
       "nivel": "avancado",
       "duracao": 20,
       "tags": [
@@ -1352,7 +1096,15 @@
           }
         ],
         "insight": "Verdadeiros mestres raramente buscam discípulos em massa, riqueza ou adoração. Eles apontam para a consciência do buscador, não para si mesmos. A transformação real vem da prática direta."
-      }
+      },
+      "praticas": [
+        {
+          "titulo": "Conexão com a Linhagem",
+          "instrucoes": "1. Escolha UM mestre da tradição gnóstica\n2. Leia um texto ou trecho de sua obra (5 min)\n3. Feche os olhos e visualize o mestre à sua frente\n4. Pergunte internamente: 'Que ensinamento específico você tem para mim hoje?'\n5. Escute em silêncio por 5 minutos\n6. Anote o que veio — mesmo que não faça sentido agora\n\nImportante: mestres não dão respostas que você não está pronto para ouvir.",
+          "duracao": 15,
+          "frequencia": "semanal"
+        }
+      ]
     },
     {
       "id": "cristianismo-1",
@@ -2402,7 +2154,7 @@
       "categoria_id": 6,
       "titulo": "Testamento de Nephtali — Da Bondade",
       "slug": "testamento-nephtali-bondade",
-      "descricao": "Transcrição do testamento de Nephtali, filho de Jacó e Baila, sobre a bondade, a ordem divina e visões proféticas das doze tribos de Israel",
+      "descricao": "Nas últimas palavras do patriarca Nephtali, descobrimos uma sabedoria ancestral sobre a bondade como força cósmica. Este testamento profético revela visões sobre as doze tribos de Israel e a ordem divina que governa o universo, antecipando princípios herméticos de correspondência entre microcosmo e macrocosmo. Um convite à contemplação da bondade não como virtude moral, mas como lei fundamental da criação.",
       "nivel": "avancado",
       "duracao": 45,
       "tags": [
@@ -2426,7 +2178,7 @@
       "categoria_id": 6,
       "titulo": "Testamento de Nephtali — Segundo Jerchmeel",
       "slug": "testamento-nephtali-jerchmeel",
-      "descricao": "Versão alternativa do testamento de Nephtali segundo a crônica hebraica de Jerchmeel, com visões de um navio, do touro gigante e a escolha de Abraão",
+      "descricao": "Uma versão alternativa e profundamente simbólica do testamento de Nephtali, preservada na crônica hebraica de Jerchmeel. Este texto contém visões místicas impressionantes: um navio celestial despedaçado que simboliza as consequências da desunião fraterna, um touro gigante com asas de águia, e a narrativa da escolha de Abraão entre os anjos. Uma alegoria poderosa sobre o poder do temor a Deus e a unidade espiritual.",
       "nivel": "avancado",
       "duracao": 50,
       "tags": [
@@ -2450,7 +2202,7 @@
       "categoria_id": 6,
       "titulo": "Assunção de Moisés",
       "slug": "assuncao-moises",
-      "descricao": "O testamento profético de Moisés a Josué, revelando o futuro de Israel, a corrupção dos sacerdotes e a vingança divina nos últimos dias",
+      "descricao": "No momento de sua partida, Moisés revela a Josué profecias extraordinárias sobre o destino de Israel. Este apócrifo do primeiro século narra a corrupção do templo, o cativeiro babilônico e o juízo final, contendo uma das mais antigas referências ao 'Filho do Homem' escatológico e à ressurreição dos justos. Uma visão apocalíptica que conecta a história humana com o plano divino.",
       "nivel": "avancado",
       "duracao": 60,
       "tags": [
@@ -2475,7 +2227,7 @@
       "categoria_id": 6,
       "titulo": "História de José Carpinteiro",
       "slug": "historia-jose-carpinteiro",
-      "descricao": "Narrativa apócrifa sobre a vida de José, pai terreno de Jesus, seus milagres, a viagem ao Egito e a morte piedosa do justo carpinteiro",
+      "descricao": "Uma narrativa comovente que humaniza a figura de José, o pai terreno de Jesus. Este texto detalha milagres da infância de Jesus, a fuga para o Egito e a morte piedosa do justo carpinteiro, assistida por anjos. Mais do que uma biografia, é um tratado sobre a paternidade divina e uma 'boa morte' preparada, revelando José como modelo de devoção e proteção sagrada.",
       "nivel": "intermediario",
       "duracao": 90,
       "tags": [
@@ -2500,7 +2252,7 @@
       "categoria_id": 6,
       "titulo": "Evangelho da Verdade",
       "slug": "evangelho-da-verdade",
-      "descricao": "Evangelho gnóstico do século II, provavelmente escrito por Valentino. Descreve o conhecimento direto (gnosis) como o caminho para a união com o Pleroma divino, a origem do erro e a redenção através do Logos.",
+      "descricao": "Um tesouro da Biblioteca de Nag Hammadi, provavelmente escrito por Valentino no século II. Este evangelho gnóstico ensina que a ignorância é a raiz do medo e do sofrimento — e que o conhecimento direto do Pai dissolve a ilusão. A 'verdade' não é doutrina, mas experienciação direta do divino. Uma jornada profunda do erro à redenção através do Logos, revelando o caminho de retorno ao Pleroma.",
       "nivel": "avancado",
       "duracao": 45,
       "tags": [
@@ -2523,7 +2275,7 @@
       "categoria_id": 6,
       "titulo": "Evangelho Segundo Felipe",
       "slug": "evangelho-segundo-felipe",
-      "descricao": "Evangelho gnóstico valentiniano que aborda os sacramentos, a união mística, a natureza do Cristo interior e a relação entre o masculino e o feminino divinos.",
+      "descricao": "Um evangelho gnóstico valentiniano fascinante que explora os sacramentos como portais de transformação espiritual. Felipe revela que o véu do templo não se rasgou apenas na cruz — ele se rasga dentro de cada um quando a união do masculino e feminino divinos se consuma na alma. Uma visão profunda sobre o Cristo interior, a hierogamia sagrada e a natureza do verdadeiro conhecimento espiritual.",
       "nivel": "avancado",
       "duracao": 60,
       "tags": [
@@ -2546,7 +2298,7 @@
       "categoria_id": 6,
       "titulo": "Proto-Evangelho de Tiago (Natividade de Maria)",
       "slug": "proto-evangelho-de-tiago",
-      "descricao": "Texto apócrifo do século II sobre o nascimento e infância da Virgem Maria, a concepção e nascimento de Jesus. Relata a história de Joaquim e Ana, a educação de Maria no Templo e o nascimento do Salvador.",
+      "descricao": "Este texto do século II revela a tradição esquecida sobre Maria não apenas como mãe de Jesus, mas como um ser preparado desde o ventre para uma missão divina. Narra a história miraculosa de Joaquim e Ana, a educação de Maria no Templo e a concepção imaculada como prenúncio da hierofania que viria. Uma janela para o cristianismo primitivo e a sacralidade do feminino.",
       "nivel": "intermediario",
       "duracao": 40,
       "tags": [
@@ -2569,7 +2321,7 @@
       "categoria_id": 6,
       "titulo": "Testamento de Abraão",
       "slug": "testamento-de-abraao",
-      "descricao": "Texto apócrifo que narra a jornada de Abraão guiado pelo arcanjo Miguel, revelando os mistérios do julgamento divino, a psicostasia (pesagem das almas) e a passagem para o outro mundo.",
+      "descricao": "Nesta narrativa extraordinária, o patriarca Abraão é guiado pelo arcanjo Miguel em uma jornada pelos mistérios do julgamento divino. O texto revela a psicostasia — a pesagem das almas — e apresenta uma visão única onde Abraão himself atua como aprendiz no julgamento final. Uma profundização sobre a misericórdia divina e a passagem para o outro mundo que transcende o medo da morte.",
       "nivel": "intermediario",
       "duracao": 50,
       "tags": [
@@ -2592,7 +2344,7 @@
       "categoria_id": 6,
       "titulo": "Oração de Manassés",
       "slug": "oracao-de-manasses",
-      "descricao": "Breve e tocante oração penitencial atribuída ao rei Manassés de Judá, expressando arrependimento profundo e súplica pela infinita misericórdia divina. Um dos mais belos exemplos de teologia do arrependimento.",
+      "descricao": "Uma das mais belas expressões de teologia do arrependimento, esta oração é atribuída ao rei Manassés de Judá em seu momento de conversão. Em palavras profundamente tocantes, o rei expressa arrependimento sincero e súplica pela infinita misericórdia divina. O texto ensina que o verdadeiro arrependimento não é sobre culpa, mas sobre reconhecer nossa humanidade e retornar à fonte do amor incondicional.",
       "nivel": "iniciante",
       "duracao": 10,
       "tags": [
@@ -2614,7 +2366,7 @@
       "categoria_id": 6,
       "titulo": "Apocalipse de Adão",
       "slug": "apocalipse-de-adao",
-      "descricao": "Revelação gnóstica atribuída a Adão, narrada a seu filho Set, sobre a queda da humanidade, o dilúvio, a vinda do Iluminador e o conflito eterno entre as trevas da ignorância e a luz do conhecimento.",
+      "descricao": "Esta revelação gnóstica inverte completamente a narrativa do Gênesis. Adão narra a seu filho Set a verdadeira história da humanidade: a queda não foi pecado, mas a descida da luz na matéria. O texto profetiza o dilúvio, a vinda do Iluminador e o conflito eterno entre as trevas da ignorância e a luz do conhecimento. Uma visão revolucionária que transforma nossa compreensão da origem humana e do propósito da existência.",
       "nivel": "avancado",
       "duracao": 30,
       "tags": [
@@ -2637,7 +2389,7 @@
       "categoria_id": 6,
       "titulo": "Evangelho Pseudo-Tomé (Infância do Senhor)",
       "slug": "evangelho-pseudo-tome",
-      "descricao": "Narrações apócrifas sobre a infância de Jesus, descrevendo milagres e episódios de sua meninice. Um retrato da humanidade e do poder divino manifestando-se através de uma criança.",
+      "descricao": "Este texto oferece um retrato profundamente humano do divino em processo de autodescoberta. Narra a infância de Jesus dos cinco aos doze anos, revelando um menino que ainda está aprendendo a lidar com seu próprio poder. Os milagres infantis não são apenas demonstrações de onipotência, mas momentos de crescimento e aprendizado. Uma visão comovente que nos permite ver o sagrado através dos olhos da inocência.",
       "nivel": "iniciante",
       "duracao": 25,
       "tags": [
@@ -2730,7 +2482,7 @@
       {
         "id": "audio-001",
         "titulo": "A Frequência Proibida de Thoth Revelada por Nikola Tesla： Manipule a Energia com esse MÉTODO!",
-        "arquivo": "01_gnose-esoterismo/A Frequência Proibida de Thoth Revelada por Nikola Tesla： Manipule a Energia com esse MÉTODO!.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/A Frequência Proibida de Thoth Revelada por Nikola Tesla： Manipule a Energia com esse MÉTODO!.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2744,7 +2496,7 @@
       {
         "id": "audio-002",
         "titulo": "ATERRORIZANTE! Alan Watts Revela O SEGREDO QUÂNTICO Sobre QUEM Fala Na Sua Cabeça (Desative AGORA!)",
-        "arquivo": "01_gnose-esoterismo/ATERRORIZANTE! Alan Watts Revela O SEGREDO QUÂNTICO Sobre QUEM Fala Na Sua Cabeça (Desative AGORA!).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/ATERRORIZANTE! Alan Watts Revela O SEGREDO QUÂNTICO Sobre QUEM Fala Na Sua Cabeça (Desative AGORA!).mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2758,7 +2510,7 @@
       {
         "id": "audio-003",
         "titulo": "Como Alan Watts Responde à Pergunta Mais Importante de Todas？",
-        "arquivo": "01_gnose-esoterismo/Como Alan Watts Responde à Pergunta Mais Importante de Todas？.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Como Alan Watts Responde à Pergunta Mais Importante de Todas？.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2772,7 +2524,7 @@
       {
         "id": "audio-004",
         "titulo": "Esse Vídeo Escolheu Você — Não o Contrário (Não Ignore!)",
-        "arquivo": "01_gnose-esoterismo/Esse Vídeo Escolheu Você — Não o Contrário (Não Ignore!).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Esse Vídeo Escolheu Você — Não o Contrário (Não Ignore!).mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2786,7 +2538,7 @@
       {
         "id": "audio-005",
         "titulo": "Este É O Sinal： Sua Consciência Quântica Está Despertando Agora",
-        "arquivo": "01_gnose-esoterismo/Este É O Sinal： Sua Consciência Quântica Está Despertando Agora.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Este É O Sinal： Sua Consciência Quântica Está Despertando Agora.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2800,7 +2552,7 @@
       {
         "id": "audio-006",
         "titulo": "Jesus Revelou as 4 emoções criadas pelos Arcontes— os humanos nunca foram destinados a senti las",
-        "arquivo": "01_gnose-esoterismo/Jesus Revelou as 4 emoções criadas pelos Arcontes— os humanos nunca foram destinados a senti-las.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Jesus Revelou as 4 emoções criadas pelos Arcontes— os humanos nunca foram destinados a senti-las.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2814,7 +2566,7 @@
       {
         "id": "audio-007",
         "titulo": "O Segredo Proibido da VIBRAÇÃO É Assim que se ELEVA de Forma PERMANENTE (Audiolivro)",
-        "arquivo": "01_gnose-esoterismo/O Segredo Proibido da VIBRAÇÃO_ É Assim que se ELEVA de Forma PERMANENTE (Audiolivro).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/O Segredo Proibido da VIBRAÇÃO_ É Assim que se ELEVA de Forma PERMANENTE (Audiolivro).mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2828,7 +2580,7 @@
       {
         "id": "audio-008",
         "titulo": "PARE DE IMPLORAR a DEUS — VOCÊ JÁ TEM O PODER Permita a CRIAÇÃO através da CONSCIÊNCIA",
-        "arquivo": "01_gnose-esoterismo/PARE DE IMPLORAR a DEUS — VOCÊ JÁ TEM O PODER. Permita a CRIAÇÃO através da CONSCIÊNCIA..mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/PARE DE IMPLORAR a DEUS — VOCÊ JÁ TEM O PODER. Permita a CRIAÇÃO através da CONSCIÊNCIA..mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2842,7 +2594,7 @@
       {
         "id": "audio-009",
         "titulo": "Somente Quem Ver Este Vídeo Hoje Vai Despertar para a Consciência Quântica (Mensagem de Thoth)",
-        "arquivo": "01_gnose-esoterismo/Somente Quem Ver Este Vídeo Hoje Vai Despertar para a Consciência Quântica (Mensagem de Thoth).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Somente Quem Ver Este Vídeo Hoje Vai Despertar para a Consciência Quântica (Mensagem de Thoth).mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2856,7 +2608,7 @@
       {
         "id": "audio-010",
         "titulo": "Você Finalmente Está Pronto",
-        "arquivo": "01_gnose-esoterismo/Você Finalmente Está Pronto.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Você Finalmente Está Pronto.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2870,7 +2622,7 @@
       {
         "id": "audio-011",
         "titulo": "Você NUNCA MAIS se verá da mesma forma depois de assistir a isto",
-        "arquivo": "01_gnose-esoterismo/Você NUNCA MAIS se verá da mesma forma depois de assistir a isto.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Você NUNCA MAIS se verá da mesma forma depois de assistir a isto.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2884,7 +2636,7 @@
       {
         "id": "audio-012",
         "titulo": "Você entrou em uma realidade quântica superior — algo vai mudar nas próximas 24h",
-        "arquivo": "01_gnose-esoterismo/Você entrou em uma realidade quântica superior — algo vai mudar nas próximas 24h.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/01_gnose-esoterismo/Você entrou em uma realidade quântica superior — algo vai mudar nas próximas 24h.mp3",
         "categoria": "Gnose e Esoterismo",
         "duracao": "",
         "tags": [
@@ -2898,7 +2650,7 @@
       {
         "id": "audio-013",
         "titulo": "Desperte o Cristo interior – Os ensinamentos proibidos de Jesus e a glândula pineal",
-        "arquivo": "02_cristianismo-esoterico/Desperte o Cristo interior – Os ensinamentos proibidos de Jesus e a glândula pineal [AvyX7Pqtd4w].mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/Desperte o Cristo interior – Os ensinamentos proibidos de Jesus e a glândula pineal [AvyX7Pqtd4w].mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2912,7 +2664,7 @@
       {
         "id": "audio-014",
         "titulo": "JESUS ESCONDEU ISTO NO SEU CORPO — O “NERVO SAGRADO” QUE DESPERTA A GNOSE",
-        "arquivo": "02_cristianismo-esoterico/JESUS ESCONDEU ISTO NO SEU CORPO — O “NERVO SAGRADO” QUE DESPERTA A GNOSE.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/JESUS ESCONDEU ISTO NO SEU CORPO — O “NERVO SAGRADO” QUE DESPERTA A GNOSE.mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2926,7 +2678,7 @@
       {
         "id": "audio-015",
         "titulo": "METAFÍSICA CRISTÃ que POUCAS IGREJAS CONHECEM AUDIOLIVRO COMPLETO em PORTUGUÊS",
-        "arquivo": "02_cristianismo-esoterico/METAFÍSICA CRISTÃ que POUCAS IGREJAS CONHECEM AUDIOLIVRO COMPLETO em PORTUGUÊS.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/METAFÍSICA CRISTÃ que POUCAS IGREJAS CONHECEM AUDIOLIVRO COMPLETO em PORTUGUÊS.mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2940,7 +2692,7 @@
       {
         "id": "audio-016",
         "titulo": "O EVANGELHO Sem Cruz, Sem Pecado e Sem Igreja ｜ O Evangelho Perdido de Tomé",
-        "arquivo": "02_cristianismo-esoterico/O EVANGELHO Sem Cruz, Sem Pecado e Sem Igreja ｜ O Evangelho Perdido de Tomé.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/O EVANGELHO Sem Cruz, Sem Pecado e Sem Igreja ｜ O Evangelho Perdido de Tomé.mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2954,7 +2706,7 @@
       {
         "id": "audio-017",
         "titulo": "O Que a Igreja Escondeu Sobre Jesus Por Mais de Mil Anos",
-        "arquivo": "02_cristianismo-esoterico/O Que a Igreja Escondeu Sobre Jesus Por Mais de Mil Anos.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/O Que a Igreja Escondeu Sobre Jesus Por Mais de Mil Anos.mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2968,7 +2720,7 @@
       {
         "id": "audio-018",
         "titulo": "O Ritual De Jesus De Apenas 5 Minutos Para Acessar a Mônada (Faça Isso Hoje)",
-        "arquivo": "02_cristianismo-esoterico/O Ritual De Jesus De Apenas 5 Minutos Para Acessar a Mônada (Faça Isso Hoje).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/O Ritual De Jesus De Apenas 5 Minutos Para Acessar a Mônada (Faça Isso Hoje).mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2982,7 +2734,7 @@
       {
         "id": "audio-019",
         "titulo": "Por que Jesus Desapareceu por 20 Anos？ — E Para Onde Ele Realmente Foi？",
-        "arquivo": "02_cristianismo-esoterico/Por que Jesus Desapareceu por 20 Anos？ — E Para Onde Ele Realmente Foi？.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/02_cristianismo-esoterico/Por que Jesus Desapareceu por 20 Anos？ — E Para Onde Ele Realmente Foi？.mp3",
         "categoria": "Cristianismo Esotérico",
         "duracao": "",
         "tags": [
@@ -2996,7 +2748,7 @@
       {
         "id": "audio-022",
         "titulo": "Como o Universo Te Testa Antes de Mudar Sua Realidade ｜ Carl Jung",
-        "arquivo": "04_consciencia-meditacao/Como o Universo Te Testa Antes de Mudar Sua Realidade ｜ Carl Jung.mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/04_consciencia-meditacao/Como o Universo Te Testa Antes de Mudar Sua Realidade ｜ Carl Jung.mp3",
         "categoria": "Consciência e Meditação",
         "duracao": "",
         "tags": [
@@ -3010,7 +2762,7 @@
       {
         "id": "audio-023",
         "titulo": "Torna te quem tu és",
-        "arquivo": "04_consciencia-meditacao/Torna-te quem tu és [7bepUJB9ozY].mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/04_consciencia-meditacao/Torna-te quem tu és [7bepUJB9ozY].mp3",
         "categoria": "Consciência e Meditação",
         "duracao": "",
         "tags": [
@@ -3024,7 +2776,7 @@
       {
         "id": "audio-024",
         "titulo": "Você É o Observador e o Observado (Explicação Completa)",
-        "arquivo": "04_consciencia-meditacao/Você É o Observador... e o Observado (Explicação Completa).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/04_consciencia-meditacao/Você É o Observador... e o Observado (Explicação Completa).mp3",
         "categoria": "Consciência e Meditação",
         "duracao": "",
         "tags": [
@@ -3038,7 +2790,7 @@
       {
         "id": "audio-025",
         "titulo": "Autofagia OCodigoProibidoDaRegeneracaoInstantâneaDoCorpo(Audiolivro)",
-        "arquivo": "05_corpo-regeneracao/Autofagia_OCodigoProibidoDaRegeneracaoInstantâneaDoCorpo(Audiolivro).mp3",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/05_corpo-regeneracao/Autofagia_OCodigoProibidoDaRegeneracaoInstantâneaDoCorpo(Audiolivro).mp3",
         "categoria": "Corpo e Regeneração",
         "duracao": "",
         "tags": [
@@ -3052,7 +2804,7 @@
       {
         "id": "audio-027",
         "titulo": "Frequencia",
-        "arquivo": "06_musica-sons/frequencia.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/06_musica-sons/frequencia.mp4",
         "categoria": "Música e Sons",
         "duracao": "",
         "tags": [
@@ -3066,7 +2818,7 @@
       {
         "id": "audio-029",
         "titulo": "SentelhaDivina",
-        "arquivo": "06_musica-sons/sentelhaDivina.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/audios/06_musica-sons/sentelhaDivina.mp4",
         "categoria": "Música e Sons",
         "duracao": "",
         "tags": [
@@ -3082,7 +2834,7 @@
       {
         "id": "video-001",
         "titulo": "All 9 Solfeggio Frequencies, Full Body Healing, Full Body Aura Cleanse, Healing Frequencies",
-        "arquivo": "01_frequencias-curacao/All 9 Solfeggio Frequencies, Full Body Healing, Full Body Aura Cleanse, Healing Frequencies.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/01_frequencias-curacao/All 9 Solfeggio Frequencies, Full Body Healing, Full Body Aura Cleanse, Healing Frequencies.mp4",
         "categoria": "Frequências e Cura",
         "duracao": "",
         "tags": [
@@ -3096,7 +2848,7 @@
       {
         "id": "video-002",
         "titulo": "O que fazer ao acordar?RecomendacaodeHelenaBlavatsky Prof LúciaHelenaGalvao",
-        "arquivo": "02_filosofia-consciencia/O que fazer ao acordar?RecomendacaodeHelenaBlavatsky-Prof.LúciaHelenaGalvao.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/02_filosofia-consciencia/O que fazer ao acordar.RecomendacaodeHelenaBlavatsky-Prof.LuciaHelenaGalvao.mp4",
         "categoria": "Filosofia e Consciência",
         "duracao": "",
         "tags": [
@@ -3110,7 +2862,7 @@
       {
         "id": "video-003",
         "titulo": "SeVoceUsaTikTokouInstagram SuaMenteJa EstaSendoProgramada!Carl Jung",
-        "arquivo": "02_filosofia-consciencia/SeVoceUsaTikTokouInstagram-SuaMenteJa EstaSendoProgramada!Carl Jung.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/02_filosofia-consciencia/Se Voce Usa TikTok ou Instagram - Sua Mente Ja Esta Sendo Programada! Carl Jung.mp4",
         "categoria": "Filosofia e Consciência",
         "duracao": "",
         "tags": [
@@ -3124,7 +2876,7 @@
       {
         "id": "video-004",
         "titulo": "O BRASIL ANTES DE 1500： A HISTÓRIA QUE VOCÊ NUNCA APRENDEU",
-        "arquivo": "03_historia-cultura/O BRASIL ANTES DE 1500：  A HISTÓRIA QUE VOCÊ NUNCA APRENDEU.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/03_historia-cultura/O BRASIL ANTES DE 1500：  A HISTÓRIA QUE VOCÊ NUNCA APRENDEU.mp4",
         "categoria": "História e Cultura",
         "duracao": "",
         "tags": [
@@ -3138,7 +2890,7 @@
       {
         "id": "video-006",
         "titulo": "ContemplarToDia",
-        "arquivo": "04_momentos-pessoais/contemplarToDia.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/04_momentos-pessoais/contemplarToDia.mp4",
         "categoria": "Momentos Pessoais",
         "duracao": "",
         "tags": [
@@ -3151,7 +2903,7 @@
       {
         "id": "video-007",
         "titulo": "GENKAI Voce Nunca Chegou No Seu Limite D Media",
-        "arquivo": "05_animes/GENKAI-Voce-Nunca-Chegou-No-Seu-Limite-D_Media.mp4",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/05_animes/GENKAI-Voce-Nunca-Chegou-No-Seu-Limite-D_Media.mp4",
         "categoria": "Animes",
         "duracao": "",
         "tags": [
@@ -3164,7 +2916,7 @@
       {
         "id": "video-008",
         "titulo": "Que droga!!!",
-        "arquivo": "05_animes/que droga!!!.mkv",
+        "arquivo": "https://res.cloudinary.com/deblzssiw/video/upload/v1/videos/05_animes/que droga!!!.mkv",
         "categoria": "Animes",
         "duracao": "",
         "tags": [

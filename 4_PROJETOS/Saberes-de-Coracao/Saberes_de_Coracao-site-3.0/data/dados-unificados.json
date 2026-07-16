@@ -1,8 +1,8 @@
 {
   "meta": {
-    "versao": "5.0-sync",
+    "versao": "5.0",
     "atualizado": "2026-07-16",
-    "descricao": "Fonte única canônica — sincronizada com site-3.0/data/",
+    "descricao": "Dados unificados do Projeto Saberes de Coração - Fonte única para site, banco de dados, ebooks e multimídia",
     "total_apocrifos": 93
   },
   "categorias": [
@@ -4504,5 +4504,6 @@
         "saberes_relacionados": []
       }
     ]
-  }
+  },
+  "versao": "5.0"
 }

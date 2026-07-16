@@ -55,9 +55,6 @@ ebooks/
 ├── epigenetica-ebook.md
 ├── epigenetica-ebook.html
 ├── epigenetica-ebook.epub
-├── hermetismo-ebook.md
-├── hermetismo-ebook.html
-└── hermetismo-ebook.epub
 ```
 
 ### Curso (pronto)

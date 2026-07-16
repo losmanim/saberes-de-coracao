@@ -191,7 +191,7 @@ Shakti (Energia)         ↔    Sopro Divino
 | Ponto | Entrance | Caminho Inicial |
 |-------|----------|-----------------|
 | Gnose | Buscando answers | gnose/ → gnosis/ → pistis-sofia/ → pindorama/ |
-| Hermetismo | Buscando lei | hermetismo/ → 7-principios/ |
+
 | Tao | Buscando fluxo | tao/ → wu-wei/ |
 | Teosofia | Buscando sabedoria divina | teosofia/ → helena-blavatsky/ |
 | Cristianismo Primitivo | Buscando origens | cristianismo-primitivo/ → iCosmica/ |
@@ -208,7 +208,7 @@ Shakti (Energia)         ↔    Sopro Divino
 |-----------|-----------------|
 | Quer conhecimento direto | [[gnose/gnosis/]] |
 | Quer os textos gnósticos originais | [[gnose/pistis-sofia/]] |
-| Quer compreensão das leis | [[hermetismo/]] |
+
 | Quer fluir com o universo | [[tao/]] |
 | Quer sabedoria divina | [[teosofia/]] |
 | Quer as origens do cristianismo | [[cristianismo-primitivo/]] |

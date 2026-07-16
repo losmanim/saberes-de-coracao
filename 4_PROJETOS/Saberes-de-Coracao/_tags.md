@@ -10,10 +10,10 @@
 
 | Tag | Descrição | Módulos Relacionados |
 |-----|-----------|---------------------|
-| `#espirito` | Conhecimento espiritual e gnóstico | gnose, hermetismo, teosofia |
+| `#espirito` | Conhecimento espiritual e gnóstico | gnose, teosofia |
 | `#pratica` | Práticas e técnicas | tecnica-meditacao, jornada |
 | `#ciencia` | Conhecimento científico | epigenetica |
-| `#filosofia` | Filosofias e tradições | tao, hermetismo, teosofia |
+| `#filosofia` | Filosofias e tradições | tao, teosofia |
 | `#jornada` | Processo de transformação | jornada, camino-verdade |
 
 ### Por Tradição
@@ -23,7 +23,6 @@
 | `#gnose` | Gnose | Conhecimento direto de Deus |
 | `#kundalini` | Kundalini | Energia serpente |
 | `#pneuma` | Pneuma | Espírito/sopro divino |
-| `#hermetismo` | Tradição Hermética | 7 Princípios |
 | `#teosofia` | Teosofia | Sabedoria divina |
 | `#tao` | Tao/Dao | O Caminho |
 | `#budismo` | Budismo | Iluminação |
@@ -60,7 +59,7 @@
 | Tag Composta | Uso |
 |--------------|-----|
 | `#espirito/gnose` | Gnose espiritual |
-| `#espirito/hermetismo` | Hermetismo |
+
 | `#pratica/meditacao` | Técnicas de meditação |
 | `#pratica/respiracao` | Técnicas respiratórias |
 | `#ciencia/epigenetica` | Epigenética |
@@ -85,7 +84,7 @@
 
 ```markdown
 [[#gnose]] - Para linking direto
-[[#hermetismo]] 
+
 [[#pratica]]
 ```
 

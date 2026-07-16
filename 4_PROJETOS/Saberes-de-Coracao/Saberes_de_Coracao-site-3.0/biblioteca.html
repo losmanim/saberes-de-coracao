@@ -6,9 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca — Saberes de Coração</title>
     <meta name="description" content="Biblioteca completa dos Saberes de Coração — Gnose, Epigenética, Práticas, Mestres e muito mais">
+    <meta name="author" content="Saberes de Coração">
+    <meta property="og:title" content="Biblioteca — Saberes de Coração">
+    <meta property="og:description" content="Biblioteca completa dos Saberes de Coração — Gnose, Epigenética, Práticas, Mestres e muito mais">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Saberes de Coração">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Biblioteca — Saberes de Coração">
+    <meta name="twitter:description" content="Biblioteca completa dos Saberes de Coração">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/app.js" defer></script>
+    <script src="js/features.js" defer></script>
 </head>
 
 <body>
@@ -1407,6 +1417,12 @@ INCERTO → BUSCA → PRÁTICA → DESPERTAR → (volta ao INCERTO, em nível su
         }
     });
     </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
 </body>
-
 </html>

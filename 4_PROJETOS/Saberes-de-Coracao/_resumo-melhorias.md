@@ -42,7 +42,6 @@
 | Arquivo | Assunto | Tradição |
 |--------|--------|----------|
 | `practica/respiracao/resida.md` | Manual de Respiração Espiritual (5 técnicas) | Universal |
-| `espirito/hermetismo/correspondencia.md` | Lei da Correspondência | Hermetismo |
 | `practica/mantras/mantras.md` | Mantras de Poder (6 mantras) | Universal |
 | `ciencia/epigenetica/practica-epigenetica.md` | Epigenética Prática | Ciência |
 | `espirito/gnose/curso/licao-6-em-construcao.md` | Corpos Sutis e Faculdades Superiores | Gnose |

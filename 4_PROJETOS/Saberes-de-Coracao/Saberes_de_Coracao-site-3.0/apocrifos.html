@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Apócrifa — Saberes de Coração</title>
     <meta name="description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos dos primeiros séculos">
+    <meta name="author" content="Saberes de Coração">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+    <meta property="og:title" content="Biblioteca Apócrifa — Saberes de Coração">
+    <meta property="og:description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos dos primeiros séculos">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Saberes de Coração">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Biblioteca Apócrifa — Saberes de Coração">
+    <meta name="twitter:description" content="Biblioteca de textos apócrifos — evangelhos, testamentos, revelações e escritos gnósticos">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -54,12 +66,7 @@
             <div class="busca-info" id="buscaInfo"></div>
         </div>
 
-        <nav class="pilares" id="categoriasNav">
-            <button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')">📜 Todos</button>
-            <button class="pilar-btn" data-cat="patriarcas" onclick="filtrarCategoria('patriarcas')">🕊️ Patriarcas</button>
-            <button class="pilar-btn" data-cat="infancia" onclick="filtrarCategoria('infancia')">👶 Infância de Jesus</button>
-            <button class="pilar-btn" data-cat="gnosticos" onclick="filtrarCategoria('gnosticos')">🔮 Gnósticos</button>
-        </nav>
+        <nav class="pilares" id="categoriasNav"></nav>
 
         <div id="apocrifosContainer">
             <div class="loading">
@@ -144,7 +151,16 @@
         <button class="player-btn player-close" id="playerClose" title="Fechar player" aria-label="Fechar player">✕</button>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js"></script>
     <script src="js/app.js" defer></script>
+    <script src="js/features.js" defer></script>
     <script src="js/apocrifos.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
 </body>
 </html>

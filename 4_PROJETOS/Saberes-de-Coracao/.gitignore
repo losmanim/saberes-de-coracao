@@ -21,3 +21,8 @@ __pycache__/
 
 # Local media symlinks or generated assets
 Saberes_de_Coracao-site-3.0/midia/
+
+# Environment
+.env
+.env.local
+*.log

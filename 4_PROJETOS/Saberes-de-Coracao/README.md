@@ -20,7 +20,6 @@ Uma estrutura organizada de conhecimentos espiritual, filosófico e científico,
 | **viver/**      | "Viver sem filtros" - filosofia de vida direta e sem dogmas |
 | **gnose/**      | Gnose, Kundalini, Pneuma - conhecimento interior            |
 | **gnose/curso/**| Curso estruturado de Gnose com lições sequenciais (7 lições disponíveis) |
-| **hermetismo/** | Filosofia hermética e tradições antigas                     |
 | **teosofia/**   | Helena Blavatsky, Tao, sabedoria antiga                     |
 
 ### 🧠 PRÁTICAS (Trabalho Interior)

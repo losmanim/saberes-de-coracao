@@ -105,8 +105,8 @@ def validate_references(data):
 
 def main():
     """Executa validação completa."""
-    # Procurar no diretório raiz do projeto
-    filepath = Path(__file__).parent.parent / 'database' / 'dados-unificados.json'
+    # Procurar no diretório do site (canônico)
+    filepath = Path(__file__).parent.parent / 'Saberes_de_Coracao-site-3.0' / 'data' / 'dados-unificados.json'
     
     print(f"Validando {filepath}...\n")
     

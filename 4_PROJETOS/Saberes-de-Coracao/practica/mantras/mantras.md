@@ -36,7 +36,6 @@ O som é vibração. A vibração é energia. A energia é a base de toda a cria
 
 ### Conexões
 
-- [[../../espirito/hermetismo/]] — Princípio da Vibração
 - [[../respiracao/resida.md]] — Preparação com respiração
 
 ---

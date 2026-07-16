@@ -7,11 +7,29 @@
     <title>Saberes de Coração</title>
     <meta name="description" content="Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira">
     <meta name="theme-color" content="#0d1117">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+    <link rel="apple-touch-icon" href="/icons/icon.svg">
+    <meta name="author" content="Saberes de Coração">
+    <meta name="keywords" content="gnose, teosofia, epigenética, meditação, sabedoria, espiritualidade, filosofia, conhecimento">
+    <meta property="og:title" content="Saberes de Coração">
+    <meta property="og:description" content="Plataforma de saberes ancestrais — Gnose, Teosofia, Cristianismo Primitivo, Éter, Epigenética, Práticas, Jornada da Consciência e Vida Verdadeira">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Saberes de Coração">
+    <meta property="og:locale" content="pt_BR">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Saberes de Coração">
+    <meta name="twitter:description" content="Plataforma de saberes ancestrais — conhecimento direto e experiencial da natureza divina">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <div class="reading-progress" id="readingProgress" aria-hidden="true">
+        <div class="reading-progress-bar" id="readingProgressBar"></div> 
+    </div>
     <header class="header" role="banner">
         <div class="header-content">
             <a href="index.html" class="logo" aria-label="Saberes de Coração - Início">
@@ -29,8 +47,17 @@
     </header>
     <main class="main" role="main">
         <section class="hero" aria-label="Introdução">
-            <h1>Saberes de Coração</h1>
-            <p>"O verdadeiro conhecimento deve ser passado de coração, com boa vontade, em empatia ativa, elevando o campo."</p>
+            <div class="hero-orbs" aria-hidden="true">
+                <div class="orb"></div>
+                <div class="orb"></div>
+                <div class="orb"></div>
+            </div>
+            <h1 class="reveal">Saberes de Coração</h1>
+            <p class="hero-subtitle reveal reveal-delay-1">Gnose · Ciência · Meditação · Filosofia · Vida Verdadeira</p>
+            <p class="hero-quote reveal reveal-delay-2">"O conhecimento transformador não se acumula — pratica-se, vive-se, transmite-se de coração para coração, através dos tempos."</p>
+            <div class="hero-saber-dia reveal reveal-delay-3" id="saberDoDia" role="complementary" aria-label="Saber do dia">
+                <div class="saber-dia-loading">⋆</div>
+            </div>
             <div class="hero-stats" id="heroStats" aria-label="Estatísticas do projeto">
                 <div class="hero-stat">
                     <div class="hero-stat-num" id="statSaberes">—</div>
@@ -53,6 +80,9 @@
         <nav class="pilares" id="pilaresNav" aria-label="Filtrar por pilar">
             <button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')" aria-pressed="true">
                 🌟 Todos
+            </button>
+            <button class="pilar-btn" data-cat="fav" onclick="filtrarCategoria('fav')" aria-pressed="false" id="btnFav">
+                ❤️ Favoritos
             </button>
             <button class="pilar-btn" data-cat="1" onclick="filtrarCategoria('1')" aria-pressed="false">
                 🜂 Espírito
@@ -82,7 +112,15 @@
             <div class="busca-info" id="buscaInfo" aria-live="polite"></div>
         </div>
         <div class="cards-grid" id="cardsGrid" role="list" aria-label="Lista de saberes">
-            <div class="loading">
+            <div class="skeleton-grid" id="skeletonGrid" aria-label="Carregando">
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+                <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
+            </div>
+            <div class="loading" id="loadingFallback" style="display:none">
                 <div class="loading-spinner" aria-hidden="true"></div>
                 <p>Carregando saberes...</p>
             </div>
@@ -97,6 +135,12 @@
             <div class="modal-content" id="modalContent"></div>
         </div>
     </div>
+    <aside class="continue-bar" id="continueBar" role="complementary" aria-label="Continuar lendo" hidden>
+        <span>📖 Continuar lendo</span>
+        <span id="continueTitulo" class="continue-titulo"></span>
+        <button class="continue-btn" onclick="abrirSaber(continueSaberId)">Abrir</button>
+        <button class="continue-btn continue-close" onclick="fecharContinue()" aria-label="Descartar">✕</button>
+    </aside>
     <div id="playerBar" class="player-bar" role="region" aria-label="Player de mídia" hidden>
         <audio id="playerAudio" preload="metadata"></audio>
         <div class="player-track-info">
@@ -141,7 +185,7 @@
                 <h4>Conteúdo</h4>
                 <ul>
                     <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
-                    <li><a href="biblioteca.html#sec-gnose">🜂 Gnose</a></li>
+
                     <li><a href="biblioteca.html#sec-praticas">🧘 Práticas</a></li>
                     <li><a href="biblioteca.html#sec-ciencia">🔬 Ciência</a></li>
                 </ul>
@@ -162,7 +206,16 @@
             </div>
         </div>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js"></script>
     <script src="js/app.js" defer></script>
+    <script src="js/features.js" defer></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+        }
+    </script>
 </body>
 
 </html>

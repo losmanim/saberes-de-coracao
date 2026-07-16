@@ -16,7 +16,6 @@ Saberes de Coração (Raiz)
 │   │   ├── Gnosis (site)  → espirito/gnose/gnosis/
 │   │   ├── Pistis Sophia  → espirito/gnose/pistis-sofia/
 │   │   └── Pindorama      → espirito/gnose/pindorama/
-│   ├── Hermetismo        → espirito/hermetismo/
 │   ├── Teosofia (site)   → espirito/teosofia/
 │   └── Cristianismo Primitivo → espirito/cristianismo-primitivo/
 │       └── iCosmica       → espirito/cristianismo-primitivo/iCosmica/
@@ -54,8 +53,7 @@ Saberes de Coração (Raiz)
 | Gnose: Gnosis (site) | `gnosis/index.html` | Iniciante | 15min |
 | Gnose: Pistis Sophia | `pistis-sofia/` | Avançado | 60min |
 | Gnose: Pindorama | `pindorama/index.html` | Intermediário | 30min |
-| Hermetismo: 7 Princípios | `site`, `hermetismo-ebook` | Iniciante | 30min |
-| Lei da Correspondência | `correspondencia.md` | Iniciante | 20min |
+
 | Kundalini | `kundalini-ebook` | Intermediário | 25min |
 | Teosofia (site) | `teosofia/index.html` | Iniciante | 20min |
 | Cristianismo Primitivo | `cristianismo-primitivo/index.html` | Iniciante | 20min |
@@ -102,9 +100,7 @@ GNOSE ────────────────────────�
    │                                    │
    ├──▶ PNEUMA ──▶ CORAÇÃO              │
    │                                    │
-   ├──▶ HERMETISMO ──▶ LEI DA CORRESPONDÊNCIA
-   │                         │          │
-   │                         └─▶ EPIGENÉTICA
+   ├──▶ EPIGENÉTICA                     │
    │                                    │
    ├──▶ Teosofia ──▶ Sabedoria Divina   │
    │                                    │
@@ -201,7 +197,7 @@ espirito/gnose/gnosis/        → Site Gnosis (HTML/CSS/JS)
 espirito/gnose/curso/          → Curso de Gnose (Markdown)
 espirito/gnose/pistis-sofia/   → Pistis Sophia (PDFs)
 espirito/gnose/pindorama/      → Pindorama (site completo)
-espirito/hermetismo/           → 7 Princípios (Markdown)
+
 espirito/teosofia/             → Site Teosofia (HTML/CSS/JS)
 espirito/cristianismo-primitivo/ → Site Crist. Primitivo
 espirito/cristianismo-primitivo/iCosmica/ → Site iCosmica

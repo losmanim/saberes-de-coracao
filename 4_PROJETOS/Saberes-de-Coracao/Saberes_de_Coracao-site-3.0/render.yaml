@@ -3,9 +3,43 @@ services:
     name: saberes-de-coracao
     env: node
     buildCommand: npm install
-    startCommand: node server/app.js
+    startCommand: node app.js
     envVars:
       - key: NODE_VERSION
         value: 22
       - key: ADMIN_PASS
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGIN
+        value: https://saberes-de-coracao.onrender.com
+      - key: LOG_LEVEL
+        value: info
+      - key: MIDIA_BASE_URL
+        value: https://res.cloudinary.com/deblzssiw
+      - key: APPWRITE_ENDPOINT
+        value: https://cloud.appwrite.io/v1
+      - key: APPWRITE_PROJECT_ID
+        sync: false
+      - key: APPWRITE_API_KEY
+        sync: false
+      - key: APPWRITE_DATABASE_ID
+        sync: false
+      - key: APPWRITE_SABERES_COLLECTION_ID
+        value: saberes
+      - key: APPWRITE_CATEGORIAS_COLLECTION_ID
+        value: categorias
+      - key: APPWRITE_MIDIA_COLLECTION_ID
+        value: midia
+      - key: APPWRITE_CONTATOS_COLLECTION_ID
+        value: contatos
+      - key: APPWRITE_USUARIOS_COLLECTION_ID
+        value: usuarios_dados
+      - key: EMAILJS_SERVICE_ID
+        sync: false
+      - key: EMAILJS_TEMPLATE_ID
+        sync: false
+      - key: EMAILJS_PUBLIC_KEY
+        sync: false
+      - key: EMAILJS_PRIVATE_KEY
         sync: false

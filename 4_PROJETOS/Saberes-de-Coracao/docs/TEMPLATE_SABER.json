@@ -23,7 +23,7 @@
         "frequencia": "diaria"
       }
     ],
-    "conexoes": ["gnose-1", "hermetismo-1"]
+    "conexoes": ["gnose-1"]
   },
   "campos_obrigatorios": [
     "id",

@@ -30,7 +30,6 @@
 | **Formato** | PDF, EPUB, Kindle |
 | **Preço Sugerido** | R$ 27,00 |
 | **Páginas** | ~40 páginas |
-| **Palavras-chave** | Hermetismo, Filosofia, Hermes, Kybalion, Princípios |
 
 ### Curso: Jornada da Consciência
 

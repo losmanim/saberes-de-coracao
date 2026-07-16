@@ -1,296 +1,286 @@
+// =============================================
+// Sanitização XSS
+// =============================================
+
+function $(el, htmlContent) {
+  el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
+  return el;
+}
+
+// =============================================
+// Constantes
+// =============================================
+
+const DADOS_CACHE_KEY = 'saberes_cache';
+const DADOS_CACHE_VERSAO_KEY = 'saberes_cache_versao';
+const FAVORITOS_KEY = 'saberes_favoritos';
+const SABER_DIA_KEY = 'saberes_saber_dia';
+const CONTINUE_KEY = 'saberes_continue';
+const ABERTOS_KEY = 'saberes_abertos';
+
+const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
+
+// =============================================
+// Estado Global
+// =============================================
+
 let dados = null;
 let categoriaAtual = 'all';
 let ultimoElementoFocado = null;
+let continueSaberId = null;
 
-const Player = {
-    currentList: [],
-    currentIndex: -1,
-    currentItem: null,
-    isPlaying: false,
+// =============================================
+// Saber do Dia
+// =============================================
 
-    init() {
-        const audio = document.getElementById('playerAudio');
-        const playPause = document.getElementById('playerPlayPause');
-        const prev = document.getElementById('playerPrev');
-        const next = document.getElementById('playerNext');
-        const closeBtn = document.getElementById('playerClose');
-        const muteBtn = document.getElementById('playerMute');
-        const volumeSlider = document.getElementById('playerVolumeSlider');
-        const seekSlider = document.getElementById('playerSeekSlider');
-        const progressWrap = document.getElementById('playerProgressWrap');
+function saberDoDia() {
+    const el = document.getElementById('saberDoDia');
+    if (!el || !dados || !dados.saberes) return;
 
-        playPause.addEventListener('click', () => this.togglePlay());
-        prev.addEventListener('click', () => this.prev());
-        next.addEventListener('click', () => this.next());
-        closeBtn.addEventListener('click', () => this.close());
-        muteBtn.addEventListener('click', () => this.toggleMute());
+    const hoje = new Date().toDateString();
+    const salvo = localStorage.getItem(SABER_DIA_KEY);
+    let escolha;
+    let citacaoUsar;
 
-        volumeSlider.addEventListener('input', e => {
-            audio.volume = parseFloat(e.target.value);
-            this.updateMuteIcon();
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            if (!audio.duration) return;
-            const pct = (audio.currentTime / audio.duration) * 100;
-            document.getElementById('playerProgressBar').style.width = pct + '%';
-            document.getElementById('playerSeekSlider').value = pct;
-            document.getElementById('playerTimeCurrent').textContent = this.formatTime(audio.currentTime);
-        });
-
-        audio.addEventListener('loadedmetadata', () => {
-            document.getElementById('playerTimeTotal').textContent = this.formatTime(audio.duration);
-        });
-
-        audio.addEventListener('ended', () => {
-            this.next();
-        });
-
-        audio.addEventListener('play', () => {
-            this.isPlaying = true;
-            this.updatePlayBtn();
-        });
-
-        audio.addEventListener('pause', () => {
-            this.isPlaying = false;
-            this.updatePlayBtn();
-        });
-
-        seekSlider.addEventListener('input', e => {
-            if (!audio.duration) return;
-            audio.currentTime = (parseFloat(e.target.value) / 100) * audio.duration;
-        });
-
-        document.getElementById('playerProgressWrap').addEventListener('click', e => {
-            if (!audio.duration || e.target.tagName === 'INPUT') return;
-            const rect = progressWrap.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pct * audio.duration;
-        });
-
-        document.addEventListener('keydown', e => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            const bar = document.getElementById('playerBar');
-            if (bar.hasAttribute('hidden')) return;
-
-            switch (e.key) {
-                case ' ':
-                    e.preventDefault();
-                    this.togglePlay();
-                    break;
-                case 'p':
-                case 'P':
-                    this.prev();
-                    break;
-                case 'n':
-                case 'N':
-                    this.next();
-                    break;
-                case 'm':
-                case 'M':
-                    this.toggleMute();
-                    break;
-            }
-        });
-    },
-
-    buildList(tipo) {
-        if (!dados || !dados.midia) return [];
-        if (tipo === 'audio') return dados.midia.audios || [];
-        return dados.midia.videos || [];
-    },
-
-    open(tipo, id) {
-        const list = this.buildList(tipo);
-        const index = list.findIndex(m => m.id === id);
-        if (index === -1) return;
-
-        this.currentList = list;
-        this.currentIndex = index;
-        this.currentItem = list[index];
-
-        const baseDir = window.midiaBaseUrl;
-        const partes = this.currentItem.arquivo.split('/');
-        const arquivoCod = partes.map(encodeURIComponent).join('/');
-        const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
-
-        const audio = document.getElementById('playerAudio');
-        audio.src = src;
-        audio.load();
-        audio.onerror = () => {
-            alert('Arquivo de mídia não encontrado: ' + src);
-        };
-
-        const bar = document.getElementById('playerBar');
-        bar.removeAttribute('hidden');
-        document.body.classList.add('player-active');
-
-        document.getElementById('playerIcon').textContent = tipo === 'audio' ? '🎧' : '🎬';
-        document.getElementById('playerTrackName').textContent = this.currentItem.titulo;
-
-        const vol = localStorage.getItem('playerVolume');
-        audio.volume = vol !== null ? parseFloat(vol) : 1;
-        document.getElementById('playerVolumeSlider').value = audio.volume;
-
-        audio.play().catch(() => {});
-    },
-
-    togglePlay() {
-        const audio = document.getElementById('playerAudio');
-        if (!audio.src) return;
-        if (audio.paused) {
-            audio.play().catch(() => {});
-        } else {
-            audio.pause();
-        }
-    },
-
-    prev() {
-        if (!this.currentList.length) return;
-        this.currentIndex = (this.currentIndex - 1 + this.currentList.length) % this.currentList.length;
-        this.loadCurrent();
-    },
-
-    next() {
-        if (!this.currentList.length) return;
-        this.currentIndex = (this.currentIndex + 1) % this.currentList.length;
-        this.loadCurrent();
-    },
-
-    loadCurrent() {
-        const item = this.currentList[this.currentIndex];
-        if (!item) return;
-        this.currentItem = item;
-
-        const audio = document.getElementById('playerAudio');
-        const isVideo = item.id && item.id.startsWith('video-');
-        const baseDir = window.midiaBaseUrl;
-        const partes = item.arquivo.split('/');
-        const arquivoCod = partes.map(encodeURIComponent).join('/');
-        const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
-
-        audio.src = src;
-        document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
-        document.getElementById('playerTrackName').textContent = item.titulo;
-        document.getElementById('playerProgressBar').style.width = '0%';
-        document.getElementById('playerSeekSlider').value = 0;
-        document.getElementById('playerTimeCurrent').textContent = '0:00';
-
-        audio.load();
-        audio.onerror = () => {
-            alert('Arquivo não encontrado: ' + audio.src);
-        };
-        audio.play().catch(() => {});
-    },
-
-    close() {
-        const audio = document.getElementById('playerAudio');
-        audio.pause();
-        audio.src = '';
-        this.currentList = [];
-        this.currentIndex = -1;
-        this.currentItem = null;
-        this.isPlaying = false;
-
-        document.getElementById('playerBar').setAttribute('hidden', '');
-        document.body.classList.remove('player-active');
-    },
-
-    toggleMute() {
-        const audio = document.getElementById('playerAudio');
-        audio.muted = !audio.muted;
-        this.updateMuteIcon();
-    },
-
-    updateMuteIcon() {
-        const audio = document.getElementById('playerAudio');
-        const btn = document.getElementById('playerMute');
-        btn.textContent = audio.muted || audio.volume === 0 ? '🔇' : '🔊';
-    },
-
-    updatePlayBtn() {
-        const btn = document.getElementById('playerPlayPause');
-        btn.textContent = this.isPlaying ? '⏸' : '▶';
-        btn.classList.toggle('playing', this.isPlaying);
-    },
-
-    formatTime(secs) {
-        if (!secs || isNaN(secs)) return '0:00';
-        const m = Math.floor(secs / 60);
-        const s = Math.floor(secs % 60);
-        return m + ':' + (s < 10 ? '0' : '') + s;
-    },
-
-    saveState() {
-        const audio = document.getElementById('playerAudio');
-        if (!audio || !audio.src || this.currentList.length === 0) return;
-        sessionStorage.setItem('playerState', JSON.stringify({
-            currentIndex: this.currentIndex,
-            currentTime: audio.currentTime,
-            isPlaying: !audio.paused,
-            trackTitle: this.currentItem?.titulo || '',
-            trackId: this.currentItem?.id || '',
-            trackTipo: this.currentItem?.id?.startsWith('video-') ? 'video' : 'audio',
-            listIds: this.currentList.map(m => m.id),
-        }));
-    },
-
-    restoreState() {
-        const saved = sessionStorage.getItem('playerState');
-        if (!saved) return;
+    if (salvo) {
         try {
-            const state = JSON.parse(saved);
-            if (!state.listIds || state.listIds.length === 0) return;
-
-            if (!dados || !dados.midia) return;
-            const allMidia = [...(dados.midia.audios || []), ...(dados.midia.videos || [])];
-            const list = state.listIds.map(id => allMidia.find(m => m.id === id)).filter(Boolean);
-            if (list.length === 0) return;
-
-            const idx = list.findIndex(m => m.id === state.trackId);
-            if (idx === -1) return;
-
-            this.currentList = list;
-            this.currentIndex = idx;
-            this.currentItem = list[idx];
-
-            const baseDir = window.midiaBaseUrl;
-            const isVideo = state.trackTipo === 'video';
-            const partes = this.currentItem.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
-
-            const audio = document.getElementById('playerAudio');
-            audio.src = src;
-            audio.currentTime = state.currentTime || 0;
-
-            const bar = document.getElementById('playerBar');
-            bar.removeAttribute('hidden');
-            document.body.classList.add('player-active');
-
-            document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
-            document.getElementById('playerTrackName').textContent = this.currentItem.titulo;
-
-            const vol = localStorage.getItem('playerVolume');
-            audio.volume = vol !== null ? parseFloat(vol) : 1;
-            document.getElementById('playerVolumeSlider').value = audio.volume;
-
-            audio.load();
-            if (state.isPlaying) {
-                audio.currentTime = state.currentTime || 0;
-                audio.play().catch(() => {});
+            const parsed = JSON.parse(salvo);
+            if (parsed.data === hoje && parsed.id) {
+                escolha = dados.saberes.find(s => s.id === parsed.id);
+                citacaoUsar = parsed.citacao;
             }
+        } catch {}
+    }
 
-            sessionStorage.removeItem('playerState');
-        } catch (e) {
-            sessionStorage.removeItem('playerState');
+    if (!escolha) {
+        const idx = Math.floor(Math.random() * dados.saberes.length);
+        escolha = dados.saberes[idx];
+        citacaoUsar = extrairCitacaoImpactante(escolha);
+        localStorage.setItem(SABER_DIA_KEY, JSON.stringify({ data: hoje, id: escolha.id, citacao: citacaoUsar }));
+    }
+
+    if (!escolha || !citacaoUsar) return;
+
+    $(el, `
+        <div class="saber-dia-card" onclick="abrirSaber('${escolha.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${escolha.id}')" tabindex="0" role="button" aria-label="Saber do dia: ${escolha.titulo}">
+            <div class="saber-dia-label">☀️ Saber do Dia</div>
+            <div class="saber-dia-quote">${citacaoUsar}</div>
+            <div class="saber-dia-fonte">— ${escolha.titulo}</div>
+        </div>`);
+}
+
+function extrairCitacaoImpactante(saber) {
+    if (!saber.conteudo) return saber.descricao;
+
+    if (saber.conteudo.citacoes && saber.conteudo.citacoes.length > 0) {
+        const citacoes = saber.conteudo.citacoes.filter(c => c.length > 20 && c.length < 300);
+        if (citacoes.length > 0) {
+            return citacoes[Math.floor(Math.random() * citacoes.length)];
         }
     }
-};
+
+    if (saber.conteudo.insight) {
+        const insight = saber.conteudo.insight;
+        if (insight.length < 250) return insight;
+        const frases = insight.split(/[.!?]+/).filter(f => f.trim().length > 20 && f.trim().length < 200);
+        if (frases.length > 0) return frases[Math.floor(Math.random() * frases.length)].trim() + '.';
+        return insight.substring(0, 200).trim() + '...';
+    }
+
+    return saber.descricao;
+}
+
+// =============================================
+// Favoritos
+// =============================================
+
+function getFavoritos() {
+    try {
+        const raw = localStorage.getItem(FAVORITOS_KEY);
+        return raw ? JSON.parse(raw) : [];
+    } catch { return []; }
+}
+
+function salvarFavoritos(lista) {
+    localStorage.setItem(FAVORITOS_KEY, JSON.stringify(lista));
+}
+
+function isFavorito(id) {
+    return getFavoritos().includes(id);
+}
+
+function toggleFavorito(id, event) {
+    if (event) { event.stopPropagation(); }
+    let favs = getFavoritos();
+    const idx = favs.indexOf(id);
+    if (idx === -1) {
+        favs.push(id);
+        mostrarToast('❤️ Adicionado aos favoritos', 'sucesso');
+    } else {
+        favs.splice(idx, 1);
+        mostrarToast('💔 Removido dos favoritos');
+    }
+    salvarFavoritos(favs);
+
+    document.querySelectorAll(`.card-fav[data-id="${id}"]`).forEach(btn => {
+        btn.classList.toggle('active', isFavorito(id));
+        btn.textContent = isFavorito(id) ? '❤️' : '🤍';
+    });
+
+    if (categoriaAtual === 'fav' && !isFavorito(id)) {
+        const btn2 = document.querySelector(`.card-fav[data-id="${id}"]`);
+        if (btn2) {
+            const card = btn2.closest('.card');
+            if (card) {
+                card.remove();
+                const grid = document.getElementById('cardsGrid');
+                const remaining = grid.querySelectorAll('.card, .empty-state');
+                if (remaining.length === 0) {
+                    $(grid, '<div class="empty-state"><div class="empty-state-icon">💔</div><p>Nenhum favorito ainda</p><p style="font-size:0.8rem;color:var(--cor-texto-sec);margin-top:0.5rem">Clique no 🤍 nos cards para adicionar</p></div>');
+                }
+            }
+        }
+    }
+}
+
+// =============================================
+// Continuar Lendo
+// =============================================
+
+function salvarContinueLendo(id) {
+    try {
+        localStorage.setItem(CONTINUE_KEY, JSON.stringify({
+            id: id,
+            data: Date.now()
+        }));
+    } catch {}
+}
+
+function mostrarContinueLendo() {
+    const bar = document.getElementById('continueBar');
+    const titulo = document.getElementById('continueTitulo');
+    if (!bar || !titulo) return;
+
+    try {
+        const raw = localStorage.getItem(CONTINUE_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (!saved.id || !dados) return;
+        const saber = dados.saberes.find(s => s.id === saved.id);
+        if (!saber) return;
+
+        continueSaberId = saved.id;
+        titulo.textContent = saber.titulo;
+        bar.removeAttribute('hidden');
+    } catch {}
+}
+
+function fecharContinue() {
+    const bar = document.getElementById('continueBar');
+    if (bar) bar.setAttribute('hidden', '');
+    localStorage.removeItem(CONTINUE_KEY);
+}
+
+// =============================================
+// Rastreio de Saberes Abertos
+// =============================================
+
+function getSaberesAbertos() {
+    try { return JSON.parse(localStorage.getItem(ABERTOS_KEY) || '[]'); }
+    catch { return []; }
+}
+
+function marcarSaberAberto(id) {
+    const abertos = getSaberesAbertos();
+    if (!abertos.includes(id)) {
+        abertos.push(id);
+        localStorage.setItem(ABERTOS_KEY, JSON.stringify(abertos));
+    }
+}
+
+// =============================================
+// Toast Notifications
+// =============================================
+
+function mostrarToast(mensagem, tipo) {
+    const container = document.getElementById('toastContainer') || (() => {
+        const c = document.createElement('div');
+        c.id = 'toastContainer';
+        c.className = 'toast-container';
+        document.body.appendChild(c);
+        return c;
+    })();
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    if (tipo === 'sucesso') toast.style.color = '#7ee787';
+    else if (tipo === 'erro') toast.style.color = '#f85149';
+    toast.textContent = mensagem;
+    container.appendChild(toast);
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 2500);
+}
+
+// =============================================
+// Compartilhar
+// =============================================
+
+function compartilharSaber(id) {
+    if (!dados) return;
+    const saber = dados.saberes.find(s => s.id === id);
+    if (!saber) return;
+
+    const url = window.location.origin + window.location.pathname;
+    const texto = `📖 ${saber.titulo}\n\n${saber.descricao}\n\nFonte: Saberes de Coração\n${url}`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: saber.titulo,
+            text: saber.descricao,
+            url: url,
+        }).catch(() => {});
+    } else {
+        const temp = document.createElement('textarea');
+        temp.value = texto;
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+            document.execCommand('copy');
+            mostrarToast('✅ Link copiado!', 'sucesso');
+        } catch {}
+        document.body.removeChild(temp);
+    }
+}
+
+// =============================================
+// Atalhos do Teclado
+// =============================================
+
+function mostrarAtalhos() {
+    document.getElementById('modalTitulo').textContent = '⌨️ Atalhos do Teclado';
+    $(document.getElementById('modalContent'), `
+        <div class="atalhos-grid">
+            <div class="atalhos-item"><span class="atalhos-key">?</span> Mostrar atalhos</div>
+            <div class="atalhos-item"><span class="atalhos-key">Esc</span> Fechar modal</div>
+            <div class="atalhos-item"><span class="atalhos-key">Espaço</span> Tocar/Pausar mídia</div>
+            <div class="atalhos-item"><span class="atalhos-key">P</span> Faixa anterior</div>
+            <div class="atalhos-item"><span class="atalhos-key">N</span> Próxima faixa</div>
+            <div class="atalhos-item"><span class="atalhos-key">M</span> Mudo</div>
+            <div class="atalhos-item"><span class="atalhos-key">/</span> Focar busca</div>
+            <div class="atalhos-item"><span class="atalhos-key">D</span> Saber aleatório</div>
+            <div class="atalhos-item"><span class="atalhos-key">T</span> Alternar tema</div>
+        </div>
+        <p style="margin-top:1rem;font-size:0.8rem;color:var(--cor-texto-sec)">Atalhos funcionam quando nenhum input está focado.</p>`);
+    abrirModal();
+}
+
+
 
 document.addEventListener('keydown', e => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    if (e.key === 'Escape') fecharModalBtn();
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'Escape') { fecharModalBtn(); return; }
+    if (e.key === '?') { e.preventDefault(); mostrarAtalhos(); return; }
+    if (e.key === '/') { e.preventDefault(); toggleBusca(); return; }
+    if (e.key === 'd' || e.key === 'D') { e.preventDefault(); saberAleatorio(); return; }
+    if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTema(); return; }
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -311,27 +301,177 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 
     await carregarMidiaConfig();
-    carregarDados().then(() => Player.restoreState());
+    observarReveal();
+    carregarDados().then(() => {
+        Player.restoreState();
+        saberDoDia();
+        mostrarContinueLendo();
+    });
 });
 
 window.addEventListener('beforeunload', () => Player.saveState());
 window.addEventListener('pagehide', () => Player.saveState());
 
-async function carregarDados() {
+// =============================================
+// Reading Progress Bar
+// =============================================
+
+let readingRAF = null;
+
+function atualizarProgressoLeitura() {
+    const bar = document.getElementById('readingProgressBar');
+    if (!bar) return;
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+    bar.style.width = pct + '%';
+}
+
+window.addEventListener('scroll', () => {
+    if (readingRAF) cancelAnimationFrame(readingRAF);
+    readingRAF = requestAnimationFrame(atualizarProgressoLeitura);
+}, { passive: true });
+
+// =============================================
+// Scroll Reveal (Intersection Observer)
+// =============================================
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+function observarReveal() {
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+}
+
+// Aplicar reveal nos cards após renderizar
+function aplicarReveal() {
+    const cards = document.querySelectorAll('.cards-grid .card, .midia-grid .midia-card');
+    cards.forEach((card, i) => {
+        card.classList.add('reveal');
+        if (i < 5) card.classList.add('reveal-delay-' + (i + 1));
+    });
+    observarReveal();
+}
+
+// =============================================
+// Cache e Carregamento de Dados
+// =============================================
+
+function carregarDadosCache() {
     try {
-        const response = await fetch('/api/dados');
-        if (!response.ok) throw new Error('HTTP ' + response.status);
-        dados = await response.json();
+        const raw = localStorage.getItem(DADOS_CACHE_KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || !parsed.saberes) return null;
+        return parsed;
+    } catch {
+        return null;
+    }
+}
+
+function salvarDadosCache(dados) {
+    try {
+        localStorage.setItem(DADOS_CACHE_KEY, JSON.stringify(dados));
+        if (dados.meta && dados.meta.versao) {
+            localStorage.setItem(DADOS_CACHE_VERSAO_KEY, dados.meta.versao);
+        }
+    } catch {
+    }
+}
+
+async function carregarDados() {
+    console.log('Iniciando carregamento de dados...');
+    const grid = document.getElementById('cardsGrid');
+    console.log('Grid encontrado:', !!grid);
+
+    const cache = carregarDadosCache();
+    if (cache) {
+        console.log('Usando cache do localStorage');
+        dados = cache;
         atualizarEstatisticas();
-        if (document.getElementById('cardsGrid')) {
+        if (grid) {
+            console.log('Renderizando saberes do cache:', dados.saberes?.length);
             renderizarSaberes(dados.saberes);
         }
+        saberDoDia();
+    }
+
+    try {
+        console.log('Buscando dados da API /api/dados...');
+        const response = await fetch('/api/dados');
+        console.log('Resposta da API:', response.status);
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const novosDados = await response.json();
+        console.log('Dados recebidos:', novosDados.meta?.versao, 'saberes:', novosDados.saberes?.length);
+
+        const versaoAtual = localStorage.getItem(DADOS_CACHE_VERSAO_KEY);
+        const novaVersao = novosDados.meta && novosDados.meta.versao;
+        console.log('Versões - atual:', versaoAtual, 'nova:', novaVersao);
+
+        if (!cache || (novaVersao && novaVersao !== versaoAtual)) {
+            console.log('Atualizando dados...');
+            dados = novosDados;
+            salvarDadosCache(novosDados);
+            atualizarEstatisticas();
+            if (grid) {
+                console.log('Renderizando saberes novos:', dados.saberes?.length);
+                renderizarSaberes(dados.saberes);
+            }
+            saberDoDia();
+        } else {
+            console.log('Dados em cache estão atualizados');
+        }
     } catch (e) {
-        const grid = document.getElementById('cardsGrid');
-        if (grid) {
-            grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Certifique-se de que o servidor Express está rodando.</small></p></div>';
+        console.error('Erro ao carregar dados da API:', e);
+        // Fallback: tentar carregar JSON diretamente
+        if (!cache) {
+            try {
+                console.log('Tentando fallback para JSON direto...');
+                const jsonResponse = await fetch('/data/dados-unificados.json');
+                if (!jsonResponse.ok) throw new Error('HTTP ' + jsonResponse.status);
+                const dadosJson = await jsonResponse.json();
+                console.log('Dados JSON recebidos:', dadosJson.meta?.versao, 'saberes:', dadosJson.saberes?.length);
+                dados = dadosJson;
+                salvarDadosCache(dadosJson);
+                atualizarEstatisticas();
+                if (grid) {
+                    console.log('Renderizando saberes do JSON:', dados.saberes?.length);
+                    renderizarSaberes(dados.saberes);
+                }
+                saberDoDia();
+            } catch (fallbackError) {
+                console.error('Fallback também falhou:', fallbackError);
+                if (grid) {
+                    $(grid, '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Tentativa de fallback: ' + fallbackError.message + '</small></p></div>');
+                }
+            }
         }
     }
+}
+
+// =============================================
+// Estatísticas
+// =============================================
+
+function animarContagem(el, alvo) {
+    if (!el) return;
+    const dur = 600;
+    const inicio = performance.now();
+    const inicial = parseInt(el.dataset.valorInicial) || 0;
+    function atualizar(agora) {
+        const progresso = Math.min((agora - inicio) / dur, 1);
+        const eased = 1 - Math.pow(1 - progresso, 3);
+        const valor = Math.floor(inicial + eased * (alvo - inicial));
+        el.textContent = valor;
+        if (progresso < 1) requestAnimationFrame(atualizar);
+    }
+    requestAnimationFrame(atualizar);
 }
 
 function atualizarEstatisticas() {
@@ -341,24 +481,45 @@ function atualizarEstatisticas() {
     const nMidia = (dados.midia ? (dados.midia.audios ? dados.midia.audios.length : 0) : 0) +
         (dados.midia ? (dados.midia.videos ? dados.midia.videos.length : 0) : 0);
     const el = id => document.getElementById(id);
-    if (el('statSaberes')) el('statSaberes').textContent = nSaberes;
-    if (el('statPraticas')) el('statPraticas').textContent = nPraticas;
-    if (el('statMidia')) el('statMidia').textContent = nMidia;
+    animarContagem(el('statSaberes'), nSaberes);
+    animarContagem(el('statPraticas'), nPraticas);
+    animarContagem(el('statMidia'), nMidia);
 }
 
+// =============================================
+// Renderização de Saberes (Grid de Cards)
+// =============================================
+
 function renderizarSaberes(saberes) {
+    console.log('renderizarSaberes chamado com:', saberes?.length, 'saberes');
     const grid = document.getElementById('cardsGrid');
+    console.log('Grid no renderizarSaberes:', !!grid);
+    if (!grid) {
+        console.error('Grid não encontrado!');
+        return;
+    }
     grid.className = 'cards-grid';
 
     if (!saberes || saberes.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>';
+        console.log('Nenhum saber para renderizar');
+        $(grid, '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>');
+        esconderSkeleton();
         return;
     }
 
-    grid.innerHTML = saberes.map(saber => `
-            <div class="card" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+    console.log('Renderizando', saberes.length, 'saberes');
+    const favs = getFavoritos();
+    const abertos = getSaberesAbertos();
+    const cardsHtml = saberes.map(saber => {
+        const isNovo = !abertos.includes(saber.id);
+        const isVisited = abertos.includes(saber.id);
+        const catIcon = CAT_EMOJIS[saber.categoria_id] || '📖';
+        return `
+            <div class="card ${isVisited ? 'visited' : ''}" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+                ${isNovo ? '<span class="card-novo">✨ Novo</span>' : ''}
+                <button class="card-fav ${favs.includes(saber.id) ? 'active' : ''}" data-id="${saber.id}" onclick="toggleFavorito('${saber.id}', event)" onkeydown="event.stopPropagation()" aria-label="${favs.includes(saber.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(saber.id) ? '❤️' : '🤍'}</button>
                 <div class="card-header">
-                    <span class="card-titulo">${saber.titulo}</span>
+                    <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${saber.titulo}</span>
                     <span class="card-nivel ${saber.nivel}">${saber.nivel}</span>
                 </div>
                 <p class="card-desc">${saber.descricao}</p>
@@ -369,9 +530,24 @@ function renderizarSaberes(saberes) {
                 <div class="card-tags">
                     ${saber.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
                 </div>
-            </div>
-        `).join('');
+            </div>`;
+    }).join('');
+
+    $(grid, cardsHtml);
+
+    console.log('Renderização concluída');
+    esconderSkeleton();
+    aplicarReveal();
 }
+
+function esconderSkeleton() {
+    const sk = document.getElementById('skeletonGrid');
+    if (sk) sk.style.display = 'none';
+}
+
+// =============================================
+// Filtragem por Categoria
+// =============================================
 
 function filtrarCategoria(cat) {
     categoriaAtual = cat;
@@ -390,6 +566,13 @@ function filtrarCategoria(cat) {
         return;
     }
 
+    if (cat === 'fav') {
+        const favs = getFavoritos();
+        const filtrados = dados.saberes.filter(s => favs.includes(s.id));
+        renderizarSaberes(filtrados);
+        return;
+    }
+
     if (cat === 'all') {
         renderizarSaberes(dados.saberes);
     } else {
@@ -397,6 +580,10 @@ function filtrarCategoria(cat) {
         renderizarSaberes(filtrados);
     }
 }
+
+// =============================================
+// Renderização de Mídia
+// =============================================
 
 function renderizarMidia() {
     const grid = document.getElementById('cardsGrid');
@@ -434,18 +621,32 @@ function renderizarMidia() {
         html = '<div class="empty-state"><div class="empty-state-icon">🎵</div><p>Nenhuma multimídia disponível</p></div>';
     }
 
-    grid.innerHTML = html;
+    document.getElementById('modalTitulo').textContent = '🎵 Multimídia';
+    $(document.getElementById('modalContent'), html);
+    abrirModal();
+    esconderSkeleton();
+    aplicarReveal();
 }
+
+// =============================================
+// Abertura de Mídia (Modal)
+// =============================================
 
 function abrirMidia(tipo, id) {
     const lista = tipo === 'audio' ? dados.midia.audios : dados.midia.videos;
     const item = lista ? lista.find(m => m.id === id) : null;
     if (!item) return;
 
-    const baseDir = window.midiaBaseUrl;
-    const partes = item.arquivo.split('/');
-    const arquivoCod = partes.map(encodeURIComponent).join('/');
-    const src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+    // Verifica se o arquivo já é uma URL completa (Cloudinary)
+    let src;
+    if (item.arquivo.startsWith('http')) {
+        src = item.arquivo;
+    } else {
+        const baseDir = window.midiaBaseUrl;
+        const partes = item.arquivo.split('/');
+        const arquivoCod = partes.map(encodeURIComponent).join('/');
+        src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+    }
 
     document.getElementById('modalTitulo').textContent = item.titulo;
 
@@ -454,13 +655,14 @@ function abrirMidia(tipo, id) {
     if (tipo === 'video') {
         html += `
             <div class="player-container" style="margin-bottom:1rem">
-                <video controls autoplay style="width:100%;max-height:70vh;border-radius:var(--radius);background:#000">
+                <video controls style="width:100%;max-height:70vh;border-radius:var(--radius);background:#000">
                     <source src="${src}" type="video/${src.endsWith('.mkv') ? 'x-matroska' : 'mp4'}">
                     Seu navegador não suporta vídeo.
                 </video>
             </div>`;
     } else {
         Player.open(tipo, id);
+        html += `<div class="pratica-box" style="text-align:center"><p style="margin:0;font-size:0.9rem">🎧 Reproduzindo <strong>${item.titulo}</strong> na barra inferior</p><p style="margin:0.3rem 0 0;font-size:0.8rem;color:var(--cor-texto-sec)">Use os controles na barra para pausar, ajustar volume ou navegar</p></div>`;
     }
 
     if (item.saberes_relacionados && item.saberes_relacionados.length > 0) {
@@ -476,9 +678,13 @@ function abrirMidia(tipo, id) {
     html += `<p style="margin-top:0.8rem;font-size:0.9rem"><strong>Categoria:</strong> ${item.categoria}</p>`;
     html += `<div class="card-tags" style="margin-top:0.4rem">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>`;
 
-    document.getElementById('modalContent').innerHTML = html;
+    $(document.getElementById('modalContent'), html);
     abrirModal();
 }
+
+// =============================================
+// Busca
+// =============================================
 
 function buscarSaberes(termo) {
     const info = document.getElementById('buscaInfo');
@@ -503,316 +709,50 @@ function buscarSaberes(termo) {
     renderizarSaberes(filtrados);
 }
 
-function abrirSaber(id) {
+
+
+// =============================================
+// Abertura de Saber (Modal de Conteúdo)
+// =============================================
+
+async function abrirSaber(id) {
     const saber = dados.saberes.find(s => s.id === id);
     if (!saber) return;
+
+    marcarSaberAberto(id);
+    salvarContinueLendo(id);
+    mostrarContinueLendo();
 
     document.getElementById('modalTitulo').textContent = saber.titulo;
 
     let html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
     html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
 
-    if (saber.conteudo) {
-        const c = saber.conteudo;
+    // Lazy loading do conteúdo
+    if (!saber.conteudo) {
+        html += `<div id="loading-conteudo" style="text-align:center;padding:2rem"><div class="skeleton" style="height:100px;margin-bottom:1rem"></div><p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p></div>`;
+        $(document.getElementById('modalContent'), html);
+        abrirModal();
 
-        if (c.definicao) {
-            html += `<h3>Definição</h3><p>${c.definicao}</p>`;
+        try {
+            const res = await fetch(`/api/saberes/${id}/conteudo`);
+            if (!res.ok) throw new Error('Erro ao carregar conteúdo');
+            const data = await res.json();
+            saber.conteudo = data.conteudo;
+
+            html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
+            html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+        } catch (e) {
+            $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo: ${e.message}</p>`);
+            return;
         }
-        if (c.analogia) {
-            html += `<h3>📝 Analogia</h3><p>${c.analogia}</p>`;
-        }
-        if (c.insight) {
-            html += `<h3>💡 Insight</h3><p>${c.insight}</p>`;
-        }
-        if (c.conceitos) {
-            html += `<h3>Conceitos</h3><ul>`;
-            c.conceitos.forEach(item => {
-                html += `<li><strong>${item.termo}:</strong> ${item.def}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.principios) {
-            html += `<h3>Os Sete Princípios</h3><ul>`;
-            c.principios.forEach(p => {
-                html += `<li><strong>${p.num}. ${p.nome}</strong> — "${p.frase}"<br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${p.desc}</span></li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mundos) {
-            html += `<h3>Os Três Mundos</h3><ul>`;
-            c.mundos.forEach(m => {
-                html += `<li><strong>${m.simbolo} ${m.nome}</strong><br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${m.desc}</span></li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.textos) {
-            html += `<h3>Textos da Biblioteca de Nag Hammadi</h3><ul>`;
-            c.textos.forEach(t => {
-                html += `<li><strong>${t.nome}</strong>: ${t.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.aplicacoes) {
-            html += `<h3>Lei da Correspondência</h3><table style="width:100%; border-collapse: collapse; margin-top:0.5rem;">`;
-            c.aplicacoes.forEach(a => {
-                html += `<tr><td style="padding:6px 8px; border:1px solid var(--cor-borda); font-weight:600">${a.maior}</td><td style="padding:6px 8px; border:1px solid var(--cor-borda)">${a.menor}</td></tr>`;
-            });
-            html += `</table>`;
-        }
-        if (c.fatores) {
-            html += `<h3>Fatores que Influenciam</h3><ul>`;
-            c.fatores.forEach(f => {
-                html += `<li><strong>${f.icone} ${f.nome}</strong>: ${f.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mecanismos) {
-            html += `<h3>Os Três Mecanismos Epigenéticos</h3><ul>`;
-            c.mecanismos.forEach(m => {
-                html += `<li><strong>${m.icone} ${m.nome}</strong>: ${m.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.citacoes) {
-            html += `<h3>Citações</h3><blockquote style="border-left: 3px solid var(--cor-destaque); padding-left: 1rem; font-style: italic; margin: 0.5rem 0;">${c.citacoes.join('<br>')}</blockquote>`;
-        }
-        if (c.parabolas) {
-            html += `<h3>Parábolas</h3>`;
-            c.parabolas.forEach(p => {
-                html += `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)">`;
-                html += `<h4 style="color:var(--cor-destaque);margin-bottom:0.3rem">${p.nome}</h4>`;
-                html += `<p><em>"${p.texto}"</em></p>`;
-                html += `<p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Sentido:</strong> ${p.sentido}</p>`;
-                html += `</div>`;
-            });
-        }
-        if (c.ensinamentos_chave) {
-            html += `<h3>Ensinamentos Chave</h3>`;
-            c.ensinamentos_chave.forEach(e => {
-                html += `<div class="pratica-box"><h4>${e.tema}</h4><p>${e.ensino}</p></div>`;
-            });
-        }
-        if (c.estrutura_cosmica) {
-            html += `<h3>Estrutura Cósmica</h3>`;
-            for (const [key, val] of Object.entries(c.estrutura_cosmica)) {
-                const nome = key.charAt(0).toUpperCase() + key.slice(1);
-                html += `<p><strong>${nome}:</strong> ${val}</p>`;
-            }
-        }
-        if (c.personagens) {
-            html += `<h3>Personagens do Drama Cósmico</h3><ul>`;
-            c.personagens.forEach(p => {
-                html += `<li><strong>${p.nome}:</strong> ${p.descricao}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.misterios) {
-            html += `<h3>Os Mistérios</h3><ul>`;
-            c.misterios.forEach(m => {
-                html += `<li><strong>${m.nome}:</strong> ${m.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.caracteristicas) {
-            html += `<h3>Características das Primeiras Comunidades</h3><ul>`;
-            c.caracteristicas.forEach(c => {
-                html += `<li><strong>${c.nome}:</strong> ${c.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.desafios) {
-            html += `<h3>Desafios e Expansão</h3><ul>`;
-            c.desafios.forEach(d => {
-                html += `<li><strong>${d.nome}:</strong> ${d.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.nag_hammadi) {
-            html += `<h3>Nag Hammadi (1945)</h3>`;
-            html += `<p>${c.nag_hammadi.descricao}</p>`;
-            if (c.nag_hammadi.textos) {
-                html += `<ul>`;
-                c.nag_hammadi.textos.forEach(t => {
-                    html += `<li><strong>${t.nome}:</strong> ${t.desc}</li>`;
-                });
-                html += `</ul>`;
-            }
-        }
-        if (c.controversias) {
-            html += `<h3>Controvérsias e Legado</h3><ul>`;
-            c.controversias.forEach(ct => {
-                html += `<li><strong>${ct.tema}:</strong> ${ct.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mitos_desmistificados) {
-            html += `<h3>Mitos Desmistificados</h3><ul>`;
-            c.mitos_desmistificados.forEach(m => {
-                html += `<li><strong>${m.mito}</strong> → ${m.verdade}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.tres_fatores) {
-            html += `<h3>Os 3 Fatores da Revolução da Consciência</h3><ul>`;
-            c.tres_fatores.forEach(f => {
-                html += `<li><strong>${f.fator}:</strong> ${f.descricao}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.ascensao) {
-            html += `<h3>A Ascensão da Kundalini</h3><p>${c.ascensao}</p>`;
-        }
-        if (c.chakras && c.chakras[0] && c.chakras[0].ordem) {
-            html += `<h3>Os 8 Chakras da Meditação</h3>`;
-            html += `<table style="width:100%;border-collapse:collapse;margin:0.8rem 0">`;
-            html += `<tr><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">#</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Chakra</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Sílaba</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Função</th></tr>`;
-            c.chakras.forEach(ch => {
-                html += `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.ordem}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.nome}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.silaba}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.funcao}</td></tr>`;
-            });
-            html += `</table>`;
-        }
-        if (c.instrucoes_passos) {
-            html += `<h3>Passo a Passo</h3><p>${c.instrucoes_passos.replace(/\n/g, '<br>')}</p>`;
-        }
-        if (c.ciencia_moderna) {
-            html += `<h3>Ciência Moderna e o Éter</h3>`;
-            c.ciencia_moderna.forEach(cm => {
-                html += `<div class="pratica-box"><h4>${cm.topico}</h4><p>${cm.desc}</p></div>`;
-            });
-        }
-        if (c.alquimia_interior) {
-            html += `<h3>${c.alquimia_interior.nome}</h3>`;
-            if (c.alquimia_interior.operacoes) {
-                html += `<ul>`;
-                c.alquimia_interior.operacoes.forEach(op => {
-                    html += `<li><strong>${op.etapa}:</strong> ${op.desc}</li>`;
-                });
-                html += `</ul>`;
-            }
-        }
-        if (c.praticas_acesso) {
-            html += `<h3>Práticas de Acesso ao Éter</h3><ul>`;
-            c.praticas_acesso.forEach(pa => {
-                html += `<li><strong>${pa.nome}</strong>${pa.proporcao ? ' (' + pa.proporcao + ')' : ''}: ${pa.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.mapa_exoterico_esoterico) {
-            html += `<h3>Exotérico vs. Esotérico</h3>`;
-            html += `<div class="pratica-box"><h4>Exotérico (Público)</h4><p>${c.mapa_exoterico_esoterico.exoterico}</p></div>`;
-            html += `<div class="pratica-box"><h4>Esotérico (Reservado)</h4><p>${c.mapa_exoterico_esoterico.esoterico}</p></div>`;
-        }
-        if (c.quatro_mapas) {
-            html += `<h3>Os 4 Mapas de Sabedoria</h3>`;
-            c.quatro_mapas.forEach(m => {
-                html += `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)">`;
-                html += `<h4 style="color:var(--cor-destaque)">${m.nome}</h4>`;
-                html += `<p>${m.ensinamento}</p>`;
-                html += `<p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Prática:</strong> ${m.pratica}</p>`;
-                html += `</div>`;
-            });
-        }
-        if (c.ruido_moderno) {
-            html += `<h3>O Ruído Moderno</h3><p>${c.ruido_moderno}</p>`;
-        }
-        if (c.correntes) {
-            html += `<h3>As Grandes Correntes Filosóficas</h3>`;
-            c.correntes.forEach(cr => {
-                html += `<div class="pratica-box"><h4>${cr.nome}</h4><p>${cr.desc}</p></div>`;
-            });
-        }
-        if (c.ponte_ciencia_teosofia) {
-            html += `<h3>Ponte entre Ciência e Teosofia</h3>`;
-            html += `<div class="pratica-box"><h4>Ciência</h4><p>${c.ponte_ciencia_teosofia.ciencia}</p></div>`;
-            html += `<div class="pratica-box"><h4>Teosofia</h4><p>${c.ponte_ciencia_teosofia.teosofia}</p></div>`;
-            html += `<div class="pratica-box"><h4>Ponte</h4><p>${c.ponte_ciencia_teosofia.ponte}</p></div>`;
-        }
-        if (c.perspectivas) {
-            html += `<h3>Perspectivas sobre o Sentido</h3>`;
-            c.perspectivas.forEach(p => {
-                html += `<div class="pratica-box"><h4>${p.nome}</h4><p>${p.desc}</p></div>`;
-            });
-        }
-        if (c.if_no_meaning) {
-            html += `<h3>${c.if_no_meaning.titulo}</h3>`;
-            html += `<p>${c.if_no_meaning.reflexao}</p>`;
-            if (c.if_no_meaning.citacao) {
-                html += `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${c.if_no_meaning.citacao}</blockquote>`;
-            }
-        }
-        if (c.dimensoes) {
-            html += `<h3>As Dimensões do Pneuma</h3><ul>`;
-            c.dimensoes.forEach(d => {
-                html += `<li><strong>${d.nome}:</strong> ${d.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.tool_musica) {
-            html += `<h3>Pneuma na Música (Tool)</h3>`;
-            html += `<p>${c.tool_musica.analise}</p>`;
-            if (c.tool_musica.citacao) {
-                html += `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0;color:var(--cor-texto-sec)">${c.tool_musica.citacao}</blockquote>`;
-            }
-        }
-        if (c.praticas_diarias) {
-            html += `<h3>Práticas Diárias</h3><ul>`;
-            c.praticas_diarias.forEach(pd => {
-                html += `<li><strong>${pd.nome}:</strong> ${pd.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.conexao_heartmath) {
-            html += `<h3>Conexão com HeartMath/GCI</h3>`;
-            html += `<p>${c.conexao_heartmath.descricao}</p>`;
-            html += `<p style="margin-top:0.5rem;font-style:italic;color:var(--cor-texto-sec)">${c.conexao_heartmath.pratica}</p>`;
-        }
-        if (c.dicotomia) {
-            html += `<h3>Ser vs. Ter</h3>`;
-            c.dicotomia.forEach(d => {
-                const icone = d.polo === 'SER' ? '🜁' : '🜂';
-                html += `<div class="pratica-box"><h4>${icone} ${d.polo}</h4><ul>`;
-                d.caracteristicas.forEach(car => {
-                    html += `<li>${car}</li>`;
-                });
-                html += `</ul></div>`;
-            });
-        }
-        if (c.felicidade_como_verbo) {
-            html += `<h3>Felicidade como Verbo</h3>`;
-            html += `<p>${c.felicidade_como_verbo.tese}</p>`;
-            html += `<p style="margin-top:0.5rem">${c.felicidade_como_verbo.mecanica}</p>`;
-            if (c.felicidade_como_verbo.citacao) {
-                html += `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${c.felicidade_como_verbo.citacao}</blockquote>`;
-            }
-        }
-        if (c.tres_filtros) {
-            html += `<h3>Os 3 Filtros da Percepção</h3><ul>`;
-            c.tres_filtros.forEach(f => {
-                html += `<li><strong>${f.nome}:</strong> ${f.desc}</li>`;
-            });
-            html += `</ul>`;
-        }
-        if (c.ferramentas_praticas) {
-            html += `<h3>Ferramentas Práticas</h3>`;
-            c.ferramentas_praticas.forEach(fp => {
-                html += `<div class="pratica-box"><h4>${fp.nome}</h4><p>${fp.desc}</p></div>`;
-            });
-        }
-        if (c.filtros_da_percepcao) {
-            html += `<h3>Filtros da Percepção</h3>`;
-            c.filtros_da_percepcao.forEach(fp => {
-                html += `<div class="pratica-box"><h4>${fp.nome}</h4>`;
-                html += `<p><strong>Mecanismo:</strong> ${fp.mecanismo}</p>`;
-                html += `<p style="margin-top:0.3rem"><strong>Transcendência:</strong> ${fp.transcendencia}</p>`;
-                html += `</div>`;
-            });
-        }
-        if (c.integracao_pratica) {
-            html += `<h3>Integração Prática no Dia a Dia</h3>`;
-            for (const [periodo, passos] of Object.entries(c.integracao_pratica)) {
-                html += `<div class="pratica-box"><h4>${periodo.charAt(0).toUpperCase() + periodo.slice(1)}</h4>`;
-                passos.forEach(p => { html += `<p>${p}</p>`; });
-                html += `</div>`;
+    }
+
+    if (saber.conteudo) {
+        for (const [key, val] of Object.entries(saber.conteudo)) {
+            const handler = contentHandlers[key];
+            if (handler) {
+                html += handler(val);
             }
         }
     }
@@ -834,9 +774,39 @@ function abrirSaber(id) {
         }
     }
 
-    document.getElementById('modalContent').innerHTML = html;
+    if (saber.categoria_id === 6) {
+        html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link" style="margin-top:1rem">📖 Texto completo em Apócrifos</a>`;
+    }
+
+    // Próximo Saber
+    const saberIdx = dados.saberes.findIndex(s => s.id === id);
+    const nextSaber = saberIdx !== -1 ? dados.saberes.slice(saberIdx + 1).find(s => s.categoria_id === saber.categoria_id) || dados.saberes.find((s, i) => i !== saberIdx && s.categoria_id === saber.categoria_id) : null;
+    if (nextSaber && nextSaber.id !== id) {
+        html += `<div class="next-saber-wrap">
+            <h3>📌 Continuar Jornada</h3>
+            <div class="next-saber-card" onclick="fecharModalBtn();setTimeout(()=>abrirSaber('${nextSaber.id}'),300)" tabindex="0" role="button" aria-label="Próximo: ${nextSaber.titulo}">
+                <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
+                <div class="next-saber-info">
+                    <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
+                    <div class="next-saber-titulo">${nextSaber.titulo}</div>
+                </div>
+                <div class="next-saber-arrow">→</div>
+            </div>
+        </div>`;
+    }
+
+    html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
+        <button class="btn-share" onclick="compartilharSaber('${saber.id}')" aria-label="Compartilhar">📤 Compartilhar</button>
+        <button class="btn-share" onclick="toggleFavorito('${saber.id}', event); this.textContent = isFavorito('${saber.id}') ? '❤️ Favoritado' : '🤍 Favoritar'" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
+    </div>`;
+
+    $(document.getElementById('modalContent'), html);
     abrirModal();
 }
+
+// =============================================
+// Modal (Abrir/Fechar/Gerenciamento de Foco)
+// =============================================
 
 function abrirModal() {
     ultimoElementoFocado = document.activeElement;
@@ -877,6 +847,10 @@ function fecharModalBtn() {
     }
 }
 
+// =============================================
+// Utilitários (Busca, Tema, Aleatório)
+// =============================================
+
 function toggleBusca() {
     const container = document.getElementById('buscaContainer');
     const isVisible = container.style.display !== 'none';
@@ -902,6 +876,10 @@ function saberAleatorio() {
 // Autenticação
 // =============================================
 
+// =============================================
+// Autenticação (Login/Logout)
+// =============================================
+
 function getToken() {
     return localStorage.getItem('adminToken');
 }
@@ -920,7 +898,7 @@ function toggleLogin() {
     const div = document.createElement('section');
     div.id = 'loginContainer';
     div.style.cssText = 'margin-bottom:2rem;padding:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;background:var(--cor-card);border:1px solid var(--cor-borda);border-radius:var(--radius)';
-    div.innerHTML = `
+    $(div, `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
             <h3 style="margin:0">🔐 Admin</h3>
             <button onclick="this.parentElement.parentElement.style.display='none'" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">✕</button>
@@ -935,7 +913,7 @@ function toggleLogin() {
             </form>
             <div id="loginStatus" style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"></div>
         `}
-    `;
+    `);
     main.insertBefore(div, main.querySelector('.pilares').nextSibling);
 
     const form = document.getElementById('formLogin');
@@ -984,7 +962,9 @@ function atualizarBotaoAdmin() {
 }
 
 // =============================================
-// Admin — CRUD de saberes via API
+// =============================================
+// Admin — CRUD de Saberes via API
+// =============================================
 // =============================================
 
 function toggleAdmin() {
@@ -1010,7 +990,7 @@ function criarAdminPanel() {
         ? dados.categorias.map(c => `<option value="${c.id}">${c.nome}</option>`).join('')
         : '';
 
-    panel.innerHTML = `
+    $(panel, `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
             <h3 style="margin:0">📝 Admin — Adicionar Saber</h3>
             <div style="display:flex;gap:0.5rem">
@@ -1042,7 +1022,7 @@ function criarAdminPanel() {
             </button>
         </form>
         <div id="adminStatus" style="margin-top:0.5rem;font-size:0.85rem"></div>
-    `;
+    `);
 
     main.insertBefore(panel, main.querySelector('.pilares').nextSibling);
 

@@ -7,7 +7,7 @@
 | Kundalini: O Despertar           | espirito/gnose/kundalini   | Pendente | Conteúdo existe, precisa formatar |
 | Epigenética: A Ciência Ancestral | ciencia/epigenetica        | Pendente | Conteúdo existe, precisa formatar |
 | Técnicas de Meditação            | practica/tecnica-meditacao | Pendente | Conteúdo existe, precisa formatar |
-| Hermetismo Aplicado              | espirito/hermetismo        | Pendente | Conteúdo existe, precisa formatar |
+
 
 ## Cursos
 
