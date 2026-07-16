@@ -983,11 +983,12 @@ if (modalOverlay) {
         if (e.shiftKey && document.activeElement === first) {
             e.preventDefault();
             last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-    }
-});
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    });
+}
 
 function fecharModal(e) {
     if (e.target && e.target.id === 'modalOverlay') {
