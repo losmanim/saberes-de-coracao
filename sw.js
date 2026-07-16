@@ -1,5 +1,5 @@
-const CACHE = 'saberes-v2';
-const CACHE_DYNAMIC = 'saberes-dinamico-v2';
+const CACHE = 'saberes-v3';
+const CACHE_DYNAMIC = 'saberes-dinamico-v3';
 
 const PRECACHE = [
   '/',
@@ -10,8 +10,10 @@ const PRECACHE = [
   '/css/style.css',
   '/js/app.js',
   '/js/features.js',
-  '/database/dados-unificados.json',
+  '/data/dados-unificados.json',
   '/sitemap.xml',
+  '/manifest.json',
+  '/icons/icon.svg',
 ];
 
 self.addEventListener('install', (event) => {

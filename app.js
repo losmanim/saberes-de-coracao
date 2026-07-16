@@ -2,50 +2,103 @@ import 'dotenv/config';
 import express from 'express';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve, extname, join, dirname } from 'node:path';
-import { randomBytes } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import helmet from 'helmet';
+import cors from 'cors';
+import rateLimit from 'express-rate-limit';
+import jwt from 'jsonwebtoken';
+import winston from 'winston';
 
 import * as Appwrite from './src/lib/appwrite.js';
 import { enviarEmailContato } from './src/lib/emailjs.js';
+
+const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: winston.format.combine(
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.errors({ stack: true }),
+    winston.format.printf(({ timestamp, level, message, stack }) =>
+      `${timestamp} [${level.toUpperCase()}] ${message}${stack ? '\n' + stack : ''}`)
+  ),
+  transports: [
+    new winston.transports.Console({ format: winston.format.combine(winston.format.colorize(), winston.format.printf(({ timestamp, level, message, stack }) => `${timestamp} ${level} ${message}${stack ? '\n' + stack : ''}`)) }),
+    new winston.transports.File({ filename: 'logs/erros.log', level: 'error', maxsize: 5242880, maxFiles: 5 }),
+    new winston.transports.File({ filename: 'logs/combined.log', maxsize: 5242880, maxFiles: 5 }),
+  ],
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
+if (!process.env.ADMIN_PASS) {
+  console.error('ADMIN_PASS não configurada. Defina a variável de ambiente ADMIN_PASS.');
+  process.exit(1);
+}
+const ADMIN_PASS = process.env.ADMIN_PASS;
+const JWT_SECRET = process.env.JWT_SECRET || (() => { console.error('JWT_SECRET não configurada.'); process.exit(1); })();
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 const CAMINHO_FRONTEND = resolve(__dirname, '.');
 const CAMINHO_DADOS = resolve(__dirname, './data/dados-unificados.json');
 const USE_APPWRITE = !!(process.env.APPWRITE_PROJECT_ID && process.env.APPWRITE_API_KEY && process.env.APPWRITE_DATABASE_ID);
 const USE_EMAILJS = !!(process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID && process.env.EMAILJS_PUBLIC_KEY);
 
 const app = express();
-const tokens = new Set();
 
-app.use(express.json());
+app.use(helmet({
+  contentSecurityPolicy: false,
+  crossOriginEmbedderPolicy: false,
+}));
+app.use(cors({
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+app.use(express.json({ limit: '5mb' }));
+
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: { erro: 'Muitas tentativas de login. Tente novamente em 15 minutos.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const contatoLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { erro: 'Muitas mensagens de contato. Tente novamente em 1 hora.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 if (USE_APPWRITE) {
-  console.log('🔌 Modo Appwrite ativado');
+  logger.info('Modo Appwrite ativado');
 } else {
-  console.log('📄 Modo JSON (fallback) — configure APPWRITE_* no .env para usar Appwrite');
+  logger.info('Modo JSON (fallback) — configure APPWRITE_* no .env para usar Appwrite');
 }
 
 // =====================
-// Auth Helper (legado)
+// Auth Helper (JWT)
 // =====================
 
-function gerarToken() {
-  const token = randomBytes(24).toString('hex');
-  tokens.add(token);
-  return token;
+function gerarToken(payload = {}) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
 function autenticar(req, res, next) {
-  const token = req.headers['authorization'];
-  if (!token || !tokens.has(token.replace('Bearer ', ''))) {
-    return res.status(401).json({ erro: 'Não autorizado. Faça login primeiro.' });
+  const header = req.headers['authorization'];
+  if (!header) {
+    return res.status(401).json({ erro: 'Token não fornecido.' });
   }
-  next();
+  try {
+    const token = header.replace('Bearer ', '');
+    req.usuario = jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (err) {
+    return res.status(401).json({ erro: 'Token inválido ou expirado.' });
+  }
 }
 
 // =====================
@@ -65,42 +118,33 @@ function salvarDadosJSON(dados) {
 // Auth Routes
 // =====================
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', loginLimiter, async (req, res) => {
   const { senha } = req.body;
-  if (USE_APPWRITE && process.env.APPWRITE_PROJECT_ID) {
+  if (USE_APPWRITE && process.env.APPWRITE_PROJECT_ID && req.body.email) {
     try {
-      const session = await Appwrite.criarSessao(req.body.email || 'admin@saberes.com', senha);
-      return res.json({ token: session.$id, admin: true, appwrite: true });
+      const session = await Appwrite.criarSessao(req.body.email, senha);
+      const token = gerarToken({ admin: true, appwrite: true, sessionId: session.$id });
+      return res.json({ token, admin: true, appwrite: true });
     } catch (e) {
-      if (senha === ADMIN_PASS) {
-        const token = gerarToken();
-        return res.json({ token, admin: true, appwrite: false });
-      }
       return res.status(401).json({ erro: 'Credenciais inválidas' });
     }
   }
   if (senha !== ADMIN_PASS) {
     return res.status(401).json({ erro: 'Senha incorreta' });
   }
-  const token = gerarToken();
+  const token = gerarToken({ admin: true, appwrite: false });
   res.json({ token, admin: true, appwrite: false });
 });
 
 app.post('/api/logout', async (req, res) => {
-  const header = req.headers['authorization'];
-  if (header) tokens.delete(header.replace('Bearer ', ''));
   if (USE_APPWRITE) {
     try { await Appwrite.deletarSessao(); } catch {}
   }
   res.json({ ok: true });
 });
 
-app.get('/api/verificar', (req, res) => {
-  const header = req.headers['authorization'];
-  if (!header || !tokens.has(header.replace('Bearer ', ''))) {
-    return res.json({ autenticado: false });
-  }
-  res.json({ autenticado: true });
+app.get('/api/verificar', autenticar, (req, res) => {
+  res.json({ autenticado: true, admin: true });
 });
 
 // =====================
@@ -123,7 +167,7 @@ app.get('/api/categorias', async (req, res) => {
     const dados = await lerDadosJSON();
     res.json(dados.categorias || []);
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro ao ler categorias: ' + erro.message);
     res.status(500).json({ erro: 'Erro ao ler categorias' });
   }
 });
@@ -141,7 +185,7 @@ app.get('/api/saberes', async (req, res) => {
     const dados = await lerDadosJSON();
     res.json(dados.saberes || []);
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro ao ler saberes: ' + erro.message);
     res.status(500).json({ erro: 'Erro ao ler saberes' });
   }
 });
@@ -157,7 +201,7 @@ app.get('/api/saberes/:id', async (req, res) => {
     if (!saber) return res.status(404).json({ erro: 'Saber não encontrado' });
     res.json(saber);
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao ler saber' });
   }
 });
@@ -195,7 +239,7 @@ app.post('/api/saberes', autenticar, async (req, res) => {
     await salvarDadosJSON(dados);
     res.status(201).json(novo);
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao criar saber' });
   }
 });
@@ -214,7 +258,7 @@ app.put('/api/saberes/:id', autenticar, async (req, res) => {
     await salvarDadosJSON(dados);
     res.json(atualizado);
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao atualizar saber' });
   }
 });
@@ -232,7 +276,7 @@ app.delete('/api/saberes/:id', autenticar, async (req, res) => {
     await salvarDadosJSON(dados);
     res.status(204).end();
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao remover saber' });
   }
 });
@@ -250,7 +294,7 @@ app.get('/api/saberes/:id/conteudo', async (req, res) => {
     if (!saber) return res.status(404).json({ erro: 'Saber não encontrado' });
     res.json({ conteudo: saber.conteudo });
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao ler conteúdo' });
   }
 });
@@ -268,7 +312,7 @@ app.get('/api/midia', async (req, res) => {
     const dados = await lerDadosJSON();
     res.json(dados.midia || { audios: [], videos: [] });
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao ler mídia' });
   }
 });
@@ -299,7 +343,7 @@ app.get('/api/dados', async (req, res) => {
     };
     res.json(dadosLite);
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao ler dados' });
   }
 });
@@ -308,7 +352,7 @@ app.get('/api/dados', async (req, res) => {
 // Contato (EmailJS)
 // =====================
 
-app.post('/api/contato', async (req, res) => {
+app.post('/api/contato', contatoLimiter, async (req, res) => {
   try {
     const { nome, email, assunto, mensagem } = req.body;
     if (!nome || !email || !mensagem) {
@@ -334,14 +378,14 @@ app.post('/api/contato', async (req, res) => {
         await enviarEmailContato({ nome, email, assunto, mensagem });
         return res.json({ ok: true, email_enviado: true });
       } catch (err) {
-        console.error('Erro EmailJS:', err);
+        logger.error('Erro EmailJS: ' + (err?.message || err));
         return res.json({ ok: true, email_enviado: false, aviso: 'Contato salvo, mas email não pôde ser enviado.' });
       }
     }
 
     res.json({ ok: true, email_enviado: false });
   } catch (erro) {
-    console.error(erro);
+    logger.error('Erro: ' + (erro?.message || erro));
     res.status(500).json({ erro: 'Erro ao processar contato' });
   }
 });
@@ -412,7 +456,7 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error('Erro não tratado:', err);
+  logger.error('Erro não tratado: ' + err.message, { stack: err.stack, url: req.url, method: req.method });
   res.status(500).json({ erro: 'Erro interno do servidor' });
 });
 
@@ -421,9 +465,9 @@ app.use((err, req, res, next) => {
 // =====================
 
 app.listen(PORT, () => {
-  console.log(`\n🕉️  Saberes de Coração v4.0`);
-  console.log(`   Servidor: http://localhost:${PORT}`);
-  console.log(`   Modo: ${USE_APPWRITE ? '🔥 Appwrite' : '📄 JSON (legado)'}`);
-  console.log(`   EmailJS: ${USE_EMAILJS ? '✅' : '❌ (configure EMAILJS_* no .env)'}`);
-  console.log('');
+  logger.info(`\n🕉️  Saberes de Coração v4.0`);
+  logger.info(`   Servidor: http://localhost:${PORT}`);
+  logger.info(`   Modo: ${USE_APPWRITE ? '🔥 Appwrite' : '📄 JSON (legado)'}`);
+  logger.info(`   EmailJS: ${USE_EMAILJS ? '✅' : '❌ (configure EMAILJS_* no .env)'}`);
+  logger.info('');
 });

@@ -1,6 +1,11 @@
 (function () {
   'use strict';
 
+  function $(el, htmlContent) {
+    el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
+    return el;
+  }
+
   // =============================================
   // Contato (EmailJS + Appwrite Database)
   // =============================================
@@ -11,7 +16,7 @@
     section.className = 'contato-section reveal';
     section.setAttribute('aria-label', 'Formulário de contato');
 
-    section.innerHTML = `
+    $(section, `
       <div class="contato-inner">
         <div class="contato-info">
           <h2 class="contato-titulo">💌 Entre em Contato</h2>
@@ -57,7 +62,7 @@
           <div class="contato-status" id="contatoStatus" role="status" aria-live="polite"></div>
         </form>
       </div>
-    `;
+    `);
 
     return section;
   }
@@ -124,7 +129,7 @@
     overlay.setAttribute('aria-modal', 'true');
     overlay.setAttribute('aria-labelledby', 'authTitulo');
     overlay.onclick = function (e) { if (e.target === this) fecharAuth(); };
-    overlay.innerHTML = `
+    $(overlay, `
       <div class="auth-modal" onclick="event.stopPropagation()">
         <div class="auth-header">
           <h2 id="authTitulo" class="auth-titulo">🔐 Entrar</h2>
@@ -149,7 +154,7 @@
           <p class="auth-aviso">Use o email e senha configurados no Appwrite. Ainda sem conta? O administrador pode criar uma.</p>
         </div>
       </div>
-    `;
+    `);
     return overlay;
   }
 

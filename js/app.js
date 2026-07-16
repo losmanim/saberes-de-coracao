@@ -1,4 +1,13 @@
 // =============================================
+// Sanitização XSS
+// =============================================
+
+function $(el, htmlContent) {
+  el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
+  return el;
+}
+
+// =============================================
 // Constantes
 // =============================================
 
@@ -52,12 +61,12 @@ function saberDoDia() {
 
     if (!escolha || !citacaoUsar) return;
 
-    el.innerHTML = `
+    $(el, `
         <div class="saber-dia-card" onclick="abrirSaber('${escolha.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${escolha.id}')" tabindex="0" role="button" aria-label="Saber do dia: ${escolha.titulo}">
             <div class="saber-dia-label">☀️ Saber do Dia</div>
             <div class="saber-dia-quote">${citacaoUsar}</div>
             <div class="saber-dia-fonte">— ${escolha.titulo}</div>
-        </div>`;
+        </div>`);
 }
 
 function extrairCitacaoImpactante(saber) {
@@ -127,7 +136,7 @@ function toggleFavorito(id, event) {
                 const grid = document.getElementById('cardsGrid');
                 const remaining = grid.querySelectorAll('.card, .empty-state');
                 if (remaining.length === 0) {
-                    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💔</div><p>Nenhum favorito ainda</p><p style="font-size:0.8rem;color:var(--cor-texto-sec);margin-top:0.5rem">Clique no 🤍 nos cards para adicionar</p></div>';
+                    $(grid, '<div class="empty-state"><div class="empty-state-icon">💔</div><p>Nenhum favorito ainda</p><p style="font-size:0.8rem;color:var(--cor-texto-sec);margin-top:0.5rem">Clique no 🤍 nos cards para adicionar</p></div>');
                 }
             }
         }
@@ -247,7 +256,7 @@ function compartilharSaber(id) {
 
 function mostrarAtalhos() {
     document.getElementById('modalTitulo').textContent = '⌨️ Atalhos do Teclado';
-    document.getElementById('modalContent').innerHTML = `
+    $(document.getElementById('modalContent'), `
         <div class="atalhos-grid">
             <div class="atalhos-item"><span class="atalhos-key">?</span> Mostrar atalhos</div>
             <div class="atalhos-item"><span class="atalhos-key">Esc</span> Fechar modal</div>
@@ -259,321 +268,11 @@ function mostrarAtalhos() {
             <div class="atalhos-item"><span class="atalhos-key">D</span> Saber aleatório</div>
             <div class="atalhos-item"><span class="atalhos-key">T</span> Alternar tema</div>
         </div>
-        <p style="margin-top:1rem;font-size:0.8rem;color:var(--cor-texto-sec)">Atalhos funcionam quando nenhum input está focado.</p>`;
+        <p style="margin-top:1rem;font-size:0.8rem;color:var(--cor-texto-sec)">Atalhos funcionam quando nenhum input está focado.</p>`);
     abrirModal();
 }
 
-// =============================================
-// Player de Mídia (áudio/vídeo)
-// =============================================
 
-const Player = {
-    currentList: [],
-    currentIndex: -1,
-    currentItem: null,
-    isPlaying: false,
-
-    init() {
-        const audio = document.getElementById('playerAudio');
-        const playPause = document.getElementById('playerPlayPause');
-        const prev = document.getElementById('playerPrev');
-        const next = document.getElementById('playerNext');
-        const closeBtn = document.getElementById('playerClose');
-        const muteBtn = document.getElementById('playerMute');
-        const volumeSlider = document.getElementById('playerVolumeSlider');
-        const seekSlider = document.getElementById('playerSeekSlider');
-        const progressWrap = document.getElementById('playerProgressWrap');
-
-        playPause.addEventListener('click', () => this.togglePlay());
-        prev.addEventListener('click', () => this.prev());
-        next.addEventListener('click', () => this.next());
-        closeBtn.addEventListener('click', () => this.close());
-        muteBtn.addEventListener('click', () => this.toggleMute());
-
-        volumeSlider.addEventListener('input', e => {
-            audio.volume = parseFloat(e.target.value);
-            this.updateMuteIcon();
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            if (!audio.duration) return;
-            const pct = (audio.currentTime / audio.duration) * 100;
-            document.getElementById('playerProgressBar').style.width = pct + '%';
-            document.getElementById('playerSeekSlider').value = pct;
-            document.getElementById('playerTimeCurrent').textContent = this.formatTime(audio.currentTime);
-        });
-
-        audio.addEventListener('loadedmetadata', () => {
-            document.getElementById('playerTimeTotal').textContent = this.formatTime(audio.duration);
-        });
-
-        audio.addEventListener('ended', () => {
-            this.next();
-        });
-
-        audio.addEventListener('play', () => {
-            this.isPlaying = true;
-            this.updatePlayBtn();
-        });
-
-        audio.addEventListener('pause', () => {
-            this.isPlaying = false;
-            this.updatePlayBtn();
-        });
-
-        seekSlider.addEventListener('input', e => {
-            if (!audio.duration) return;
-            audio.currentTime = (parseFloat(e.target.value) / 100) * audio.duration;
-        });
-
-        document.getElementById('playerProgressWrap').addEventListener('click', e => {
-            if (!audio.duration || e.target.tagName === 'INPUT') return;
-            const rect = progressWrap.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pct * audio.duration;
-        });
-
-        document.addEventListener('keydown', e => {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-            const bar = document.getElementById('playerBar');
-            if (bar.hasAttribute('hidden')) return;
-
-            switch (e.key) {
-                case ' ':
-                    e.preventDefault();
-                    this.togglePlay();
-                    break;
-                case 'p':
-                case 'P':
-                    this.prev();
-                    break;
-                case 'n':
-                case 'N':
-                    this.next();
-                    break;
-                case 'm':
-                case 'M':
-                    this.toggleMute();
-                    break;
-            }
-        });
-    },
-
-    buildList(tipo) {
-        if (!dados || !dados.midia) return [];
-        if (tipo === 'audio') return dados.midia.audios || [];
-        return dados.midia.videos || [];
-    },
-
-    open(tipo, id) {
-        const list = this.buildList(tipo);
-        const index = list.findIndex(m => m.id === id);
-        if (index === -1) return;
-
-        this.currentList = list;
-        this.currentIndex = index;
-        this.currentItem = list[index];
-
-        // Verifica se o arquivo já é uma URL completa (Cloudinary)
-        let src;
-        if (this.currentItem.arquivo.startsWith('http')) {
-            src = this.currentItem.arquivo;
-        } else {
-            const baseDir = window.midiaBaseUrl;
-            const partes = this.currentItem.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
-        }
-
-        const audio = document.getElementById('playerAudio');
-        const bar = document.getElementById('playerBar');
-
-        audio.onerror = () => {
-            alert('Arquivo não encontrado: ' + src);
-            this.close();
-        };
-
-        audio.src = src;
-        audio.load();
-
-        bar.removeAttribute('hidden');
-        document.body.classList.add('player-active');
-
-        document.getElementById('playerIcon').textContent = tipo === 'audio' ? '🎧' : '🎬';
-        document.getElementById('playerTrackName').textContent = this.currentItem.titulo;
-
-        const vol = localStorage.getItem('playerVolume');
-        audio.volume = vol !== null ? parseFloat(vol) : 1;
-        document.getElementById('playerVolumeSlider').value = audio.volume;
-
-        audio.play().catch(() => {
-            this.isPlaying = false;
-            this.updatePlayBtn();
-        });
-    },
-
-    togglePlay() {
-        const audio = document.getElementById('playerAudio');
-        if (!audio.src) return;
-        if (audio.paused) {
-            audio.play().catch(() => {});
-        } else {
-            audio.pause();
-        }
-    },
-
-    prev() {
-        if (!this.currentList.length) return;
-        this.currentIndex = (this.currentIndex - 1 + this.currentList.length) % this.currentList.length;
-        this.loadCurrent();
-    },
-
-    next() {
-        if (!this.currentList.length) return;
-        this.currentIndex = (this.currentIndex + 1) % this.currentList.length;
-        this.loadCurrent();
-    },
-
-    loadCurrent() {
-        const item = this.currentList[this.currentIndex];
-        if (!item) return;
-        this.currentItem = item;
-
-        const audio = document.getElementById('playerAudio');
-        const isVideo = item.id && item.id.startsWith('video-');
-
-        // Verifica se o arquivo já é uma URL completa (Cloudinary)
-        let src;
-        if (item.arquivo.startsWith('http')) {
-            src = item.arquivo;
-        } else {
-            const baseDir = window.midiaBaseUrl;
-            const partes = item.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
-        }
-
-        document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
-        document.getElementById('playerTrackName').textContent = item.titulo;
-        document.getElementById('playerProgressBar').style.width = '0%';
-        document.getElementById('playerSeekSlider').value = 0;
-        document.getElementById('playerTimeCurrent').textContent = '0:00';
-
-        audio.onerror = () => {
-            alert('Arquivo não encontrado: ' + src);
-        };
-        audio.src = src;
-        audio.load();
-        audio.play().catch(() => {
-            this.isPlaying = false;
-            this.updatePlayBtn();
-        });
-    },
-
-    close() {
-        const audio = document.getElementById('playerAudio');
-        audio.pause();
-        audio.src = '';
-        this.currentList = [];
-        this.currentIndex = -1;
-        this.currentItem = null;
-        this.isPlaying = false;
-
-        document.getElementById('playerBar').setAttribute('hidden', '');
-        document.body.classList.remove('player-active');
-    },
-
-    toggleMute() {
-        const audio = document.getElementById('playerAudio');
-        audio.muted = !audio.muted;
-        this.updateMuteIcon();
-    },
-
-    updateMuteIcon() {
-        const audio = document.getElementById('playerAudio');
-        const btn = document.getElementById('playerMute');
-        btn.textContent = audio.muted || audio.volume === 0 ? '🔇' : '🔊';
-    },
-
-    updatePlayBtn() {
-        const btn = document.getElementById('playerPlayPause');
-        btn.textContent = this.isPlaying ? '⏸' : '▶';
-        btn.classList.toggle('playing', this.isPlaying);
-    },
-
-    formatTime(secs) {
-        if (!secs || isNaN(secs)) return '0:00';
-        const m = Math.floor(secs / 60);
-        const s = Math.floor(secs % 60);
-        return m + ':' + (s < 10 ? '0' : '') + s;
-    },
-
-    saveState() {
-        const audio = document.getElementById('playerAudio');
-        if (!audio || !audio.src || this.currentList.length === 0) return;
-        sessionStorage.setItem('playerState', JSON.stringify({
-            currentIndex: this.currentIndex,
-            currentTime: audio.currentTime,
-            isPlaying: !audio.paused,
-            trackTitle: this.currentItem?.titulo || '',
-            trackId: this.currentItem?.id || '',
-            trackTipo: this.currentItem?.id?.startsWith('video-') ? 'video' : 'audio',
-            listIds: this.currentList.map(m => m.id),
-        }));
-    },
-
-    restoreState() {
-        const saved = sessionStorage.getItem('playerState');
-        if (!saved) return;
-        try {
-            const state = JSON.parse(saved);
-            if (!state.listIds || state.listIds.length === 0) return;
-
-            if (!dados || !dados.midia) return;
-            const allMidia = [...(dados.midia.audios || []), ...(dados.midia.videos || [])];
-            const list = state.listIds.map(id => allMidia.find(m => m.id === id)).filter(Boolean);
-            if (list.length === 0) return;
-
-            const idx = list.findIndex(m => m.id === state.trackId);
-            if (idx === -1) return;
-
-            this.currentList = list;
-            this.currentIndex = idx;
-            this.currentItem = list[idx];
-
-            const baseDir = window.midiaBaseUrl;
-            const isVideo = state.trackTipo === 'video';
-            const partes = this.currentItem.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
-
-            const audio = document.getElementById('playerAudio');
-            audio.src = src;
-            audio.currentTime = state.currentTime || 0;
-
-            const bar = document.getElementById('playerBar');
-            bar.removeAttribute('hidden');
-            document.body.classList.add('player-active');
-
-            document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
-            document.getElementById('playerTrackName').textContent = this.currentItem.titulo;
-
-            const vol = localStorage.getItem('playerVolume');
-            audio.volume = vol !== null ? parseFloat(vol) : 1;
-            document.getElementById('playerVolumeSlider').value = audio.volume;
-
-            audio.load();
-            if (state.isPlaying) {
-                audio.currentTime = state.currentTime || 0;
-                audio.play().catch(() => {});
-            }
-
-            sessionStorage.removeItem('playerState');
-        } catch (e) {
-            sessionStorage.removeItem('playerState');
-        }
-    }
-};
 
 document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
@@ -734,7 +433,7 @@ async function carregarDados() {
         if (!cache) {
             try {
                 console.log('Tentando fallback para JSON direto...');
-                const jsonResponse = await fetch('/database/dados-unificados.json');
+                const jsonResponse = await fetch('/data/dados-unificados.json');
                 if (!jsonResponse.ok) throw new Error('HTTP ' + jsonResponse.status);
                 const dadosJson = await jsonResponse.json();
                 console.log('Dados JSON recebidos:', dadosJson.meta?.versao, 'saberes:', dadosJson.saberes?.length);
@@ -749,7 +448,7 @@ async function carregarDados() {
             } catch (fallbackError) {
                 console.error('Fallback também falhou:', fallbackError);
                 if (grid) {
-                    grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Tentativa de fallback: ' + fallbackError.message + '</small></p></div>';
+                    $(grid, '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Tentativa de fallback: ' + fallbackError.message + '</small></p></div>');
                 }
             }
         }
@@ -803,7 +502,7 @@ function renderizarSaberes(saberes) {
 
     if (!saberes || saberes.length === 0) {
         console.log('Nenhum saber para renderizar');
-        grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>';
+        $(grid, '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>');
         esconderSkeleton();
         return;
     }
@@ -834,7 +533,7 @@ function renderizarSaberes(saberes) {
             </div>`;
     }).join('');
 
-    grid.innerHTML = cardsHtml;
+    $(grid, cardsHtml);
 
     console.log('Renderização concluída');
     esconderSkeleton();
@@ -923,7 +622,7 @@ function renderizarMidia() {
     }
 
     document.getElementById('modalTitulo').textContent = '🎵 Multimídia';
-    document.getElementById('modalContent').innerHTML = html;
+    $(document.getElementById('modalContent'), html);
     abrirModal();
     esconderSkeleton();
     aplicarReveal();
@@ -979,7 +678,7 @@ function abrirMidia(tipo, id) {
     html += `<p style="margin-top:0.8rem;font-size:0.9rem"><strong>Categoria:</strong> ${item.categoria}</p>`;
     html += `<div class="card-tags" style="margin-top:0.4rem">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>`;
 
-    document.getElementById('modalContent').innerHTML = html;
+    $(document.getElementById('modalContent'), html);
     abrirModal();
 }
 
@@ -1010,77 +709,7 @@ function buscarSaberes(termo) {
     renderizarSaberes(filtrados);
 }
 
-const contentHandlers = {
-    definicao: (v) => `<h3>Definição</h3><p>${v}</p>`,
-    analogia: (v) => `<h3>📝 Analogia</h3><p>${v}</p>`,
-    insight: (v) => `<h3>💡 Insight</h3><p>${v}</p>`,
-    ascensao: (v) => `<h3>A Ascensão da Kundalini</h3><p>${v}</p>`,
-    ruido_moderno: (v) => `<h3>O Ruído Moderno</h3><p>${v}</p>`,
-    instrucoes_passos: (v) => `<h3>Passo a Passo</h3><p>${v.replace(/\n/g, '<br>')}</p>`,
 
-    conceitos: (v) => `<h3>Conceitos</h3><ul>${v.map(i => `<li><strong>${i.termo}:</strong> ${i.def}</li>`).join('')}</ul>`,
-    principios: (v) => `<h3>Os Sete Princípios</h3><ul>${v.map(p => `<li><strong>${p.num}. ${p.nome}</strong> — "${p.frase}"<br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${p.desc}</span></li>`).join('')}</ul>`,
-    mundos: (v) => `<h3>Os Três Mundos</h3><ul>${v.map(m => `<li><strong>${m.simbolo} ${m.nome}</strong><br><span style="color:var(--cor-texto-sec);font-size:0.9rem">${m.desc}</span></li>`).join('')}</ul>`,
-    textos: (v) => `<h3>Textos da Biblioteca de Nag Hammadi</h3><ul>${v.map(t => `<li><strong>${t.nome}</strong>: ${t.desc}</li>`).join('')}</ul>`,
-    fatores: (v) => `<h3>Fatores que Influenciam</h3><ul>${v.map(f => `<li><strong>${f.icone} ${f.nome}</strong>: ${f.desc}</li>`).join('')}</ul>`,
-    mecanismos: (v) => `<h3>Os Três Mecanismos Epigenéticos</h3><ul>${v.map(m => `<li><strong>${m.icone} ${m.nome}</strong>: ${m.desc}</li>`).join('')}</ul>`,
-    personagens: (v) => `<h3>Personagens do Drama Cósmico</h3><ul>${v.map(p => `<li><strong>${p.nome}:</strong> ${p.descricao}</li>`).join('')}</ul>`,
-    misterios: (v) => `<h3>Os Mistérios</h3><ul>${v.map(m => `<li><strong>${m.nome}:</strong> ${m.desc}</li>`).join('')}</ul>`,
-    caracteristicas: (v) => `<h3>Características das Primeiras Comunidades</h3><ul>${v.map(c => `<li><strong>${c.nome}:</strong> ${c.desc}</li>`).join('')}</ul>`,
-    desafios: (v) => `<h3>Desafios e Expansão</h3><ul>${v.map(d => `<li><strong>${d.nome}:</strong> ${d.desc}</li>`).join('')}</ul>`,
-    controversias: (v) => `<h3>Controvérsias e Legado</h3><ul>${v.map(ct => `<li><strong>${ct.tema}:</strong> ${ct.desc}</li>`).join('')}</ul>`,
-    mitos_desmistificados: (v) => `<h3>Mitos Desmistificados</h3><ul>${v.map(m => `<li><strong>${m.mito}</strong> → ${m.verdade}</li>`).join('')}</ul>`,
-    tres_fatores: (v) => `<h3>Os 3 Fatores da Revolução da Consciência</h3><ul>${v.map(f => `<li><strong>${f.fator}:</strong> ${f.descricao}</li>`).join('')}</ul>`,
-    dimensoes: (v) => `<h3>As Dimensões do Pneuma</h3><ul>${v.map(d => `<li><strong>${d.nome}:</strong> ${d.desc}</li>`).join('')}</ul>`,
-    praticas_diarias: (v) => `<h3>Práticas Diárias</h3><ul>${v.map(pd => `<li><strong>${pd.nome}:</strong> ${pd.desc}</li>`).join('')}</ul>`,
-    tres_filtros: (v) => `<h3>Os 3 Filtros da Percepção</h3><ul>${v.map(f => `<li><strong>${f.nome}:</strong> ${f.desc}</li>`).join('')}</ul>`,
-
-    aplicacoes: (v) => `<h3>Lei da Correspondência</h3><table style="width:100%;border-collapse:collapse;margin-top:0.5rem;">${v.map(a => `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda);font-weight:600">${a.maior}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${a.menor}</td></tr>`).join('')}</table>`,
-
-    citacoes: (v) => `<h3>Citações</h3><blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0;">${v.join('<br>')}</blockquote>`,
-
-    parabolas: (v) => `<h3>Parábolas</h3>${v.map(p => `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)"><h4 style="color:var(--cor-destaque);margin-bottom:0.3rem">${p.nome}</h4><p><em>"${p.texto}"</em></p><p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Sentido:</strong> ${p.sentido}</p></div>`).join('')}`,
-    ensinamentos_chave: (v) => `<h3>Ensinamentos Chave</h3>${v.map(e => `<div class="pratica-box"><h4>${e.tema}</h4><p>${e.ensino}</p></div>`).join('')}`,
-    ciencia_moderna: (v) => `<h3>Ciência Moderna e o Éter</h3>${v.map(cm => `<div class="pratica-box"><h4>${cm.topico}</h4><p>${cm.desc}</p></div>`).join('')}`,
-    correntes: (v) => `<h3>As Grandes Correntes Filosóficas</h3>${v.map(cr => `<div class="pratica-box"><h4>${cr.nome}</h4><p>${cr.desc}</p></div>`).join('')}`,
-    perspectivas: (v) => `<h3>Perspectivas sobre o Sentido</h3>${v.map(p => `<div class="pratica-box"><h4>${p.nome}</h4><p>${p.desc}</p></div>`).join('')}`,
-    ferramentas_praticas: (v) => `<h3>Ferramentas Práticas</h3>${v.map(fp => `<div class="pratica-box"><h4>${fp.nome}</h4><p>${fp.desc}</p></div>`).join('')}`,
-    praticas_acesso: (v) => `<h3>Práticas de Acesso ao Éter</h3><ul>${v.map(pa => `<li><strong>${pa.nome}</strong>${pa.proporcao ? ' (' + pa.proporcao + ')' : ''}: ${pa.desc}</li>`).join('')}</ul>`,
-
-    estrutura_cosmica: (v) => `<h3>Estrutura Cósmica</h3>${Object.entries(v).map(([key, val]) => `<p><strong>${key.charAt(0).toUpperCase() + key.slice(1)}:</strong> ${val}</p>`).join('')}`,
-    nag_hammadi: (v) => `<h3>Nag Hammadi (1945)</h3><p>${v.descricao}</p>${v.textos ? `<ul>${v.textos.map(t => `<li><strong>${t.nome}:</strong> ${t.desc}</li>`).join('')}</ul>` : ''}`,
-    alquimia_interior: (v) => `<h3>${v.nome}</h3>${v.operacoes ? `<ul>${v.operacoes.map(op => `<li><strong>${op.etapa}:</strong> ${op.desc}</li>`).join('')}</ul>` : ''}`,
-    mapa_exoterico_esoterico: (v) => `<h3>Exotérico vs. Esotérico</h3><div class="pratica-box"><h4>Exotérico (Público)</h4><p>${v.exoterico}</p></div><div class="pratica-box"><h4>Esotérico (Reservado)</h4><p>${v.esoterico}</p></div>`,
-    ponte_ciencia_teosofia: (v) => `<h3>Ponte entre Ciência e Teosofia</h3><div class="pratica-box"><h4>Ciência</h4><p>${v.ciencia}</p></div><div class="pratica-box"><h4>Teosofia</h4><p>${v.teosofia}</p></div><div class="pratica-box"><h4>Ponte</h4><p>${v.ponte}</p></div>`,
-    conexao_heartmath: (v) => `<h3>Conexão com HeartMath/GCI</h3><p>${v.descricao}</p><p style="margin-top:0.5rem;font-style:italic;color:var(--cor-texto-sec)">${v.pratica}</p>`,
-
-    if_no_meaning: (v) => `<h3>${v.titulo}</h3><p>${v.reflexao}</p>${v.citacao ? `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${v.citacao}</blockquote>` : ''}`,
-    tool_musica: (v) => `<h3>Pneuma na Música (Tool)</h3><p>${v.analise}</p>${v.citacao ? `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0;color:var(--cor-texto-sec)">${v.citacao}</blockquote>` : ''}`,
-    felicidade_como_verbo: (v) => `<h3>Felicidade como Verbo</h3><p>${v.tese}</p><p style="margin-top:0.5rem">${v.mecanica}</p>${v.citacao ? `<blockquote style="border-left:3px solid var(--cor-destaque);padding-left:1rem;font-style:italic;margin:0.5rem 0">${v.citacao}</blockquote>` : ''}`,
-
-    quatro_mapas: (v) => `<h3>Os 4 Mapas de Sabedoria</h3>${v.map(m => `<div class="content-card" style="background:var(--cor-fundo);padding:1rem;border-radius:var(--radius);margin-bottom:0.8rem;border-left:3px solid var(--cor-destaque)"><h4 style="color:var(--cor-destaque)">${m.nome}</h4><p>${m.ensinamento}</p><p style="margin-top:0.4rem;color:var(--cor-texto-sec);font-size:0.9rem"><strong>Prática:</strong> ${m.pratica}</p></div>`).join('')}`,
-
-    dicotomia: (v) => `<h3>Ser vs. Ter</h3>${v.map(d => `<div class="pratica-box"><h4>${d.polo === 'SER' ? '🜁' : '🜂'} ${d.polo}</h4><ul>${d.caracteristicas.map(car => `<li>${car}</li>`).join('')}</ul></div>`).join('')}`,
-    filtros_da_percepcao: (v) => `<h3>Filtros da Percepção</h3>${v.map(fp => `<div class="pratica-box"><h4>${fp.nome}</h4><p><strong>Mecanismo:</strong> ${fp.mecanismo}</p><p style="margin-top:0.3rem"><strong>Transcendência:</strong> ${fp.transcendencia}</p></div>`).join('')}`,
-    integracao_pratica: (v) => `<h3>Integração Prática no Dia a Dia</h3>${Object.entries(v).map(([periodo, passos]) => `<div class="pratica-box"><h4>${periodo.charAt(0).toUpperCase() + periodo.slice(1)}</h4>${passos.map(p => `<p>${p}</p>`).join('')}</div>`).join('')}`,
-
-    chakras(v) {
-        if (!v[0] || !v[0].ordem) return '';
-        return `<h3>Os 8 Chakras da Meditação</h3><table style="width:100%;border-collapse:collapse;margin:0.8rem 0"><tr><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">#</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Chakra</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Sílaba</th><th style="padding:6px 8px;border:1px solid var(--cor-borda);background:var(--cor-fundo)">Função</th></tr>${v.map(ch => `<tr><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.ordem}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.nome}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.silaba}</td><td style="padding:6px 8px;border:1px solid var(--cor-borda)">${ch.funcao}</td></tr>`).join('')}</table>`;
-    },
-
-    // Handlers órfãos adicionados
-    texto_integral: (v) => `<h3>📜 Texto Integral</h3><div class="texto-integral">${v.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}</div>`,
-    mantras: (v) => `<h3>🔮 Mantras</h3>${v.map(m => `<div class="pratica-box"><h4>${m.nome}</h4><p><strong>Origem:</strong> ${m.origem}</p><p>${m.desc}</p>${m.quando ? `<p style="margin-top:0.3rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>🕐 ${m.quando}</em></p>` : ''}</div>`).join('')}`,
-    beneficios: (v) => `<h3>✅ Benefícios</h3><ul>${v.map(b => `<li>${b}</li>`).join('')}</ul>`,
-    sintese: (v) => `<h3>📋 Síntese</h3><ul>${v.map(s => `<li>${s}</li>`).join('')}</ul>`,
-    obras: (v) => `<h3>📚 Obras</h3>${v.map(o => `<div class="content-card"><h4>${o.titulo}</h4><p>${o.desc}</p></div>`).join('')}`,
-    visoes: (v) => `<h3>👁️ Visões da Jornada</h3>${v.map(vis => `<div class="pratica-box"><h4>${vis.nome}</h4><p>${vis.desc}</p></div>`).join('')}`,
-    aviso: (v) => `<div class="pratica-box" style="border-left-color:var(--cor-jornada)"><h4 style="color:var(--cor-jornada)">⚠️ Aviso</h4><p>${v}</p></div>`,
-    tecnica: (v) => `<h3>🔬 Técnica</h3><div class="pratica-box"><p>${v}</p></div>`,
-    dado: (v) => `<div class="pratica-box" style="border-left-color:var(--cor-ciencia);text-align:center"><p style="font-size:1.1rem;font-weight:600;color:var(--cor-ciencia);margin:0">${v}</p></div>`,
-    desc: (v) => `<p style="color:var(--cor-texto-sec);font-style:italic">${v}</p>`,
-};
 
 // =============================================
 // Abertura de Saber (Modal de Conteúdo)
@@ -1102,7 +731,7 @@ async function abrirSaber(id) {
     // Lazy loading do conteúdo
     if (!saber.conteudo) {
         html += `<div id="loading-conteudo" style="text-align:center;padding:2rem"><div class="skeleton" style="height:100px;margin-bottom:1rem"></div><p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p></div>`;
-        document.getElementById('modalContent').innerHTML = html;
+        $(document.getElementById('modalContent'), html);
         abrirModal();
 
         try {
@@ -1114,7 +743,7 @@ async function abrirSaber(id) {
             html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
             html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
         } catch (e) {
-            document.getElementById('loading-conteudo').innerHTML = `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo: ${e.message}</p>`;
+            $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo: ${e.message}</p>`);
             return;
         }
     }
@@ -1171,7 +800,7 @@ async function abrirSaber(id) {
         <button class="btn-share" onclick="toggleFavorito('${saber.id}', event); this.textContent = isFavorito('${saber.id}') ? '❤️ Favoritado' : '🤍 Favoritar'" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
     </div>`;
 
-    document.getElementById('modalContent').innerHTML = html;
+    $(document.getElementById('modalContent'), html);
     abrirModal();
 }
 
@@ -1269,7 +898,7 @@ function toggleLogin() {
     const div = document.createElement('section');
     div.id = 'loginContainer';
     div.style.cssText = 'margin-bottom:2rem;padding:1.5rem;max-width:400px;margin-left:auto;margin-right:auto;background:var(--cor-card);border:1px solid var(--cor-borda);border-radius:var(--radius)';
-    div.innerHTML = `
+    $(div, `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
             <h3 style="margin:0">🔐 Admin</h3>
             <button onclick="this.parentElement.parentElement.style.display='none'" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">✕</button>
@@ -1284,7 +913,7 @@ function toggleLogin() {
             </form>
             <div id="loginStatus" style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"></div>
         `}
-    `;
+    `);
     main.insertBefore(div, main.querySelector('.pilares').nextSibling);
 
     const form = document.getElementById('formLogin');
@@ -1361,7 +990,7 @@ function criarAdminPanel() {
         ? dados.categorias.map(c => `<option value="${c.id}">${c.nome}</option>`).join('')
         : '';
 
-    panel.innerHTML = `
+    $(panel, `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
             <h3 style="margin:0">📝 Admin — Adicionar Saber</h3>
             <div style="display:flex;gap:0.5rem">
@@ -1393,7 +1022,7 @@ function criarAdminPanel() {
             </button>
         </form>
         <div id="adminStatus" style="margin-top:0.5rem;font-size:0.85rem"></div>
-    `;
+    `);
 
     main.insertBefore(panel, main.querySelector('.pilares').nextSibling);
 

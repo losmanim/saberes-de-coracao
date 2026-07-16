@@ -47,7 +47,7 @@ async function migrar() {
           descricao: cat.descricao,
           cor: cat.cor,
           icone: cat.icone,
-          ordem: cat.id,
+          ordem: String(cat.id),
         });
         console.log(`  ✅ ${cat.nome}`);
       } catch (e) {
@@ -68,7 +68,7 @@ async function migrar() {
           descricao: saber.descricao || '',
           categoria_id: String(saber.categoria_id || 1),
           nivel: saber.nivel || 'iniciante',
-          duracao: saber.duracao || 15,
+          duracao: String(saber.duracao || 15),
           fonte: saber.fonte || '',
           licenca: saber.licenca || 'Domínio Público',
           tags: saber.tags?.join(',') || '',
@@ -91,15 +91,18 @@ async function migrar() {
     console.log('\n📁 Migrando mídia...');
     const migrarItem = (item, tipo) => {
       if (!item || !item.id) return;
-      return {
+      const doc = {
         titulo: item.titulo || '',
         tipo,
         arquivo: item.arquivo || '',
         categoria: item.categoria || '',
         tags: item.tags?.join(',') || '',
-        saberes_relacionados: item.saberes_relacionados?.join(',') || '',
         criado_em: new Date().toISOString(),
       };
+      if (item.saberes_relacionados?.length) {
+        doc.saberes_relacionados = item.saberes_relacionados.join(',');
+      }
+      return doc;
     };
 
     for (const audio of dados.midia.audios || []) {
