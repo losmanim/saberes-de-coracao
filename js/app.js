@@ -21,6 +21,19 @@ const ABERTOS_KEY = 'saberes_abertos';
 const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
 
 // =============================================
+// Normalização de Dados (Appwrite compatibility)
+// =============================================
+
+function normalizarSaber(saber) {
+    return {
+        ...saber,
+        tags: Array.isArray(saber.tags) ? saber.tags : 
+              typeof saber.tags === 'string' ? saber.tags.split(',').map(t => t.trim()) : 
+              []
+    };
+}
+
+// =============================================
 // Estado Global
 // =============================================
 
@@ -515,6 +528,7 @@ function renderizarSaberes(saberes) {
     const favs = getFavoritos();
     const abertos = getSaberesAbertos();
     const cardsHtml = saberes.map(saber => {
+        saber = normalizarSaber(saber);
         const isNovo = !abertos.includes(saber.id);
         const isVisited = abertos.includes(saber.id);
         const catIcon = CAT_EMOJIS[saber.categoria_id] || '📖';
