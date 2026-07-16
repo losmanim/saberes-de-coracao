@@ -956,10 +956,16 @@ async function abrirSaber(id) {
 // =============================================
 
 function abrirModal() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (!modalOverlay) {
+        console.error('modalOverlay não encontrado');
+        return;
+    }
     ultimoElementoFocado = document.activeElement;
-    document.getElementById('modalOverlay').classList.add('active');
+    modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-    document.querySelector('.modal-close').focus();
+    const closeBtn = document.querySelector('.modal-close');
+    if (closeBtn) closeBtn.focus();
 }
 
 // Event listener para trap de foco no modal (só quando o elemento existir)
@@ -984,13 +990,16 @@ if (modalOverlay) {
 });
 
 function fecharModal(e) {
-    if (e.target.id === 'modalOverlay') {
+    if (e.target && e.target.id === 'modalOverlay') {
         fecharModalBtn();
     }
 }
 
 function fecharModalBtn() {
-    document.getElementById('modalOverlay').classList.remove('active');
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (modalOverlay) {
+        modalOverlay.classList.remove('active');
+    }
     document.body.style.overflow = '';
     if (ultimoElementoFocado) {
         ultimoElementoFocado.focus();
