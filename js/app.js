@@ -284,7 +284,9 @@ document.addEventListener('keydown', e => {
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
-    Player.init();
+    if (typeof Player !== 'undefined' && Player.init) {
+        Player.init();
+    }
 
     if (localStorage.getItem('tema') === 'claro') {
         document.body.classList.add('modo-claro');
@@ -303,7 +305,9 @@ window.addEventListener('DOMContentLoaded', async () => {
     await carregarMidiaConfig();
     observarReveal();
     carregarDados().then(() => {
-        Player.restoreState();
+        if (typeof Player !== 'undefined' && Player.restoreState) {
+            Player.restoreState();
+        }
         saberDoDia();
         mostrarContinueLendo();
     });
