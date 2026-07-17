@@ -1,6 +1,9 @@
 // =============================================
 // Sanitização XSS
 // =============================================
+if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    console.log = console.warn = console.error = function () {};
+}
 
 function $(el, htmlContent) {
   el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
@@ -21,6 +24,19 @@ const ABERTOS_KEY = 'saberes_abertos';
 const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
 
 // =============================================
+// Normalização de Dados (Appwrite compatibility)
+// =============================================
+
+function normalizarSaber(saber) {
+    return {
+        ...saber,
+        tags: Array.isArray(saber.tags) ? saber.tags : 
+              typeof saber.tags === 'string' ? saber.tags.split(',').map(t => t.trim()) : 
+              []
+    };
+}
+
+// =============================================
 // Estado Global
 // =============================================
 
@@ -28,6 +44,10 @@ let dados = null;
 let categoriaAtual = 'all';
 let ultimoElementoFocado = null;
 let continueSaberId = null;
+let paginaAtual = 1;
+let itensPorPagina = 24;
+let totalPaginas = 1;
+let todosSaberes = [];
 
 // =============================================
 // Saber do Dia
@@ -62,7 +82,7 @@ function saberDoDia() {
     if (!escolha || !citacaoUsar) return;
 
     $(el, `
-        <div class="saber-dia-card" onclick="abrirSaber('${escolha.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${escolha.id}')" tabindex="0" role="button" aria-label="Saber do dia: ${escolha.titulo}">
+        <div class="saber-dia-card" tabindex="0" role="button" data-saber-id="${escolha.id}" aria-label="Saber do dia: ${escolha.titulo}">
             <div class="saber-dia-label">☀️ Saber do Dia</div>
             <div class="saber-dia-quote">${citacaoUsar}</div>
             <div class="saber-dia-fonte">— ${escolha.titulo}</div>
@@ -199,6 +219,35 @@ function marcarSaberAberto(id) {
 }
 
 // =============================================
+// Error Handler Global
+// =============================================
+
+function tratarErro(erro, contexto = 'Operação') {
+    console.error(`[${contexto}] Erro:`, erro);
+    
+    let mensagem = 'Ocorreu um erro inesperado.';
+    
+    if (erro instanceof TypeError) {
+        mensagem = 'Erro de processamento de dados.';
+    } else if (erro instanceof SyntaxError) {
+        mensagem = 'Erro ao interpretar os dados recebidos.';
+    } else if (erro.message) {
+        if (erro.message.includes('fetch')) {
+            mensagem = 'Erro de conexão. Verifique sua internet.';
+        } else if (erro.message.includes('HTTP 4')) {
+            mensagem = 'Recurso não encontrado ou dados inválidos.';
+        } else if (erro.message.includes('HTTP 5')) {
+            mensagem = 'Erro no servidor. Tente novamente mais tarde.';
+        } else {
+            mensagem = erro.message;
+        }
+    }
+    
+    mostrarToast(`❌ ${mensagem}`, 'erro');
+    return mensagem;
+}
+
+// =============================================
 // Toast Notifications
 // =============================================
 
@@ -212,11 +261,12 @@ function mostrarToast(mensagem, tipo) {
     })();
     const toast = document.createElement('div');
     toast.className = 'toast';
+    toast.setAttribute('role', 'status');
     if (tipo === 'sucesso') toast.style.color = '#7ee787';
     else if (tipo === 'erro') toast.style.color = '#f85149';
     toast.textContent = mensagem;
     container.appendChild(toast);
-    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 2500);
+    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
 }
 
 // =============================================
@@ -247,6 +297,66 @@ function compartilharSaber(id) {
             mostrarToast('✅ Link copiado!', 'sucesso');
         } catch {}
         document.body.removeChild(temp);
+    }
+}
+
+// =============================================
+// Paginação
+// =============================================
+
+function atualizarPaginacao() {
+    const pagination = document.getElementById('pagination');
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const paginationInfo = document.getElementById('paginationInfo');
+
+    if (!pagination) return;
+
+    const saberesFiltrados = obterSaberesFiltrados();
+    totalPaginas = Math.ceil(saberesFiltrados.length / itensPorPagina);
+
+    if (totalPaginas <= 1) {
+        pagination.hidden = true;
+        return;
+    }
+
+    pagination.hidden = false;
+    prevBtn.disabled = paginaAtual === 1;
+    nextBtn.disabled = paginaAtual === totalPaginas;
+    paginationInfo.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+}
+
+function mudarPagina(delta) {
+    const saberesFiltrados = obterSaberesFiltrados();
+    totalPaginas = Math.ceil(saberesFiltrados.length / itensPorPagina);
+    
+    const novaPagina = paginaAtual + delta;
+    if (novaPagina < 1 || novaPagina > totalPaginas) return;
+
+    paginaAtual = novaPagina;
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const saberesPagina = saberesFiltrados.slice(inicio, fim);
+
+    renderizarSaberes(saberesPagina);
+    atualizarPaginacao();
+    
+    // Scroll para o topo da grid
+    document.getElementById('cardsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function obterSaberesFiltrados() {
+    if (!dados || !dados.saberes) return [];
+    
+    todosSaberes = dados.saberes.map(normalizarSaber);
+
+    if (categoriaAtual === 'all') {
+        return todosSaberes;
+    } else if (categoriaAtual === 'fav') {
+        const favs = getFavoritos();
+        return todosSaberes.filter(s => favs.includes(s.id));
+    } else {
+        return todosSaberes.filter(s => String(s.categoria_id) === categoriaAtual);
     }
 }
 
@@ -284,7 +394,9 @@ document.addEventListener('keydown', e => {
 });
 
 window.addEventListener('DOMContentLoaded', async () => {
-    Player.init();
+    if (typeof Player !== 'undefined' && Player.init) {
+        Player.init();
+    }
 
     if (localStorage.getItem('tema') === 'claro') {
         document.body.classList.add('modo-claro');
@@ -303,14 +415,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     await carregarMidiaConfig();
     observarReveal();
     carregarDados().then(() => {
-        Player.restoreState();
+        if (typeof Player !== 'undefined' && Player.restoreState) {
+            Player.restoreState();
+        }
         saberDoDia();
         mostrarContinueLendo();
     });
 });
 
-window.addEventListener('beforeunload', () => Player.saveState());
-window.addEventListener('pagehide', () => Player.saveState());
+window.addEventListener('beforeunload', () => { if (typeof Player !== 'undefined') Player.saveState(); });
+window.addEventListener('pagehide', () => { if (typeof Player !== 'undefined') Player.saveState(); });
 
 // =============================================
 // Reading Progress Bar
@@ -387,7 +501,15 @@ function salvarDadosCache(dados) {
 
 async function carregarDados() {
     console.log('Iniciando carregamento de dados...');
-    const grid = document.getElementById('cardsGrid');
+    let grid = document.getElementById('cardsGrid');
+    
+    // Retry se grid não encontrado (timing issue)
+    if (!grid) {
+        console.warn('Grid não encontrado na primeira tentativa, aguardando DOM...');
+        await new Promise(r => setTimeout(r, 100));
+        grid = document.getElementById('cardsGrid');
+    }
+    
     console.log('Grid encontrado:', !!grid);
 
     const cache = carregarDadosCache();
@@ -419,16 +541,36 @@ async function carregarDados() {
             dados = novosDados;
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
-            if (grid) {
-                console.log('Renderizando saberes novos:', dados.saberes?.length);
-                renderizarSaberes(dados.saberes);
+            // Buscar grid novamente após carregar dados
+            const gridAtualizado = document.getElementById('cardsGrid');
+            if (gridAtualizado) {
+                console.log('Dados carregados:', dados.saberes?.length, 'saberes');
+                // Aplicar paginação
+                const saberesFiltrados = obterSaberesFiltrados();
+                const inicio = (paginaAtual - 1) * itensPorPagina;
+                const fim = inicio + itensPorPagina;
+                const saberesPagina = saberesFiltrados.slice(inicio, fim);
+                renderizarSaberes(saberesPagina);
+                atualizarPaginacao();
             }
             saberDoDia();
         } else {
             console.log('Dados em cache estão atualizados');
+            // Buscar grid novamente para cache atualizado
+            const gridAtualizado = document.getElementById('cardsGrid');
+            if (gridAtualizado) {
+                console.log('Renderizando do cache:', dados.saberes?.length, 'saberes');
+                // Aplicar paginação mesmo do cache
+                const saberesFiltrados = obterSaberesFiltrados();
+                const inicio = (paginaAtual - 1) * itensPorPagina;
+                const fim = inicio + itensPorPagina;
+                const saberesPagina = saberesFiltrados.slice(inicio, fim);
+                renderizarSaberes(saberesPagina);
+                atualizarPaginacao();
+            }
         }
     } catch (e) {
-        console.error('Erro ao carregar dados da API:', e);
+        tratarErro(e, 'Carregar dados');
         // Fallback: tentar carregar JSON diretamente
         if (!cache) {
             try {
@@ -440,13 +582,22 @@ async function carregarDados() {
                 dados = dadosJson;
                 salvarDadosCache(dadosJson);
                 atualizarEstatisticas();
-                if (grid) {
-                    console.log('Renderizando saberes do JSON:', dados.saberes?.length);
-                    renderizarSaberes(dados.saberes);
+                // Buscar grid novamente no fallback
+                const gridFallback = document.getElementById('cardsGrid');
+                if (gridFallback) {
+                    console.log('Dados carregados via fallback:', dados.saberes?.length, 'saberes');
+                    // Aplicar paginação no fallback
+                    const saberesFiltrados = obterSaberesFiltrados();
+                    const inicio = (paginaAtual - 1) * itensPorPagina;
+                    const fim = inicio + itensPorPagina;
+                    const saberesPagina = saberesFiltrados.slice(inicio, fim);
+                    renderizarSaberes(saberesPagina);
+                    atualizarPaginacao();
                 }
                 saberDoDia();
+                mostrarToast('✅ Dados carregados via fallback', 'sucesso');
             } catch (fallbackError) {
-                console.error('Fallback também falhou:', fallbackError);
+                tratarErro(fallbackError, 'Fallback JSON');
                 if (grid) {
                     $(grid, '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">' + e.message + '<br><small>Tentativa de fallback: ' + fallbackError.message + '</small></p></div>');
                 }
@@ -491,51 +642,43 @@ function atualizarEstatisticas() {
 // =============================================
 
 function renderizarSaberes(saberes) {
-    console.log('renderizarSaberes chamado com:', saberes?.length, 'saberes');
     const grid = document.getElementById('cardsGrid');
-    console.log('Grid no renderizarSaberes:', !!grid);
-    if (!grid) {
-        console.error('Grid não encontrado!');
-        return;
-    }
+    if (!grid) return;
     grid.className = 'cards-grid';
 
     if (!saberes || saberes.length === 0) {
-        console.log('Nenhum saber para renderizar');
         $(grid, '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>');
         esconderSkeleton();
         return;
     }
 
-    console.log('Renderizando', saberes.length, 'saberes');
     const favs = getFavoritos();
     const abertos = getSaberesAbertos();
     const cardsHtml = saberes.map(saber => {
-        const isNovo = !abertos.includes(saber.id);
-        const isVisited = abertos.includes(saber.id);
-        const catIcon = CAT_EMOJIS[saber.categoria_id] || '📖';
+        const s = normalizarSaber(saber);
+        const isNovo = !abertos.includes(s.id);
+        const isVisited = abertos.includes(s.id);
+        const catIcon = CAT_EMOJIS[s.categoria_id] || '📖';
         return `
-            <div class="card ${isVisited ? 'visited' : ''}" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+            <div class="card ${isVisited ? 'visited' : ''}" tabindex="0" role="button" data-saber-id="${s.id}" data-cat="${s.categoria_id}" aria-label="${s.titulo} — Abrir">
                 ${isNovo ? '<span class="card-novo">✨ Novo</span>' : ''}
-                <button class="card-fav ${favs.includes(saber.id) ? 'active' : ''}" data-id="${saber.id}" onclick="toggleFavorito('${saber.id}', event)" onkeydown="event.stopPropagation()" aria-label="${favs.includes(saber.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(saber.id) ? '❤️' : '🤍'}</button>
+                <button class="card-fav ${favs.includes(s.id) ? 'active' : ''}" data-id="${s.id}" aria-label="${favs.includes(s.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(s.id) ? '❤️' : '🤍'}</button>
                 <div class="card-header">
-                    <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${saber.titulo}</span>
-                    <span class="card-nivel ${saber.nivel}">${saber.nivel}</span>
+                    <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${s.titulo}</span>
+                    <span class="card-nivel ${s.nivel}">${s.nivel}</span>
                 </div>
-                <p class="card-desc">${saber.descricao}</p>
+                <p class="card-desc">${s.descricao}</p>
                 <div class="card-meta">
-                    <span>⏱️ ${saber.duracao} min</span>
-                    <span>📖 ${saber.fonte}</span>
+                    <span>⏱️ ${s.duracao} min</span>
+                    <span>📖 ${s.fonte}</span>
                 </div>
                 <div class="card-tags">
-                    ${saber.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                    ${s.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
                 </div>
             </div>`;
     }).join('');
 
     $(grid, cardsHtml);
-
-    console.log('Renderização concluída');
     esconderSkeleton();
     aplicarReveal();
 }
@@ -551,6 +694,7 @@ function esconderSkeleton() {
 
 function filtrarCategoria(cat) {
     categoriaAtual = cat;
+    paginaAtual = 1; // Resetar para página 1 ao mudar categoria
 
     document.querySelectorAll('.pilar-btn').forEach(btn => {
         btn.classList.remove('active');
@@ -566,19 +710,13 @@ function filtrarCategoria(cat) {
         return;
     }
 
-    if (cat === 'fav') {
-        const favs = getFavoritos();
-        const filtrados = dados.saberes.filter(s => favs.includes(s.id));
-        renderizarSaberes(filtrados);
-        return;
-    }
-
-    if (cat === 'all') {
-        renderizarSaberes(dados.saberes);
-    } else {
-        const filtrados = dados.saberes.filter(s => s.categoria_id === parseInt(cat));
-        renderizarSaberes(filtrados);
-    }
+    const saberesFiltrados = obterSaberesFiltrados();
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const saberesPagina = saberesFiltrados.slice(inicio, fim);
+    
+    renderizarSaberes(saberesPagina);
+    atualizarPaginacao();
 }
 
 // =============================================
@@ -594,7 +732,7 @@ function renderizarMidia() {
     if (dados.midia && dados.midia.audios && dados.midia.audios.length > 0) {
         html += '<h3 class="midia-section-title">🎵 Áudios (' + dados.midia.audios.length + ')</h3>';
         html += dados.midia.audios.map(a => `
-            <div class="midia-card" onclick="abrirMidia('audio', '${a.id}')" onkeydown="if(event.key==='Enter')abrirMidia('audio', '${a.id}')" tabindex="0" role="listitem" aria-label="Áudio: ${a.titulo}">
+            <div class="midia-card" tabindex="0" role="button" data-midia-tipo="audio" data-midia-id="${a.id}" aria-label="Áudio: ${a.titulo}">
                 <div class="midia-icon">🎧</div>
                 <div class="midia-titulo">${a.titulo}</div>
                 <div class="midia-tags">
@@ -607,7 +745,7 @@ function renderizarMidia() {
     if (dados.midia && dados.midia.videos && dados.midia.videos.length > 0) {
         html += '<h3 class="midia-section-title" style="margin-top:1rem">🎬 Vídeos (' + dados.midia.videos.length + ')</h3>';
         html += dados.midia.videos.map(v => `
-            <div class="midia-card" onclick="abrirMidia('video', '${v.id}')" onkeydown="if(event.key==='Enter')abrirMidia('video', '${v.id}')" tabindex="0" role="listitem" aria-label="Vídeo: ${v.titulo}">
+            <div class="midia-card" tabindex="0" role="button" data-midia-tipo="video" data-midia-id="${v.id}" aria-label="Vídeo: ${v.titulo}">
                 <div class="midia-icon">🎬</div>
                 <div class="midia-titulo">${v.titulo}</div>
                 <div class="midia-tags">
@@ -668,7 +806,7 @@ function abrirMidia(tipo, id) {
     if (item.saberes_relacionados && item.saberes_relacionados.length > 0) {
         const conectados = item.saberes_relacionados.map(sid => {
             const s = dados.saberes.find(x => x.id === sid);
-            return s ? `<span class="tag" style="cursor:pointer" onclick="fecharModalBtn(); setTimeout(() => abrirSaber('${s.id}'), 300)">${s.titulo}</span>` : '';
+            return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
         }).filter(Boolean).join(' ');
         if (conectados) {
             html += `<h3 style="margin-top:0">🔗 Saberes Relacionados</h3><div class="card-tags">${conectados}</div>`;
@@ -736,14 +874,17 @@ async function abrirSaber(id) {
 
         try {
             const res = await fetch(`/api/saberes/${id}/conteudo`);
-            if (!res.ok) throw new Error('Erro ao carregar conteúdo');
+            if (!res.ok) throw new Error('HTTP ' + res.status);
             const data = await res.json();
             saber.conteudo = data.conteudo;
 
             html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
             html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
         } catch (e) {
-            $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo: ${e.message}</p>`);
+            tratarErro(e, 'Carregar conteúdo');
+            if (document.getElementById('loading-conteudo')) {
+                $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo. Tente novamente.</p>`);
+            }
             return;
         }
     }
@@ -767,7 +908,7 @@ async function abrirSaber(id) {
     if (saber.conexoes && saber.conexoes.length > 0) {
         const conectados = saber.conexoes.map(cid => {
             const s = dados.saberes.find(x => x.id === cid);
-            return s ? `<span class="tag" style="cursor:pointer" onclick="abrirSaber('${s.id}')">${s.titulo}</span>` : '';
+            return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
         }).filter(Boolean).join(' ');
         if (conectados) {
             html += `<h3>🔗 Conexões</h3><div class="card-tags">${conectados}</div>`;
@@ -784,7 +925,7 @@ async function abrirSaber(id) {
     if (nextSaber && nextSaber.id !== id) {
         html += `<div class="next-saber-wrap">
             <h3>📌 Continuar Jornada</h3>
-            <div class="next-saber-card" onclick="fecharModalBtn();setTimeout(()=>abrirSaber('${nextSaber.id}'),300)" tabindex="0" role="button" aria-label="Próximo: ${nextSaber.titulo}">
+            <div class="next-saber-card" tabindex="0" role="button" data-next-saber="${nextSaber.id}" aria-label="Próximo: ${nextSaber.titulo}">
                 <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
                 <div class="next-saber-info">
                     <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
@@ -796,8 +937,8 @@ async function abrirSaber(id) {
     }
 
     html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
-        <button class="btn-share" onclick="compartilharSaber('${saber.id}')" aria-label="Compartilhar">📤 Compartilhar</button>
-        <button class="btn-share" onclick="toggleFavorito('${saber.id}', event); this.textContent = isFavorito('${saber.id}') ? '❤️ Favoritado' : '🤍 Favoritar'" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
+        <button class="btn-share" data-compartilhar="${saber.id}" aria-label="Compartilhar">📤 Compartilhar</button>
+        <button class="btn-share btn-fav-modal" data-fav-id="${saber.id}" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
     </div>`;
 
     $(document.getElementById('modalContent'), html);
@@ -809,38 +950,51 @@ async function abrirSaber(id) {
 // =============================================
 
 function abrirModal() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (!modalOverlay) {
+        console.error('modalOverlay não encontrado');
+        return;
+    }
     ultimoElementoFocado = document.activeElement;
-    document.getElementById('modalOverlay').classList.add('active');
+    modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-    document.querySelector('.modal-close').focus();
+    const closeBtn = document.querySelector('.modal-close');
+    if (closeBtn) closeBtn.focus();
 }
 
-document.getElementById('modalOverlay').addEventListener('keydown', function(e) {
-    if (e.key !== 'Tab') return;
-    const modal = this.querySelector('.modal');
-    const focusable = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    if (focusable.length === 0) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-    }
-});
+// Event listener para trap de foco no modal (só quando o elemento existir)
+const modalOverlay = document.getElementById('modalOverlay');
+if (modalOverlay) {
+    modalOverlay.addEventListener('keydown', function(e) {
+        if (e.key !== 'Tab') return;
+        const modal = this.querySelector('.modal');
+        const focusable = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    });
+}
 
 function fecharModal(e) {
-    if (e.target.id === 'modalOverlay') {
+    if (e.target && e.target.id === 'modalOverlay') {
         fecharModalBtn();
     }
 }
 
 function fecharModalBtn() {
-    document.getElementById('modalOverlay').classList.remove('active');
+    const modalOverlay = document.getElementById('modalOverlay');
+    if (modalOverlay) {
+        modalOverlay.classList.remove('active');
+    }
     document.body.style.overflow = '';
     if (ultimoElementoFocado) {
         ultimoElementoFocado.focus();
@@ -901,11 +1055,11 @@ function toggleLogin() {
     $(div, `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
             <h3 style="margin:0">🔐 Admin</h3>
-            <button onclick="this.parentElement.parentElement.style.display='none'" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">✕</button>
+            <button data-action="close-login" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">✕</button>
         </div>
         ${isAutenticado() ? `
             <p style="color:var(--cor-ciencia);margin-bottom:0.8rem">✅ Conectado como administrador</p>
-            <button onclick="logout()" class="pilar-btn active" style="background:#f85149;color:#fff;border:none;padding:0.5rem 1rem;border-radius:var(--radius);cursor:pointer;width:100%">Sair</button>
+            <button data-action="logout" class="pilar-btn active" style="background:#f85149;color:#fff;border:none;padding:0.5rem 1rem;border-radius:var(--radius);cursor:pointer;width:100%">Sair</button>
         ` : `
             <form id="formLogin" style="display:grid;gap:0.8rem">
                 <input type="password" id="inputSenha" class="busca-input" placeholder="Senha de administrador" required autofocus>
@@ -995,26 +1149,32 @@ function criarAdminPanel() {
             <h3 style="margin:0">📝 Admin — Adicionar Saber</h3>
             <div style="display:flex;gap:0.5rem">
                 <span style="font-size:0.8rem;color:var(--cor-ciencia)">✅ Admin</span>
-                <button onclick="logout()" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer;font-size:0.8rem">Sair</button>
-                <button onclick="this.parentElement.parentElement.parentElement.style.display='none'" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer">✕</button>
+                <button data-action="logout" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer;font-size:0.8rem">Sair</button>
+                <button data-action="close-admin" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer">✕</button>
             </div>
         </div>
         <form id="formSaber" style="display:grid;gap:0.8rem">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+                <label for="inputTitulo" class="sr-only">Título do saber</label>
                 <input type="text" id="inputTitulo" class="busca-input" placeholder="Título" required>
+                <label for="inputCategoria" class="sr-only">Categoria</label>
                 <select id="inputCategoria" class="busca-input" required>
                     <option value="">Categoria</option>
                     ${catOptions}
                 </select>
             </div>
+            <label for="inputDescricao" class="sr-only">Descrição</label>
             <textarea id="inputDescricao" class="busca-input" placeholder="Descrição" rows="2" required></textarea>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem">
+                <label for="inputNivel" class="sr-only">Nível</label>
                 <select id="inputNivel" class="busca-input">
                     <option value="iniciante">Iniciante</option>
                     <option value="intermediario">Intermediário</option>
                     <option value="avancado">Avançado</option>
                 </select>
+                <label for="inputFonte" class="sr-only">Fonte</label>
                 <input type="text" id="inputFonte" class="busca-input" placeholder="Fonte">
+                <label for="inputTags" class="sr-only">Tags</label>
                 <input type="text" id="inputTags" class="busca-input" placeholder="Tags (separadas por vírgula)">
             </div>
             <button type="submit" class="pilar-btn active" style="background:var(--cor-destaque);color:#fff;border:none;padding:0.6rem 1rem;border-radius:var(--radius);cursor:pointer;font-size:0.9rem">
@@ -1074,6 +1234,95 @@ function criarAdminPanel() {
     });
 }
 
+// =============================================
+// Event Delegation (clicks)
+// =============================================
+
+document.addEventListener('click', function (e) {
+  const card = e.target.closest('[data-saber-id]');
+  if (card) {
+    const id = card.dataset.saberId;
+    if (e.target.closest('.card-fav')) {
+      const btn = e.target.closest('.card-fav');
+      toggleFavorito(id, e);
+      btn.textContent = isFavorito(id) ? '❤️' : '🤍';
+      btn.classList.toggle('active', isFavorito(id));
+      return;
+    }
+    abrirSaber(id);
+    return;
+  }
+
+  const midia = e.target.closest('[data-midia-tipo]');
+  if (midia) {
+    abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
+    return;
+  }
+
+  const next = e.target.closest('[data-next-saber]');
+  if (next) {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+    return;
+  }
+
+  const share = e.target.closest('[data-compartilhar]');
+  if (share) {
+    compartilharSaber(share.dataset.compartilhar);
+    return;
+  }
+
+  const favModal = e.target.closest('[data-fav-id]');
+  if (favModal) {
+    const id = favModal.dataset.favId;
+    toggleFavorito(id, e);
+    favModal.textContent = isFavorito(id) ? '❤️ Favoritado' : '🤍 Favoritar';
+    return;
+  }
+
+  const relac = e.target.closest('.tag-relacionado');
+  if (relac) {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(relac.dataset.saberId), 300);
+    return;
+  }
+
+  const action = e.target.closest('[data-action]');
+  if (action) {
+    const a = action.dataset.action;
+    if (a === 'logout') { logout(); return; }
+    if (a === 'close-login') {
+      const c = document.getElementById('loginContainer');
+      if (c) c.style.display = 'none';
+      return;
+    }
+    if (a === 'close-admin') {
+      const c = document.getElementById('adminContainer');
+      if (c) c.style.display = 'none';
+      return;
+    }
+  }
+});
+
+document.addEventListener('keydown', function (e) {
+  const card = e.target.closest('[data-saber-id]');
+  if (card && e.key === 'Enter') {
+    if (e.target.closest('.card-fav')) return;
+    abrirSaber(card.dataset.saberId);
+    return;
+  }
+  const midia = e.target.closest('[data-midia-tipo]');
+  if (midia && e.key === 'Enter') {
+    abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
+    return;
+  }
+  const next = e.target.closest('[data-next-saber]');
+  if (next && e.key === 'Enter') {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+  }
+});
+
 // Botão Admin no header
 document.addEventListener('DOMContentLoaded', async () => {
     const header = document.querySelector('.header-actions');
@@ -1103,3 +1352,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 });
+// =============================================
+// Exportar funções para window (legado — inline onclick)
+// =============================================
+window.abrirSaber = abrirSaber;
+window.fecharModal = fecharModal;
+window.filtrarCategoria = filtrarCategoria;
+window.toggleFavorito = toggleFavorito;
+window.compartilharSaber = compartilharSaber;
+window.toggleBusca = toggleBusca;
+window.buscarSaberes = buscarSaberes;
+window.saberAleatorio = saberAleatorio;
+window.toggleTema = toggleTema;
+window.mostrarAtalhos = mostrarAtalhos;

@@ -34,40 +34,51 @@ function abrirAccordionPorId(id) {
   setTimeout(() => { if (!header.classList.contains('active')) header.click(); }, 300);
 }
 
-let dados = {};
-let todosTextos = [];
-let categoriaAtual = 'all';
-let fontScale = 100;
+let apocrifos_dados = {};
+let apocrifos_textos = [];
+let apocrifos_categoria = 'all';
+let apocrifos_fontScale = 100;
+let ultimoElementoFocado = null;
 
 async function carregarDados() {
   const container = document.getElementById('apocrifosContainer');
-  try {
-    const res = await fetch('/api/dados');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    dados = await res.json();
-    todosTextos = dados.saberes.filter(s => s.categoria_id === 6);
-    atualizarStats();
-    renderizarBotoesCategoria();
-    renderizarTextos(todosTextos);
-  } catch (e) {
+  
+  // Wait for app.js to load data if not already loaded
+  if (!dados) {
+    const maxWait = 10000;
+    const startTime = Date.now();
+    while (!dados && Date.now() - startTime < maxWait) {
+      await new Promise(r => setTimeout(r, 100));
+    }
+  }
+  
+  if (!dados || !dados.saberes) {
+    try { mostrarToast('Erro ao carregar dados', 'erro'); } catch(e) {}
     container.innerHTML = window.DOMPurify ? DOMPurify.sanitize(`
       <div class="empty-state">
         <div class="empty-state-icon">⚠️</div>
         <p>Erro ao carregar dados.</p>
         <p style="font-size:0.8rem;margin-top:0.5rem;color:var(--cor-texto-sec)">
-          ${e.message}<br>
-          <small>Certifique-se de que o servidor Express esta rodando.</small>
+          Dados não disponíveis<br>
+          <small>Tente recarregar a página.</small>
         </p>
+        <button onclick="location.reload()" class="pilar-btn" style="margin-top:1rem">🔄 Recarregar</button>
       </div>`) : `<div class="empty-state"><p>Erro ao carregar dados.</p></div>`;
+    return;
   }
+  
+  apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6);
+  atualizarStats();
+  renderizarBotoesCategoria();
+  renderizarTextos(apocrifos_textos);
 }
 
 function atualizarStats() {
-  const cats = new Set(todosTextos.map(t => categoriaInfo(t).id));
-  const totalChar = todosTextos.reduce((s, t) => s + (t.conteudo?.texto_integral?.length || 0), 0);
-  document.getElementById('statTextos').textContent = todosTextos.length;
+  const cats = new Set(apocrifos_textos.map(t => categoriaInfo(t).id));
+  const totalChar = apocrifos_textos.reduce((s, t) => s + (t.conteudo?.texto_integral?.length || 0), 0);
+  document.getElementById('statTextos').textContent = apocrifos_textos.length;
   document.getElementById('statCategoriasAp').textContent = cats.size;
-  document.getElementById('statTextosTotal').textContent = todosTextos.length;
+  document.getElementById('statTextosTotal').textContent = apocrifos_textos.length;
   const pages = Math.max(1, Math.round(totalChar / 3000));
   document.getElementById('statPaginas').textContent = `~${pages}`;
 }
@@ -76,7 +87,7 @@ function renderizarBotoesCategoria() {
   const nav = document.getElementById('categoriasNav');
   const catCounts = {};
   const catInfo = {};
-  for (const t of todosTextos) {
+  for (const t of apocrifos_textos) {
     const ci = categoriaInfo(t);
     catCounts[ci.id] = (catCounts[ci.id] || 0) + 1;
     catInfo[ci.id] = ci;
@@ -85,7 +96,7 @@ function renderizarBotoesCategoria() {
     .filter(([id]) => id !== 'geral')
     .sort((a, b) => b[1] - a[1]);
 
-  let html = `<button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')">📜 Todos (${todosTextos.length})</button>`;
+  let html = `<button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')">📜 Todos (${apocrifos_textos.length})</button>`;
   for (const [id, count] of sorted) {
     const info = catInfo[id];
     html += `<button class="pilar-btn" data-cat="${id}" onclick="filtrarCategoria('${id}')">${info.icon} ${info.label} (${count})</button>`;
@@ -140,13 +151,13 @@ function toggleAccordion(header) {
 }
 
 function filtrarCategoria(cat) {
-  categoriaAtual = cat;
+  apocrifos_categoria = cat;
   document.querySelectorAll('.pilar-btn').forEach(btn => {
     btn.classList.remove('active');
     if (btn.dataset.cat === cat) btn.classList.add('active');
   });
-  if (cat === 'all') { renderizarTextos(todosTextos); return; }
-  const filtrados = todosTextos.filter(t => categoriaInfo(t).id === cat);
+  if (cat === 'all') { renderizarTextos(apocrifos_textos); return; }
+  const filtrados = apocrifos_textos.filter(t => categoriaInfo(t).id === cat);
   renderizarTextos(filtrados);
 }
 
@@ -155,26 +166,26 @@ function buscarTextos(termo) {
   const container = document.getElementById('apocrifosContainer');
   if (!termo.trim()) {
     info.textContent = '';
-    filtrarCategoria(categoriaAtual);
+    filtrarCategoria(apocrifos_categoria);
     container.classList.remove('buscando');
     return;
   }
   container.classList.add('buscando');
   const t = termo.toLowerCase();
-  let filtrados = todosTextos.filter(s =>
+  let filtrados = apocrifos_textos.filter(s =>
     s.titulo.toLowerCase().includes(t) ||
     s.descricao.toLowerCase().includes(t) ||
     (s.tags || []).some(tag => tag.toLowerCase().includes(t))
   );
-  if (categoriaAtual !== 'all') {
-    filtrados = filtrados.filter(s => categoriaInfo(s).id === categoriaAtual);
+  if (apocrifos_categoria !== 'all') {
+    filtrados = filtrados.filter(s => categoriaInfo(s).id === apocrifos_categoria);
   }
   info.textContent = filtrados.length + ' resultado' + (filtrados.length !== 1 ? 's' : '') + ' encontrado' + (filtrados.length !== 1 ? 's' : '');
   renderizarTextos(filtrados);
 }
 
 function abrirTextoCompleto(id) {
-  const texto = todosTextos.find(t => t.id === id);
+  const texto = apocrifos_textos.find(t => t.id === id);
   if (!texto) return;
   document.getElementById('modalTitulo').textContent = texto.titulo;
   const conteudo = texto.conteudo || {};
@@ -188,7 +199,7 @@ function abrirTextoCompleto(id) {
     html += `<p style="font-size:1.05rem;margin-bottom:1rem"><strong>${texto.descricao}</strong></p>`;
   }
   if (conteudo.texto_integral) {
-    html += `<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:${fontScale}%">`;
+    html += `<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:${apocrifos_fontScale}%">`;
     const paragrafos = conteudo.texto_integral.split('\n').filter(p => p.trim());
     html += paragrafos.map(p => {
       const trimmed = p.trim();
@@ -212,10 +223,10 @@ function abrirTextoCompleto(id) {
 }
 
 function ajustarFonte(delta) {
-  if (delta === 0) fontScale = 100;
-  else fontScale = Math.max(60, Math.min(200, fontScale + delta));
+  if (delta === 0) apocrifos_fontScale = 100;
+  else apocrifos_fontScale = Math.max(60, Math.min(200, apocrifos_fontScale + delta));
   const el = document.getElementById('textoIntegral');
-  if (el) el.style.fontSize = fontScale + '%';
+  if (el) el.style.fontSize = apocrifos_fontScale + '%';
 }
 
 function salvarProgressoLeitura(id) {
@@ -231,7 +242,7 @@ function compartilharTexto(id) {
   if (navigator.share) {
     navigator.share({ title: 'Texto Apocrifo', url }).catch(() => {});
   } else {
-    navigator.clipboard.writeText(url).then(() => alert('Link copiado!'));
+    navigator.clipboard.writeText(url).then(() => { if (typeof mostrarToast === 'function') mostrarToast('✅ Link copiado!', 'sucesso'); });
   }
 }
 
@@ -255,12 +266,16 @@ function toggleTema() {
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModalBtn(); });
-document.getElementById('modalOverlay').addEventListener('keydown', function(e) {
-  if (e.key !== 'Tab') return;
-  const modal = this.querySelector('.modal');
-  const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+
+const modalOverlayApocrifos = document.getElementById('modalOverlay');
+if (modalOverlayApocrifos) {
+  modalOverlayApocrifos.addEventListener('keydown', function(e) {
+    if (e.key !== 'Tab') return;
+    const modal = this.querySelector('.modal');
+    const focusable = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
   if (focusable.length === 0) return;
   const first = focusable[0], last = focusable[focusable.length - 1];
   if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
   else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-});
+  });
+}

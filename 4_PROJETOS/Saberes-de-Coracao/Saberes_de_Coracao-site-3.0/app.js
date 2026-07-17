@@ -6,7 +6,9 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 import jwt from 'jsonwebtoken';
 import winston from 'winston';
 
@@ -32,30 +34,74 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
-if (!process.env.ADMIN_PASS) {
-  console.error('ADMIN_PASS não configurada. Defina a variável de ambiente ADMIN_PASS.');
+
+// Validação de variáveis de ambiente obrigatórias
+const requiredEnvVars = ['ADMIN_PASS', 'JWT_SECRET'];
+const missingEnvVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingEnvVars.length > 0) {
+  console.error('❌ Variáveis de ambiente obrigatórias não configuradas:');
+  missingEnvVars.forEach(varName => console.error(`   - ${varName}`));
+  console.error('\nConfigure estas variáveis no arquivo .env ou nas configurações do deploy.');
   process.exit(1);
 }
+
 const ADMIN_PASS = process.env.ADMIN_PASS;
-const JWT_SECRET = process.env.JWT_SECRET || (() => { console.error('JWT_SECRET não configurada.'); process.exit(1); })();
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h';
 const CAMINHO_FRONTEND = resolve(__dirname, '.');
 const CAMINHO_DADOS = resolve(__dirname, './data/dados-unificados.json');
 const USE_APPWRITE = !!(process.env.APPWRITE_PROJECT_ID && process.env.APPWRITE_API_KEY && process.env.APPWRITE_DATABASE_ID);
 const USE_EMAILJS = !!(process.env.EMAILJS_SERVICE_ID && process.env.EMAILJS_TEMPLATE_ID && process.env.EMAILJS_PUBLIC_KEY);
 
+// Validação de variáveis opcionais com warnings
+if (USE_APPWRITE) {
+  logger.info('✅ Appwrite configurado');
+} else {
+  logger.warn('⚠️  Appwrite não configurado - usando modo JSON (fallback)');
+}
+
+if (USE_EMAILJS) {
+  logger.info('✅ EmailJS configurado');
+} else {
+  logger.warn('⚠️  EmailJS não configurado - formulário de contato não enviará emails');
+}
+
 const app = express();
 
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true
+  },
+  frameguard: {
+    action: 'deny'
+  },
+  referrerPolicy: {
+    policy: 'strict-origin-when-cross-origin'
+  }
 }));
+app.use(cookieParser());
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+app.use(compression());
 app.use(express.json({ limit: '5mb' }));
+app.use('/api/', apiLimiter);
+app.use('/api/', csrfProtection);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  message: { erro: 'Muitas requisições. Tente novamente em 15 minutos.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -87,13 +133,23 @@ function gerarToken(payload = {}) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
+function csrfProtection(req, res, next) {
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    const origin = req.headers['origin'] || req.headers['referer'] || '';
+    const allowed = process.env.CORS_ORIGIN || 'https://saberes-de-coracao.onrender.com';
+    if (!origin.startsWith(allowed.replace(/\/$/, ''))) {
+      return res.status(403).json({ erro: 'Requisição rejeitada por segurança.' });
+    }
+  }
+  next();
+}
+
 function autenticar(req, res, next) {
-  const header = req.headers['authorization'];
-  if (!header) {
+  const token = req.cookies?.token || req.headers['authorization']?.replace('Bearer ', '');
+  if (!token) {
     return res.status(401).json({ erro: 'Token não fornecido.' });
   }
   try {
-    const token = header.replace('Bearer ', '');
     req.usuario = jwt.verify(token, JWT_SECRET);
     next();
   } catch (err) {
@@ -124,6 +180,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     try {
       const session = await Appwrite.criarSessao(req.body.email, senha);
       const token = gerarToken({ admin: true, appwrite: true, sessionId: session.$id });
+      res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 });
       return res.json({ token, admin: true, appwrite: true });
     } catch (e) {
       return res.status(401).json({ erro: 'Credenciais inválidas' });
@@ -133,6 +190,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     return res.status(401).json({ erro: 'Senha incorreta' });
   }
   const token = gerarToken({ admin: true, appwrite: false });
+  res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 });
   res.json({ token, admin: true, appwrite: false });
 });
 
@@ -140,6 +198,7 @@ app.post('/api/logout', async (req, res) => {
   if (USE_APPWRITE) {
     try { await Appwrite.deletarSessao(); } catch {}
   }
+  res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'strict' });
   res.json({ ok: true });
 });
 
@@ -178,12 +237,37 @@ app.get('/api/categorias', async (req, res) => {
 
 app.get('/api/saberes', async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const offset = (page - 1) * limit;
+
     if (USE_APPWRITE) {
       const saberes = await Appwrite.listarSaberes();
-      return res.json(saberes);
+      const paginados = saberes.slice(offset, offset + limit);
+      return res.json({
+        data: paginados,
+        pagination: {
+          page,
+          limit,
+          total: saberes.length,
+          totalPages: Math.ceil(saberes.length / limit)
+        }
+      });
     }
+
     const dados = await lerDadosJSON();
-    res.json(dados.saberes || []);
+    const todosSaberes = dados.saberes || [];
+    const paginados = todosSaberes.slice(offset, offset + limit);
+    
+    res.json({
+      data: paginados,
+      pagination: {
+        page,
+        limit,
+        total: todosSaberes.length,
+        totalPages: Math.ceil(todosSaberes.length / limit)
+      }
+    });
   } catch (erro) {
     logger.error('Erro ao ler saberes: ' + erro.message);
     res.status(500).json({ erro: 'Erro ao ler saberes' });
@@ -323,6 +407,8 @@ app.get('/api/midia', async (req, res) => {
 
 app.get('/api/dados', async (req, res) => {
   try {
+    const lite = req.query.lite !== 'false'; // Default é true (lite mode)
+    
     if (USE_APPWRITE) {
       const [saberes, midiaList] = await Promise.all([
         Appwrite.listarSaberes(),
@@ -332,14 +418,15 @@ app.get('/api/dados', async (req, res) => {
       return res.json({
         meta: { versao: '4.0-appwrite', atualizado: new Date().toISOString() },
         categorias: categorias.map(c => ({ id: parseInt(c.ordem) || c.$id, nome: c.nome, slug: c.slug, descricao: c.descricao, cor: c.cor, icone: c.icone })),
-        saberes: saberes.map(s => ({ ...s, conteudo: undefined })),
+        saberes: lite ? saberes.map(s => ({ ...s, conteudo: undefined })) : saberes,
         midia: midiaList,
       });
     }
+    
     const dados = await lerDadosJSON();
     const dadosLite = {
       ...dados,
-      saberes: dados.saberes.map(s => ({ ...s, conteudo: undefined })),
+      saberes: lite ? dados.saberes.map(s => ({ ...s, conteudo: undefined })) : dados.saberes,
     };
     res.json(dadosLite);
   } catch (erro) {
