@@ -38,7 +38,6 @@ let apocrifos_dados = {};
 let apocrifos_textos = [];
 let apocrifos_categoria = 'all';
 let apocrifos_fontScale = 100;
-let ultimoElementoFocado = null;
 
 async function carregarDados() {
   const container = document.getElementById('apocrifosContainer');
