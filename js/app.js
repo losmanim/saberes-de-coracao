@@ -386,7 +386,17 @@ function mostrarAtalhos() {
 
 document.addEventListener('keydown', e => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
-    if (e.key === 'Escape') { fecharModalBtn(); return; }
+    if (e.key === 'Escape') {
+        const reader = document.getElementById('readerOverlay');
+        if (reader && reader.classList.contains('active')) {
+            fecharLeitor();
+            return;
+        }
+        fecharModalBtn();
+        return;
+    }
+    if (e.key === 'ArrowLeft') { navegarSaber(-1); return; }
+    if (e.key === 'ArrowRight') { navegarSaber(1); return; }
     if (e.key === '?') { e.preventDefault(); mostrarAtalhos(); return; }
     if (e.key === '/') { e.preventDefault(); toggleBusca(); return; }
     if (e.key === 'd' || e.key === 'D') { e.preventDefault(); saberAleatorio(); return; }
@@ -869,33 +879,66 @@ async function abrirSaber(id) {
         salvarContinueLendo(id);
         mostrarContinueLendo();
 
-        document.getElementById('modalTitulo').textContent = saber.titulo;
+        // Fecha modal antigo se aberto
+        const modalOverlay = document.getElementById('modalOverlay');
+        if (modalOverlay) modalOverlay.classList.remove('active');
 
-        let html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
-        html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+        const readerOverlay = document.getElementById('readerOverlay');
+        const readerTitulo = document.getElementById('readerTitulo');
+        const readerContent = document.getElementById('readerContent');
+        if (!readerOverlay || !readerContent) return;
+
+        readerTitulo.textContent = saber.titulo;
+
+        // Atualiza navegação
+        const saberesDoContexto = categoriaAtual === 'all'
+            ? dados.saberes
+            : dados.saberes.filter(s => String(s.categoria_id) === categoriaAtual);
+        const saberIdx = saberesDoContexto.findIndex(s => s.id === id);
+        const prevSaber = saberIdx > 0 ? saberesDoContexto[saberIdx - 1] : null;
+        const nextSaber = saberIdx !== -1
+            ? saberesDoContexto[saberIdx + 1] || saberesDoContexto[0]
+            : null;
+        document.getElementById('readerPrevBtn').disabled = !prevSaber;
+        document.getElementById('readerNextBtn').disabled = !nextSaber || nextSaber.id === id;
+        window._readerContexto = saberesDoContexto;
+        window._readerIdx = saberIdx;
+
+        let html = `<div class="reader-meta">
+            <span>📖 ${saber.fonte}</span>
+            <span>⏱️ ${saber.duracao} min</span>
+            <span>🏷️ ${saber.nivel}</span>
+        </div>`;
 
         // Lazy loading do conteúdo
         if (!saber.conteudo) {
-            html += `<div id="loading-conteudo" style="text-align:center;padding:2rem"><div class="skeleton" style="height:100px;margin-bottom:1rem"></div><p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p></div>`;
-            $(document.getElementById('modalContent'), html);
-            abrirModal();
+            html += `<div id="loading-conteudo" style="text-align:center;padding:3rem">
+                <div class="skeleton" style="height:80px;margin-bottom:1rem"></div>
+                <p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p>
+            </div>`;
+            readerContent.innerHTML = html;
+            readerOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
 
             try {
                 const res = await fetch(`/api/saberes/${id}/conteudo`);
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const data = await res.json();
                 saber.conteudo = data.conteudo;
-
-                html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
-                html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+                html = `<div class="reader-meta">
+                    <span>📖 ${saber.fonte}</span>
+                    <span>⏱️ ${saber.duracao} min</span>
+                    <span>🏷️ ${saber.nivel}</span>
+                </div>`;
             } catch (e) {
                 tratarErro(e, 'Carregar conteúdo');
-                if (document.getElementById('loading-conteudo')) {
-                    $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo. Tente novamente.</p>`);
-                }
+                readerContent.innerHTML = `<p style="text-align:center;padding:2rem;color:var(--cor-destaque)">Erro ao carregar conteúdo.</p>`;
                 return;
             }
         }
+
+        // Descrição
+        html += `<p style="font-size:1.05rem;margin-bottom:1.5rem;color:var(--cor-texto-sec)"><em>${saber.descricao}</em></p>`;
 
         if (saber.conteudo) {
             for (const [key, val] of Object.entries(saber.conteudo)) {
@@ -916,53 +959,76 @@ async function abrirSaber(id) {
         if (Array.isArray(saber.conexoes) && saber.conexoes.length > 0) {
             const conectados = saber.conexoes.map(cid => {
                 const s = dados.saberes.find(x => x.id === cid);
-                return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
+                return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}">${s.titulo}</span>` : '';
             }).filter(Boolean).join(' ');
             if (conectados) {
-                html += `<h3>🔗 Conexões</h3><div class="card-tags">${conectados}</div>`;
+                html += `<h3>🔗 Conexões</h3><div>${conectados}</div>`;
             }
         }
 
         if (saber.categoria_id === 6) {
-            html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link">📖 Texto completo em Apócrifos</a>`;
-        } else if (saber.conteudo && saber.conteudo.texto_integral) {
-            html += `<p class="conteudo-status completo">📖 Conteúdo integral disponível</p>`;
-        } else if (!saber.conteudo || Object.keys(saber.conteudo).length === 0) {
-            html += `<p class="conteudo-status pendente">📖 Conteúdo completo sendo preparado</p>`;
+            html += `<a href="apocrifos.html#${saber.id}" style="display:inline-block;margin-top:1rem;padding:0.5rem 1rem;background:var(--cor-card);border:1px solid var(--cor-borda);border-radius:var(--radius);text-decoration:none;color:var(--cor-texto)">📖 Texto completo em Apócrifos</a>`;
         }
 
-        // Próximo Saber (respeita filtro atual)
-        const saberesDoContexto = categoriaAtual === 'all'
-            ? dados.saberes
-            : dados.saberes.filter(s => String(s.categoria_id) === categoriaAtual);
-        const saberIdx = saberesDoContexto.findIndex(s => s.id === id);
-        const nextSaber = saberIdx !== -1
-            ? saberesDoContexto[saberIdx + 1] || saberesDoContexto[0]
-            : null;
+        // Próximo Saber (no fim do conteúdo)
         if (nextSaber && nextSaber.id !== id) {
-            html += `<div class="next-saber-wrap">
+            html += `<div class="reader-next-section">
                 <h3>📌 Continuar Jornada</h3>
-                <div class="next-saber-card" tabindex="0" role="button" data-next-saber="${nextSaber.id}" aria-label="Próximo: ${nextSaber.titulo}">
-                    <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
-                    <div class="next-saber-info">
-                        <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
-                        <div class="next-saber-titulo">${nextSaber.titulo}</div>
+                <div class="reader-next-card" tabindex="0" role="button" data-next-saber="${nextSaber.id}" aria-label="Próximo: ${nextSaber.titulo}">
+                    <div class="reader-next-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
+                    <div class="reader-next-info">
+                        <div class="reader-next-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
+                        <div class="reader-next-titulo">${nextSaber.titulo}</div>
                     </div>
-                    <div class="next-saber-arrow">→</div>
+                    <div class="reader-next-arrow">→</div>
                 </div>
             </div>`;
         }
 
-        html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
-            <button class="btn-share" data-compartilhar="${saber.id}" aria-label="Compartilhar">📤 Compartilhar</button>
-            <button class="btn-share btn-fav-modal" data-fav-id="${saber.id}" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
+        // Ações
+        html += `<div class="reader-actions">
+            <button class="reader-btn" data-compartilhar="${saber.id}">📤 Compartilhar</button>
+            <button class="reader-btn" data-fav-id="${saber.id}">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
         </div>`;
 
-        $(document.getElementById('modalContent'), html);
-        abrirModal();
+        readerContent.innerHTML = html;
+        readerOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        readerOverlay.querySelector('.reader-body').scrollTop = 0;
+        document.getElementById('readerProgressFill').style.width = '0%';
+
+        // Foco no conteúdo
+        readerContent.querySelector('p')?.focus();
     } catch (erro) {
         tratarErro(erro, 'Abrir saber');
     }
+}
+
+function fecharLeitor() {
+    const readerOverlay = document.getElementById('readerOverlay');
+    if (readerOverlay) readerOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function navegarSaber(delta) {
+    const idx = window._readerIdx;
+    const ctx = window._readerContexto;
+    if (!ctx || idx === undefined) return;
+    const target = ctx[idx + delta];
+    if (target) {
+        abrirSaber(target.id);
+    }
+}
+
+// Barra de progresso do leitor
+const readerBody = document.getElementById('readerBody');
+if (readerBody) {
+    readerBody.addEventListener('scroll', function () {
+        const scrollTop = this.scrollTop;
+        const scrollHeight = this.scrollHeight - this.clientHeight;
+        const pct = scrollHeight > 0 ? Math.min((scrollTop / scrollHeight) * 100, 100) : 0;
+        document.getElementById('readerProgressFill').style.width = pct + '%';
+    }, { passive: true });
 }
 
 // =============================================
@@ -1260,13 +1326,30 @@ function criarAdminPanel() {
 
 document.addEventListener('click', function (e) {
   try {
-    const next = e.target.closest('[data-next-saber]');
-    if (next) {
-      fecharModalBtn();
-      setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+    // Botão voltar do leitor
+    if (e.target.closest('#readerBackBtn')) {
+      fecharLeitor();
       return;
     }
 
+    // Navegação anterior/próximo no leitor
+    if (e.target.closest('#readerPrevBtn')) {
+      navegarSaber(-1);
+      return;
+    }
+    if (e.target.closest('#readerNextBtn')) {
+      navegarSaber(1);
+      return;
+    }
+
+    // Próximo saber (dentro do conteúdo)
+    const next = e.target.closest('[data-next-saber]');
+    if (next) {
+      abrirSaber(next.dataset.nextSaber);
+      return;
+    }
+
+    // Card de saber na grid
     const card = e.target.closest('[data-saber-id]');
     if (card) {
       const id = card.dataset.saberId;
@@ -1280,11 +1363,7 @@ document.addEventListener('click', function (e) {
       abrirSaber(id);
       return;
     }
-  } catch (erro) {
-    tratarErro(erro, 'Navegação');
-  }
 
-  try {
     const midia = e.target.closest('[data-midia-tipo]');
     if (midia) {
       abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
@@ -1307,8 +1386,8 @@ document.addEventListener('click', function (e) {
 
     const relac = e.target.closest('.tag-relacionado');
     if (relac) {
-      fecharModalBtn();
-      setTimeout(() => abrirSaber(relac.dataset.saberId), 300);
+      fecharLeitor();
+      abrirSaber(relac.dataset.saberId);
       return;
     }
 
@@ -1387,6 +1466,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Exportar funções para window (legado — inline onclick)
 // =============================================
 window.abrirSaber = abrirSaber;
+window.fecharLeitor = fecharLeitor;
+window.navegarSaber = navegarSaber;
 window.fecharModal = fecharModal;
 window.fecharModalBtn = fecharModalBtn;
 window.filtrarCategoria = filtrarCategoria;

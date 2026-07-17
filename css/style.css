@@ -1030,7 +1030,399 @@ body.player-active .continue-bar {
     color: var(--cor-texto-sec);
 }
 
-/* Modal */
+/* =============================================
+   Leitor Imersivo — Tela Cheia
+   ============================================= */
+.reader-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--cor-fundo);
+    z-index: 200;
+    overflow: hidden;
+}
+
+.reader-overlay.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.reader-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 1.5rem;
+    background: var(--cor-card);
+    border-bottom: 1px solid var(--cor-borda);
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.reader-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-width: 0;
+}
+
+.reader-back-btn {
+    background: none;
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto-sec);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.reader-back-btn:hover {
+    color: var(--cor-texto);
+    border-color: var(--cor-destaque);
+}
+
+.reader-titulo {
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reader-nav-btns {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.reader-nav-btn {
+    background: none;
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto-sec);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+
+.reader-nav-btn:hover {
+    border-color: var(--cor-destaque);
+    color: var(--cor-texto);
+}
+
+.reader-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: var(--cor-borda);
+    color: var(--cor-texto-sec);
+}
+
+.reader-progress-bar {
+    height: 3px;
+    background: var(--cor-borda);
+    flex-shrink: 0;
+    position: relative;
+}
+
+.reader-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cor-destaque), var(--cor-espirito));
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.reader-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.reader-content {
+    max-width: 720px;
+    width: 100%;
+    animation: readerFadeIn 0.3s ease;
+}
+
+@keyframes readerFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Leitura — tipografia */
+.reader-content {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--cor-texto);
+}
+
+.reader-content p {
+    margin-bottom: 1.2rem;
+    text-align: justify;
+    hyphens: auto;
+}
+
+.reader-content h3 {
+    margin: 2rem 0 0.8rem;
+    color: var(--cor-destaque);
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.reader-content ul {
+    padding-left: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+.reader-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+}
+
+.reader-content blockquote {
+    border-left: 3px solid var(--cor-destaque);
+    padding-left: 1.2rem;
+    margin: 1.2rem 0;
+    font-style: italic;
+    color: var(--cor-texto-sec);
+    font-size: 0.95rem;
+}
+
+.reader-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+.reader-content th,
+.reader-content td {
+    padding: 8px 10px;
+    border: 1px solid var(--cor-borda);
+    text-align: left;
+}
+
+.reader-content th {
+    background: var(--cor-card);
+    font-weight: 600;
+}
+
+.reader-content .pratica-box {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-left: 3px solid var(--cor-destaque);
+    padding: 1.2rem;
+    border-radius: var(--radius);
+    margin: 1rem 0;
+}
+
+.reader-content .pratica-box h4 {
+    color: var(--cor-destaque);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.reader-content .content-card {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-left: 3px solid var(--cor-destaque);
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin: 0.8rem 0;
+}
+
+.reader-content .tag {
+    display: inline-block;
+    background: var(--cor-fundo);
+    color: var(--cor-texto-sec);
+    padding: 0.2rem 0.6rem;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    margin: 0.15rem;
+}
+
+.reader-content .tag-relacionado {
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.reader-content .tag-relacionado:hover {
+    background: var(--cor-destaque);
+    color: #fff;
+}
+
+.reader-meta {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--cor-borda);
+    font-size: 0.85rem;
+    color: var(--cor-texto-sec);
+}
+
+.reader-meta strong {
+    color: var(--cor-texto);
+}
+
+.reader-actions {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--cor-borda);
+    flex-wrap: wrap;
+}
+
+.reader-btn {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    color: var(--cor-texto-sec);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.reader-btn:hover {
+    border-color: var(--cor-destaque);
+    color: var(--cor-texto);
+}
+
+.reader-next-section {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--cor-borda);
+}
+
+.reader-next-section h3 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cor-texto-sec);
+    margin-bottom: 0.6rem;
+}
+
+.reader-next-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--radius);
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.reader-next-card:hover {
+    border-color: var(--cor-destaque);
+    transform: translateX(4px);
+    box-shadow: var(--shadow);
+}
+
+.reader-next-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.reader-next-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.reader-next-label {
+    font-size: 0.7rem;
+    color: var(--cor-texto-sec);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.15rem;
+}
+
+.reader-next-titulo {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reader-next-arrow {
+    font-size: 1.2rem;
+    color: var(--cor-destaque);
+    flex-shrink: 0;
+    transition: transform var(--transition);
+}
+
+.reader-next-card:hover .reader-next-arrow {
+    transform: translateX(4px);
+}
+
+/* Navegação lateral (anterior / próximo) */
+.reader-side-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 15;
+    display: flex;
+    align-items: center;
+}
+
+.reader-side-nav.left {
+    left: 0;
+}
+
+.reader-side-nav.right {
+    right: 0;
+}
+
+.reader-side-btn {
+    background: var(--cor-card);
+    border: 1px solid var(--cor-borda);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 0.8rem 0.6rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--cor-texto-sec);
+    transition: all var(--transition);
+    opacity: 0.4;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+}
+
+.reader-side-nav.right .reader-side-btn {
+    border-radius: var(--radius) 0 0 var(--radius);
+}
+
+.reader-side-btn:hover {
+    opacity: 1;
+    color: var(--cor-destaque);
+    border-color: var(--cor-destaque);
+}
+
+/* Modal antigo — mantido para compatibilidade fallback */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -1064,15 +1456,8 @@ body.player-active .continue-bar {
 }
 
 @keyframes modalIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .modal-header {
@@ -1120,70 +1505,14 @@ body.player-active .continue-bar {
     text-align: justify;
     hyphens: auto;
 }
-
 .modal-content h3 {
     margin: 1.2rem 0 0.5rem;
     color: var(--cor-destaque);
     font-size: 1.1rem;
 }
-
-.modal-content ul {
-    padding-left: 1.2rem;
-}
-
-.modal-content li {
-    margin-bottom: 0.4rem;
-}
-
-.pratica-box {
-    background: var(--cor-fundo);
-    padding: 1rem;
-    border-radius: var(--radius);
-    margin: 0.8rem 0;
-    border-left: 3px solid var(--cor-destaque);
-}
-
-.pratica-box h4 {
-    color: var(--cor-destaque);
-    margin-bottom: 0.4rem;
-    font-size: 0.95rem;
-}
-
-.content-card {
-    background: var(--cor-fundo);
-    padding: 1rem;
-    border-radius: var(--radius);
-    margin: 0.8rem 0;
-    border-left: 3px solid var(--cor-destaque);
-}
-
-.content-card h4 {
-    color: var(--cor-destaque);
-    margin-bottom: 0.3rem;
-}
-
-.modal-content table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0.8rem 0;
-}
-
-.modal-content th,
-.modal-content td {
-    padding: 6px 8px;
-    border: 1px solid var(--cor-borda);
-    text-align: left;
-    font-size: 0.9rem;
-}
-
-.modal-content th {
-    background: var(--cor-fundo);
-    font-weight: 600;
-}
-
-.modal-content blockquote+blockquote {
-    margin-top: 0.4rem;
-}
+.modal-content ul { padding-left: 1.2rem; }
+.modal-content li { margin-bottom: 0.4rem; }
+.modal-content blockquote+blockquote { margin-top: 0.4rem; }
 
 /* Toast Notifications */
 .toast-container {
