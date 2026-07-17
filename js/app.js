@@ -1,9 +1,6 @@
 // =============================================
 // Sanitização XSS
 // =============================================
-if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
-    console.log = console.warn = console.error = function () {};
-}
 
 function $(el, htmlContent) {
   el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
@@ -860,99 +857,112 @@ function buscarSaberes(termo) {
 // =============================================
 
 async function abrirSaber(id) {
-    const saber = dados.saberes.find(s => s.id === id);
-    if (!saber) return;
-
-    marcarSaberAberto(id);
-    salvarContinueLendo(id);
-    mostrarContinueLendo();
-
-    document.getElementById('modalTitulo').textContent = saber.titulo;
-
-    let html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
-    html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
-
-    // Lazy loading do conteúdo
-    if (!saber.conteudo) {
-        html += `<div id="loading-conteudo" style="text-align:center;padding:2rem"><div class="skeleton" style="height:100px;margin-bottom:1rem"></div><p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p></div>`;
-        $(document.getElementById('modalContent'), html);
-        abrirModal();
-
-        try {
-            const res = await fetch(`/api/saberes/${id}/conteudo`);
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const data = await res.json();
-            saber.conteudo = data.conteudo;
-
-            html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
-            html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
-        } catch (e) {
-            tratarErro(e, 'Carregar conteúdo');
-            if (document.getElementById('loading-conteudo')) {
-                $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo. Tente novamente.</p>`);
-            }
+    try {
+        if (!dados || !dados.saberes) {
+            tratarErro(new Error('Dados não carregados'), 'Abrir saber');
             return;
         }
-    }
+        const saber = dados.saberes.find(s => s.id === id);
+        if (!saber) return;
 
-    if (saber.conteudo) {
-        for (const [key, val] of Object.entries(saber.conteudo)) {
-            const handler = contentHandlers[key];
-            if (handler) {
-                html += handler(val);
+        marcarSaberAberto(id);
+        salvarContinueLendo(id);
+        mostrarContinueLendo();
+
+        document.getElementById('modalTitulo').textContent = saber.titulo;
+
+        let html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
+        html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+
+        // Lazy loading do conteúdo
+        if (!saber.conteudo) {
+            html += `<div id="loading-conteudo" style="text-align:center;padding:2rem"><div class="skeleton" style="height:100px;margin-bottom:1rem"></div><p style="color:var(--cor-texto-sec)">Carregando conteúdo...</p></div>`;
+            $(document.getElementById('modalContent'), html);
+            abrirModal();
+
+            try {
+                const res = await fetch(`/api/saberes/${id}/conteudo`);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                saber.conteudo = data.conteudo;
+
+                html = `<p style="font-size:1.05rem;margin-bottom:0.5rem"><strong>${saber.descricao}</strong></p>`;
+                html += `<p style="color: var(--cor-texto-sec); margin: 0.5rem 0; font-size: 0.85rem;">Nível: <strong>${saber.nivel}</strong> | Duração: <strong>${saber.duracao} min</strong> | Fonte: ${saber.fonte}</p>`;
+            } catch (e) {
+                tratarErro(e, 'Carregar conteúdo');
+                if (document.getElementById('loading-conteudo')) {
+                    $(document.getElementById('loading-conteudo'), `<p style="color:var(--cor-destaque)">Erro ao carregar conteúdo. Tente novamente.</p>`);
+                }
+                return;
             }
         }
-    }
 
-    if (Array.isArray(saber.praticas) && saber.praticas.length > 0) {
-        html += `<h3>🧘 Práticas</h3>`;
-        saber.praticas.forEach(p => {
-            html += `<div class="pratica-box"><h4>${p.titulo}</h4><p>${p.instrucoes.replace(/\n/g, '<br>')}</p><p style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>⏱️ ${p.duracao} min | 🔄 ${p.frequencia}</em></p></div>`;
-        });
-    }
-
-    if (Array.isArray(saber.conexoes) && saber.conexoes.length > 0) {
-        const conectados = saber.conexoes.map(cid => {
-            const s = dados.saberes.find(x => x.id === cid);
-            return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
-        }).filter(Boolean).join(' ');
-        if (conectados) {
-            html += `<h3>🔗 Conexões</h3><div class="card-tags">${conectados}</div>`;
+        if (saber.conteudo) {
+            for (const [key, val] of Object.entries(saber.conteudo)) {
+                const handler = contentHandlers[key];
+                if (handler) {
+                    html += handler(val);
+                }
+            }
         }
-    }
 
-    if (saber.categoria_id === 6) {
-        html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link">📖 Texto completo em Apócrifos</a>`;
-    } else if (saber.conteudo && saber.conteudo.texto_integral) {
-        html += `<p class="conteudo-status completo">📖 Conteúdo integral disponível</p>`;
-    } else if (!saber.conteudo || Object.keys(saber.conteudo).length === 0) {
-        html += `<p class="conteudo-status pendente">📖 Conteúdo completo sendo preparado</p>`;
-    }
+        if (Array.isArray(saber.praticas) && saber.praticas.length > 0) {
+            html += `<h3>🧘 Práticas</h3>`;
+            saber.praticas.forEach(p => {
+                html += `<div class="pratica-box"><h4>${p.titulo}</h4><p>${p.instrucoes.replace(/\n/g, '<br>')}</p><p style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>⏱️ ${p.duracao} min | 🔄 ${p.frequencia}</em></p></div>`;
+            });
+        }
 
-    // Próximo Saber
-    const saberIdx = dados.saberes.findIndex(s => s.id === id);
-    const nextSaber = saberIdx !== -1 ? dados.saberes.slice(saberIdx + 1).find(s => s.categoria_id === saber.categoria_id) || dados.saberes.find((s, i) => i !== saberIdx && s.categoria_id === saber.categoria_id) : null;
-    if (nextSaber && nextSaber.id !== id) {
-        html += `<div class="next-saber-wrap">
-            <h3>📌 Continuar Jornada</h3>
-            <div class="next-saber-card" tabindex="0" role="button" data-next-saber="${nextSaber.id}" aria-label="Próximo: ${nextSaber.titulo}">
-                <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
-                <div class="next-saber-info">
-                    <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
-                    <div class="next-saber-titulo">${nextSaber.titulo}</div>
+        if (Array.isArray(saber.conexoes) && saber.conexoes.length > 0) {
+            const conectados = saber.conexoes.map(cid => {
+                const s = dados.saberes.find(x => x.id === cid);
+                return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
+            }).filter(Boolean).join(' ');
+            if (conectados) {
+                html += `<h3>🔗 Conexões</h3><div class="card-tags">${conectados}</div>`;
+            }
+        }
+
+        if (saber.categoria_id === 6) {
+            html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link">📖 Texto completo em Apócrifos</a>`;
+        } else if (saber.conteudo && saber.conteudo.texto_integral) {
+            html += `<p class="conteudo-status completo">📖 Conteúdo integral disponível</p>`;
+        } else if (!saber.conteudo || Object.keys(saber.conteudo).length === 0) {
+            html += `<p class="conteudo-status pendente">📖 Conteúdo completo sendo preparado</p>`;
+        }
+
+        // Próximo Saber (respeita filtro atual)
+        const saberesDoContexto = categoriaAtual === 'all'
+            ? dados.saberes
+            : dados.saberes.filter(s => String(s.categoria_id) === categoriaAtual);
+        const saberIdx = saberesDoContexto.findIndex(s => s.id === id);
+        const nextSaber = saberIdx !== -1
+            ? saberesDoContexto[saberIdx + 1] || saberesDoContexto[0]
+            : null;
+        if (nextSaber && nextSaber.id !== id) {
+            html += `<div class="next-saber-wrap">
+                <h3>📌 Continuar Jornada</h3>
+                <div class="next-saber-card" tabindex="0" role="button" data-next-saber="${nextSaber.id}" aria-label="Próximo: ${nextSaber.titulo}">
+                    <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
+                    <div class="next-saber-info">
+                        <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
+                        <div class="next-saber-titulo">${nextSaber.titulo}</div>
+                    </div>
+                    <div class="next-saber-arrow">→</div>
                 </div>
-                <div class="next-saber-arrow">→</div>
-            </div>
+            </div>`;
+        }
+
+        html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
+            <button class="btn-share" data-compartilhar="${saber.id}" aria-label="Compartilhar">📤 Compartilhar</button>
+            <button class="btn-share btn-fav-modal" data-fav-id="${saber.id}" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
         </div>`;
+
+        $(document.getElementById('modalContent'), html);
+        abrirModal();
+    } catch (erro) {
+        tratarErro(erro, 'Abrir saber');
     }
-
-    html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
-        <button class="btn-share" data-compartilhar="${saber.id}" aria-label="Compartilhar">📤 Compartilhar</button>
-        <button class="btn-share btn-fav-modal" data-fav-id="${saber.id}" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
-    </div>`;
-
-    $(document.getElementById('modalContent'), html);
-    abrirModal();
 }
 
 // =============================================
@@ -1249,68 +1259,76 @@ function criarAdminPanel() {
 // =============================================
 
 document.addEventListener('click', function (e) {
-  const next = e.target.closest('[data-next-saber]');
-  if (next) {
-    fecharModalBtn();
-    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
-    return;
+  try {
+    const next = e.target.closest('[data-next-saber]');
+    if (next) {
+      fecharModalBtn();
+      setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+      return;
+    }
+
+    const card = e.target.closest('[data-saber-id]');
+    if (card) {
+      const id = card.dataset.saberId;
+      if (e.target.closest('.card-fav')) {
+        const btn = e.target.closest('.card-fav');
+        toggleFavorito(id, e);
+        btn.textContent = isFavorito(id) ? '❤️' : '🤍';
+        btn.classList.toggle('active', isFavorito(id));
+        return;
+      }
+      abrirSaber(id);
+      return;
+    }
+  } catch (erro) {
+    tratarErro(erro, 'Navegação');
   }
 
-  const card = e.target.closest('[data-saber-id]');
-  if (card) {
-    const id = card.dataset.saberId;
-    if (e.target.closest('.card-fav')) {
-      const btn = e.target.closest('.card-fav');
+  try {
+    const midia = e.target.closest('[data-midia-tipo]');
+    if (midia) {
+      abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
+      return;
+    }
+
+    const share = e.target.closest('[data-compartilhar]');
+    if (share) {
+      compartilharSaber(share.dataset.compartilhar);
+      return;
+    }
+
+    const favModal = e.target.closest('[data-fav-id]');
+    if (favModal) {
+      const id = favModal.dataset.favId;
       toggleFavorito(id, e);
-      btn.textContent = isFavorito(id) ? '❤️' : '🤍';
-      btn.classList.toggle('active', isFavorito(id));
+      favModal.textContent = isFavorito(id) ? '❤️ Favoritado' : '🤍 Favoritar';
       return;
     }
-    abrirSaber(id);
-    return;
-  }
 
-  const midia = e.target.closest('[data-midia-tipo]');
-  if (midia) {
-    abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
-    return;
-  }
-
-  const share = e.target.closest('[data-compartilhar]');
-  if (share) {
-    compartilharSaber(share.dataset.compartilhar);
-    return;
-  }
-
-  const favModal = e.target.closest('[data-fav-id]');
-  if (favModal) {
-    const id = favModal.dataset.favId;
-    toggleFavorito(id, e);
-    favModal.textContent = isFavorito(id) ? '❤️ Favoritado' : '🤍 Favoritar';
-    return;
-  }
-
-  const relac = e.target.closest('.tag-relacionado');
-  if (relac) {
-    fecharModalBtn();
-    setTimeout(() => abrirSaber(relac.dataset.saberId), 300);
-    return;
-  }
-
-  const action = e.target.closest('[data-action]');
-  if (action) {
-    const a = action.dataset.action;
-    if (a === 'logout') { logout(); return; }
-    if (a === 'close-login') {
-      const c = document.getElementById('loginContainer');
-      if (c) c.style.display = 'none';
+    const relac = e.target.closest('.tag-relacionado');
+    if (relac) {
+      fecharModalBtn();
+      setTimeout(() => abrirSaber(relac.dataset.saberId), 300);
       return;
     }
-    if (a === 'close-admin') {
-      const c = document.getElementById('adminContainer');
-      if (c) c.style.display = 'none';
-      return;
+
+    const action = e.target.closest('[data-action]');
+    if (action) {
+      const a = action.dataset.action;
+      if (a === 'logout') { logout(); return; }
+      if (a === 'close-login') {
+        const c = document.getElementById('loginContainer');
+        if (c) c.style.display = 'none';
+        return;
+      }
+      if (a === 'close-admin') {
+        const c = document.getElementById('adminContainer');
+        if (c) c.style.display = 'none';
+        return;
+      }
     }
+  } catch (erro) {
+    tratarErro(erro, 'Navegação');
   }
 });
 
@@ -1370,6 +1388,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // =============================================
 window.abrirSaber = abrirSaber;
 window.fecharModal = fecharModal;
+window.fecharModalBtn = fecharModalBtn;
 window.filtrarCategoria = filtrarCategoria;
 window.toggleFavorito = toggleFavorito;
 window.compartilharSaber = compartilharSaber;
@@ -1378,3 +1397,7 @@ window.buscarSaberes = buscarSaberes;
 window.saberAleatorio = saberAleatorio;
 window.toggleTema = toggleTema;
 window.mostrarAtalhos = mostrarAtalhos;
+window.mudarPagina = mudarPagina;
+window.fecharContinue = fecharContinue;
+window.toggleLogin = toggleLogin;
+window.toggleAdmin = toggleAdmin;

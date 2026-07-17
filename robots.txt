@@ -3,4 +3,4 @@ Allow: /
 Disallow: /api/
 Disallow: /admin
 
-Sitemap: https://saberes-de-coracao.onrender.com/sitemap.xml
+Sitemap: https://saberesdecoracao.up.railway.app/sitemap.xml

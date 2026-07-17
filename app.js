@@ -88,8 +88,9 @@ app.use(helmet({
   }
 }));
 app.use(cookieParser());
+const corsOrigins = (process.env.CORS_ORIGIN || '*').split(',').map(s => s.trim());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
+  origin: corsOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
@@ -139,9 +140,13 @@ function gerarToken(payload = {}) {
 
 function csrfProtection(req, res, next) {
   if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
-    const origin = req.headers['origin'] || req.headers['referer'] || '';
-    const allowed = process.env.CORS_ORIGIN || 'https://saberes-de-coracao.onrender.com';
-    if (!origin.startsWith(allowed.replace(/\/$/, ''))) {
+    const origin = (req.headers['origin'] || req.headers['referer'] || '').replace(/\/$/, '');
+    const allowedOrigins = corsOrigins;
+    const permitido = allowedOrigins.some(a => {
+      if (a === '*') return true;
+      return origin.startsWith(a.replace(/\/$/, ''));
+    });
+    if (!permitido) {
       return res.status(403).json({ erro: 'Requisição rejeitada por segurança.' });
     }
   }
