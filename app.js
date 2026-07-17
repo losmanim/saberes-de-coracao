@@ -92,8 +92,6 @@ app.use(cors({
 }));
 app.use(compression());
 app.use(express.json({ limit: '5mb' }));
-app.use('/api/', apiLimiter);
-app.use('/api/', csrfProtection);
 
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -102,6 +100,9 @@ const apiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
 });
+
+app.use('/api/', apiLimiter);
+app.use('/api/', csrfProtection);
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
