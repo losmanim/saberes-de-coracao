@@ -30,6 +30,7 @@ const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '�
 function normalizarSaber(saber) {
     return {
         ...saber,
+        categoria_id: Number(saber.categoria_id),
         tags: Array.isArray(saber.tags) ? saber.tags : 
               typeof saber.tags === 'string' ? saber.tags.split(',').map(t => t.trim()) : 
               [],
@@ -1241,6 +1242,13 @@ function criarAdminPanel() {
 // =============================================
 
 document.addEventListener('click', function (e) {
+  const next = e.target.closest('[data-next-saber]');
+  if (next) {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+    return;
+  }
+
   const card = e.target.closest('[data-saber-id]');
   if (card) {
     const id = card.dataset.saberId;
@@ -1258,13 +1266,6 @@ document.addEventListener('click', function (e) {
   const midia = e.target.closest('[data-midia-tipo]');
   if (midia) {
     abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
-    return;
-  }
-
-  const next = e.target.closest('[data-next-saber]');
-  if (next) {
-    fecharModalBtn();
-    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
     return;
   }
 
@@ -1307,6 +1308,14 @@ document.addEventListener('click', function (e) {
 });
 
 document.addEventListener('keydown', function (e) {
+  const next = e.target.closest('[data-next-saber]');
+  if (next && e.key === 'Enter') {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+    e.preventDefault();
+    return;
+  }
+
   const card = e.target.closest('[data-saber-id]');
   if (card && e.key === 'Enter') {
     if (e.target.closest('.card-fav')) return;
@@ -1317,11 +1326,6 @@ document.addEventListener('keydown', function (e) {
   if (midia && e.key === 'Enter') {
     abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
     return;
-  }
-  const next = e.target.closest('[data-next-saber]');
-  if (next && e.key === 'Enter') {
-    fecharModalBtn();
-    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
   }
 });
 

@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 function normalizarSaber(saber) {
   return {
     ...saber,
+    categoria_id: Number(saber.categoria_id),
     tags: Array.isArray(saber.tags) ? saber.tags :
       typeof saber.tags === 'string' ? saber.tags.split(',').map(t => t.trim()) : [],
     praticas: Array.isArray(saber.praticas) ? saber.praticas : [],
@@ -15,6 +16,10 @@ function normalizarSaber(saber) {
 }
 
 describe('normalizarSaber', () => {
+  it('normaliza categoria_id para numero', () => {
+    expect(normalizarSaber({ id: '1', categoria_id: '6' }).categoria_id).toBe(6);
+    expect(normalizarSaber({ id: '1', categoria_id: 6 }).categoria_id).toBe(6);
+  });
   it('mantem tags array intacto', () => {
     const s = normalizarSaber({ id: '1', tags: ['a', 'b'] });
     expect(s.tags).toEqual(['a', 'b']);
