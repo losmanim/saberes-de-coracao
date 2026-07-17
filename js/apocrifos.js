@@ -67,7 +67,11 @@ async function carregarDados() {
     return;
   }
   
-  apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6);
+  apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6).map(s => {
+    if (typeof s.tags === 'string') s.tags = s.tags.split(',').map(t => t.trim());
+    if (!Array.isArray(s.tags)) s.tags = [];
+    return s;
+  });
   atualizarStats();
   renderizarBotoesCategoria();
   renderizarTextos(apocrifos_textos);
@@ -209,7 +213,7 @@ function abrirTextoCompleto(id) {
     }).join('');
     html += `</div>`;
   }
-  if (texto.tags && texto.tags.length > 0) {
+  if (Array.isArray(texto.tags) && texto.tags.length > 0) {
     html += `<div class="card-tags" style="margin-top:1.5rem;border-top:1px solid var(--cor-borda);padding-top:1rem">`;
     html += texto.tags.map(t => `<span class="tag">#${t}</span>`).join('');
     html += `</div>`;

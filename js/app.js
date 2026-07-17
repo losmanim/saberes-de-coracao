@@ -32,7 +32,9 @@ function normalizarSaber(saber) {
         ...saber,
         tags: Array.isArray(saber.tags) ? saber.tags : 
               typeof saber.tags === 'string' ? saber.tags.split(',').map(t => t.trim()) : 
-              []
+              [],
+        praticas: Array.isArray(saber.praticas) ? saber.praticas : [],
+        conexoes: Array.isArray(saber.conexoes) ? saber.conexoes : [],
     };
 }
 
@@ -92,7 +94,7 @@ function saberDoDia() {
 function extrairCitacaoImpactante(saber) {
     if (!saber.conteudo) return saber.descricao;
 
-    if (saber.conteudo.citacoes && saber.conteudo.citacoes.length > 0) {
+    if (Array.isArray(saber.conteudo.citacoes) && saber.conteudo.citacoes.length > 0) {
         const citacoes = saber.conteudo.citacoes.filter(c => c.length > 20 && c.length < 300);
         if (citacoes.length > 0) {
             return citacoes[Math.floor(Math.random() * citacoes.length)];
@@ -898,14 +900,14 @@ async function abrirSaber(id) {
         }
     }
 
-    if (saber.praticas && saber.praticas.length > 0) {
+    if (Array.isArray(saber.praticas) && saber.praticas.length > 0) {
         html += `<h3>🧘 Práticas</h3>`;
         saber.praticas.forEach(p => {
             html += `<div class="pratica-box"><h4>${p.titulo}</h4><p>${p.instrucoes.replace(/\n/g, '<br>')}</p><p style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>⏱️ ${p.duracao} min | 🔄 ${p.frequencia}</em></p></div>`;
         });
     }
 
-    if (saber.conexoes && saber.conexoes.length > 0) {
+    if (Array.isArray(saber.conexoes) && saber.conexoes.length > 0) {
         const conectados = saber.conexoes.map(cid => {
             const s = dados.saberes.find(x => x.id === cid);
             return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
