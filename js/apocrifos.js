@@ -51,7 +51,7 @@ async function carregarApocrifos() {
     $(container, '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p class="texto-aux">Dados não disponíveis<br><small>Tente recarregar a página.</small></p><button data-action="reload" class="pilar-btn" style="margin-top:1rem">🔄 Recarregar</button></div>');
     return;
   }
-  apocrifos_textos = dados.saberes.filter(s => s.categoria_id === 6).map(normalizarSaber);
+  apocrifos_textos = dados.saberes.map(normalizarSaber).filter(s => s.categoria_id === 6);
   atualizarStats();
   renderizarBotoesCategoria();
   renderizarTextos(apocrifos_textos);

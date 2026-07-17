@@ -519,6 +519,7 @@ async function carregarDados() {
     if (cache) {
         console.log('Usando cache do localStorage');
         dados = cache;
+        if (dados && dados.saberes) dados.saberes = dados.saberes.map(normalizarSaber);
         atualizarEstatisticas();
         if (grid) {
             console.log('Renderizando saberes do cache:', dados.saberes?.length);
@@ -542,6 +543,7 @@ async function carregarDados() {
         if (!cache || (novaVersao && novaVersao !== versaoAtual)) {
             console.log('Atualizando dados...');
             dados = novosDados;
+            if (dados && dados.saberes) dados.saberes = dados.saberes.map(normalizarSaber);
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
             // Buscar grid novamente após carregar dados
@@ -583,7 +585,8 @@ async function carregarDados() {
                 const dadosJson = await jsonResponse.json();
                 console.log('Dados JSON recebidos:', dadosJson.meta?.versao, 'saberes:', dadosJson.saberes?.length);
                 dados = dadosJson;
-                salvarDadosCache(dadosJson);
+                if (dados && dados.saberes) dados.saberes = dados.saberes.map(normalizarSaber);
+                salvarDadosCache(dados);
                 atualizarEstatisticas();
                 // Buscar grid novamente no fallback
                 const gridFallback = document.getElementById('cardsGrid');
