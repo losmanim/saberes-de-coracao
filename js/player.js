@@ -4,6 +4,14 @@ const Player = {
     currentItem: null,
     isPlaying: false,
 
+    _buildSrc(item, tipo) {
+        if (item.arquivo.startsWith('http')) return item.arquivo;
+        const baseDir = window.midiaBaseUrl;
+        const partes = item.arquivo.split('/');
+        const arquivoCod = partes.map(encodeURIComponent).join('/');
+        return baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+    },
+
     init() {
         const audio = document.getElementById('playerAudio');
         const playPause = document.getElementById('playerPlayPause');
@@ -105,15 +113,7 @@ const Player = {
         this.currentIndex = index;
         this.currentItem = list[index];
 
-        let src;
-        if (this.currentItem.arquivo.startsWith('http')) {
-            src = this.currentItem.arquivo;
-        } else {
-            const baseDir = window.midiaBaseUrl;
-            const partes = this.currentItem.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
-        }
+        const src = this._buildSrc(this.currentItem, tipo);
 
         const audio = document.getElementById('playerAudio');
         const bar = document.getElementById('playerBar');
@@ -172,15 +172,7 @@ const Player = {
         const audio = document.getElementById('playerAudio');
         const isVideo = item.id && item.id.startsWith('video-');
 
-        let src;
-        if (item.arquivo.startsWith('http')) {
-            src = item.arquivo;
-        } else {
-            const baseDir = window.midiaBaseUrl;
-            const partes = item.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
-        }
+        const src = this._buildSrc(item, isVideo ? 'video' : 'audio');
 
         document.getElementById('playerIcon').textContent = isVideo ? '🎬' : '🎧';
         document.getElementById('playerTrackName').textContent = item.titulo;
@@ -270,11 +262,8 @@ const Player = {
             this.currentIndex = idx;
             this.currentItem = list[idx];
 
-            const baseDir = window.midiaBaseUrl;
             const isVideo = state.trackTipo === 'video';
-            const partes = this.currentItem.arquivo.split('/');
-            const arquivoCod = partes.map(encodeURIComponent).join('/');
-            const src = baseDir + '/' + (isVideo ? 'videos' : 'audios') + '/' + arquivoCod;
+            const src = this._buildSrc(this.currentItem, isVideo ? 'video' : 'audio');
 
             const audio = document.getElementById('playerAudio');
             audio.src = src;

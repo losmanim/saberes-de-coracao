@@ -16,6 +16,8 @@
     --radius: 8px;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     --transition: 0.2s ease;
+    --cor-sucesso: #7ee787;
+    --cor-erro: #f85149;
 }
 
 body.modo-claro {
@@ -1772,6 +1774,34 @@ body.player-active .footer {
 }
 
 .accordion-content.active { display: block; }
+
+.accordion-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.texto-aux {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  color: var(--cor-texto-sec);
+}
+
+.descricao-modal {
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
+.btn-ler {
+  background: var(--cor-destaque);
+  color: #fff;
+  border: none;
+  flex: 1;
+  min-width: 150px;
+}
+
+.status-sucesso { color: var(--cor-sucesso); }
+.status-erro { color: var(--cor-erro); }
 
 /* ===== Content (Biblioteca) ===== */
 .content h3 {
