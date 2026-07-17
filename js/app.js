@@ -919,7 +919,11 @@ async function abrirSaber(id) {
     }
 
     if (saber.categoria_id === 6) {
-        html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link" style="margin-top:1rem">📖 Texto completo em Apócrifos</a>`;
+        html += `<a href="apocrifos.html#${saber.id}" class="card-apocrifo-link">📖 Texto completo em Apócrifos</a>`;
+    } else if (saber.conteudo && saber.conteudo.texto_integral) {
+        html += `<p class="conteudo-status completo">📖 Conteúdo integral disponível</p>`;
+    } else if (!saber.conteudo || Object.keys(saber.conteudo).length === 0) {
+        html += `<p class="conteudo-status pendente">📖 Conteúdo completo sendo preparado</p>`;
     }
 
     // Próximo Saber

@@ -931,6 +931,24 @@ body.player-active .continue-bar {
     filter: brightness(1.2);
 }
 
+.conteudo-status {
+    display: block;
+    text-align: center;
+    padding: 0.4rem;
+    margin: 0.6rem 0 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border-radius: var(--radius);
+}
+.conteudo-status.completo {
+    background: var(--cor-sucesso, #2d6e4f30);
+    color: var(--cor-texto);
+}
+.conteudo-status.pendente {
+    background: var(--cor-erro, #9a4b4b30);
+    color: var(--cor-texto);
+}
+
 /* Multimídia */
 .midia-grid {
     display: grid;
