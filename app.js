@@ -2,8 +2,11 @@ import 'dotenv/config';
 import express from 'express';
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve, extname, join, dirname } from 'node:path';
-import { existsSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+
+const logsDir = join(dirname(fileURLToPath(import.meta.url)), 'logs');
+try { mkdirSync(logsDir, { recursive: true }); } catch {}
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
