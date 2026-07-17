@@ -23,7 +23,7 @@ body.modo-claro {
     --cor-card: #ffffff;
     --cor-borda: #d0d7de;
     --cor-texto: #24292f;
-    --cor-texto-sec: #57606a;
+    --cor-texto-sec: #3d444d;
     --cor-destaque: #0969da;
     --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -48,8 +48,8 @@ body::before {
     content: '';
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    opacity: 0.015;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background: radial-gradient(ellipse at 20% 50%, rgba(155,89,182,0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, rgba(88,166,255,0.03) 0%, transparent 50%);
     pointer-events: none;
     z-index: 9999;
 }
@@ -259,15 +259,20 @@ body::before {
 
 .card-fav {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.3rem;
+    right: 0.3rem;
     z-index: 2;
     background: none;
     border: none;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     cursor: pointer;
-    padding: 0.2rem;
+    padding: 0.5rem;
     line-height: 1;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0.5;
     transition: all var(--transition);
     filter: grayscale(1);
@@ -753,6 +758,26 @@ body.player-active .continue-bar {
     position: relative;
     overflow: hidden;
     animation: cardEnter 0.35s ease both;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent 50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover::after {
+    opacity: 1;
 }
 
 @keyframes cardEnter {
@@ -849,8 +874,8 @@ body.player-active .continue-bar {
 }
 
 .card-nivel.avancado {
-    background: #5c1f2e;
-    color: #f85149;
+    background: #7a1f2e;
+    color: #ffb3b0;
 }
 
 .card-desc {
@@ -1465,6 +1490,20 @@ body.player-active .footer {
     outline-offset: 2px;
 }
 
+.skip-link:focus { top: 8px !important; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .hero-orbs .orb { animation: none !important; }
+    .skeleton-card::after { animation: none !important; }
+    .reveal { opacity: 1; transform: none; transition: none !important; }
+    .card { animation: none !important; }
+}
+
 /* ===== Player Bar Flutuante ===== */
 .player-bar {
     position: fixed;
@@ -1810,12 +1849,12 @@ body.player-active .footer {
     font-weight: 600;
 }
 
-.badge-espirito { background: #3d2352; color: #c084fc; }
-.badge-pratica { background: #1a3a52; color: #60a5fa; }
-.badge-ciencia { background: #1a4a2e; color: #4ade80; }
-.badge-jornada { background: #4a2e0a; color: #fb923c; }
-.badge-vida { background: #4a1a1a; color: #f87171; }
-.badge-apocrifo { background: #3d2f00; color: #fbbf24; }
+.badge-espirito { background: #4a2870; color: #d8b4fe; }
+.badge-pratica { background: #1f4a6b; color: #93c5fd; }
+.badge-ciencia { background: #14532d; color: #86efac; }
+.badge-jornada { background: #5c3a0a; color: #fdba74; }
+.badge-vida { background: #5c1a1a; color: #fca5a5; }
+.badge-apocrifo { background: #4a3a00; color: #fde68a; }
 
 .texto-integral {
     font-size: 0.95rem;
@@ -2199,69 +2238,6 @@ body.player-active .footer {
 .hero {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-}
-
-.card {
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
-    border-color: var(--cor-destaque);
-}
-
-.card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: var(--radius);
-    background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent 50%);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.card:hover::after {
-    opacity: 1;
-}
-
-/* Gradiente sutil no header */
-.header {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: rgba(22, 27, 34, 0.85);
-}
-
-body.modo-claro .header {
-    background: rgba(255, 255, 255, 0.85);
-}
-
-/* =============================================
-   Animações refinadas
-   ============================================= */
-
-/* Skeleton shimmer mais suave */
-@keyframes shimmer {
-    0% { left: -100%; }
-    100% { left: 200%; }
-}
-
-/* Cards: enter animation mais fluida */
-@keyframes cardEnter {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.97);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
 }
 
 /* Transição de tema suave */

@@ -1,6 +1,9 @@
 // =============================================
 // Sanitização XSS
 // =============================================
+if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    console.log = console.warn = console.error = function () {};
+}
 
 function $(el, htmlContent) {
   el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
@@ -79,7 +82,7 @@ function saberDoDia() {
     if (!escolha || !citacaoUsar) return;
 
     $(el, `
-        <div class="saber-dia-card" onclick="abrirSaber('${escolha.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${escolha.id}')" tabindex="0" role="button" aria-label="Saber do dia: ${escolha.titulo}">
+        <div class="saber-dia-card" tabindex="0" role="button" data-saber-id="${escolha.id}" aria-label="Saber do dia: ${escolha.titulo}">
             <div class="saber-dia-label">☀️ Saber do Dia</div>
             <div class="saber-dia-quote">${citacaoUsar}</div>
             <div class="saber-dia-fonte">— ${escolha.titulo}</div>
@@ -258,9 +261,9 @@ function mostrarToast(mensagem, tipo) {
     })();
     const toast = document.createElement('div');
     toast.className = 'toast';
+    toast.setAttribute('role', 'status');
     if (tipo === 'sucesso') toast.style.color = '#7ee787';
     else if (tipo === 'erro') toast.style.color = '#f85149';
-    else if (tipo === 'aviso') toast.style.color = '#d29922';
     toast.textContent = mensagem;
     container.appendChild(toast);
     setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
@@ -420,8 +423,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-window.addEventListener('beforeunload', () => Player.saveState());
-window.addEventListener('pagehide', () => Player.saveState());
+window.addEventListener('beforeunload', () => { if (typeof Player !== 'undefined') Player.saveState(); });
+window.addEventListener('pagehide', () => { if (typeof Player !== 'undefined') Player.saveState(); });
 
 // =============================================
 // Reading Progress Bar
@@ -639,52 +642,43 @@ function atualizarEstatisticas() {
 // =============================================
 
 function renderizarSaberes(saberes) {
-    console.log('renderizarSaberes chamado com:', saberes?.length, 'saberes');
     const grid = document.getElementById('cardsGrid');
-    console.log('Grid no renderizarSaberes:', !!grid);
-    if (!grid) {
-        console.error('Grid não encontrado!');
-        return;
-    }
+    if (!grid) return;
     grid.className = 'cards-grid';
 
     if (!saberes || saberes.length === 0) {
-        console.log('Nenhum saber para renderizar');
         $(grid, '<div class="empty-state"><div class="empty-state-icon">📚</div><p>Nenhum saber encontrado</p></div>');
         esconderSkeleton();
         return;
     }
 
-    console.log('Renderizando', saberes.length, 'saberes');
     const favs = getFavoritos();
     const abertos = getSaberesAbertos();
     const cardsHtml = saberes.map(saber => {
-        saber = normalizarSaber(saber);
-        const isNovo = !abertos.includes(saber.id);
-        const isVisited = abertos.includes(saber.id);
-        const catIcon = CAT_EMOJIS[saber.categoria_id] || '📖';
+        const s = normalizarSaber(saber);
+        const isNovo = !abertos.includes(s.id);
+        const isVisited = abertos.includes(s.id);
+        const catIcon = CAT_EMOJIS[s.categoria_id] || '📖';
         return `
-            <div class="card ${isVisited ? 'visited' : ''}" data-cat="${saber.categoria_id}" onclick="abrirSaber('${saber.id}')" onkeydown="if(event.key==='Enter')abrirSaber('${saber.id}')" tabindex="0" role="listitem" aria-label="${saber.titulo}">
+            <div class="card ${isVisited ? 'visited' : ''}" tabindex="0" role="button" data-saber-id="${s.id}" data-cat="${s.categoria_id}" aria-label="${s.titulo} — Abrir">
                 ${isNovo ? '<span class="card-novo">✨ Novo</span>' : ''}
-                <button class="card-fav ${favs.includes(saber.id) ? 'active' : ''}" data-id="${saber.id}" onclick="toggleFavorito('${saber.id}', event)" onkeydown="event.stopPropagation()" aria-label="${favs.includes(saber.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(saber.id) ? '❤️' : '🤍'}</button>
+                <button class="card-fav ${favs.includes(s.id) ? 'active' : ''}" data-id="${s.id}" aria-label="${favs.includes(s.id) ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}">${favs.includes(s.id) ? '❤️' : '🤍'}</button>
                 <div class="card-header">
-                    <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${saber.titulo}</span>
-                    <span class="card-nivel ${saber.nivel}">${saber.nivel}</span>
+                    <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${s.titulo}</span>
+                    <span class="card-nivel ${s.nivel}">${s.nivel}</span>
                 </div>
-                <p class="card-desc">${saber.descricao}</p>
+                <p class="card-desc">${s.descricao}</p>
                 <div class="card-meta">
-                    <span>⏱️ ${saber.duracao} min</span>
-                    <span>📖 ${saber.fonte}</span>
+                    <span>⏱️ ${s.duracao} min</span>
+                    <span>📖 ${s.fonte}</span>
                 </div>
                 <div class="card-tags">
-                    ${saber.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                    ${s.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
                 </div>
             </div>`;
     }).join('');
 
     $(grid, cardsHtml);
-
-    console.log('Renderização concluída');
     esconderSkeleton();
     aplicarReveal();
 }
@@ -738,7 +732,7 @@ function renderizarMidia() {
     if (dados.midia && dados.midia.audios && dados.midia.audios.length > 0) {
         html += '<h3 class="midia-section-title">🎵 Áudios (' + dados.midia.audios.length + ')</h3>';
         html += dados.midia.audios.map(a => `
-            <div class="midia-card" onclick="abrirMidia('audio', '${a.id}')" onkeydown="if(event.key==='Enter')abrirMidia('audio', '${a.id}')" tabindex="0" role="listitem" aria-label="Áudio: ${a.titulo}">
+            <div class="midia-card" tabindex="0" role="button" data-midia-tipo="audio" data-midia-id="${a.id}" aria-label="Áudio: ${a.titulo}">
                 <div class="midia-icon">🎧</div>
                 <div class="midia-titulo">${a.titulo}</div>
                 <div class="midia-tags">
@@ -751,7 +745,7 @@ function renderizarMidia() {
     if (dados.midia && dados.midia.videos && dados.midia.videos.length > 0) {
         html += '<h3 class="midia-section-title" style="margin-top:1rem">🎬 Vídeos (' + dados.midia.videos.length + ')</h3>';
         html += dados.midia.videos.map(v => `
-            <div class="midia-card" onclick="abrirMidia('video', '${v.id}')" onkeydown="if(event.key==='Enter')abrirMidia('video', '${v.id}')" tabindex="0" role="listitem" aria-label="Vídeo: ${v.titulo}">
+            <div class="midia-card" tabindex="0" role="button" data-midia-tipo="video" data-midia-id="${v.id}" aria-label="Vídeo: ${v.titulo}">
                 <div class="midia-icon">🎬</div>
                 <div class="midia-titulo">${v.titulo}</div>
                 <div class="midia-tags">
@@ -812,7 +806,7 @@ function abrirMidia(tipo, id) {
     if (item.saberes_relacionados && item.saberes_relacionados.length > 0) {
         const conectados = item.saberes_relacionados.map(sid => {
             const s = dados.saberes.find(x => x.id === sid);
-            return s ? `<span class="tag" style="cursor:pointer" onclick="fecharModalBtn(); setTimeout(() => abrirSaber('${s.id}'), 300)">${s.titulo}</span>` : '';
+            return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
         }).filter(Boolean).join(' ');
         if (conectados) {
             html += `<h3 style="margin-top:0">🔗 Saberes Relacionados</h3><div class="card-tags">${conectados}</div>`;
@@ -914,7 +908,7 @@ async function abrirSaber(id) {
     if (saber.conexoes && saber.conexoes.length > 0) {
         const conectados = saber.conexoes.map(cid => {
             const s = dados.saberes.find(x => x.id === cid);
-            return s ? `<span class="tag" style="cursor:pointer" onclick="abrirSaber('${s.id}')">${s.titulo}</span>` : '';
+            return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
         }).filter(Boolean).join(' ');
         if (conectados) {
             html += `<h3>🔗 Conexões</h3><div class="card-tags">${conectados}</div>`;
@@ -931,7 +925,7 @@ async function abrirSaber(id) {
     if (nextSaber && nextSaber.id !== id) {
         html += `<div class="next-saber-wrap">
             <h3>📌 Continuar Jornada</h3>
-            <div class="next-saber-card" onclick="fecharModalBtn();setTimeout(()=>abrirSaber('${nextSaber.id}'),300)" tabindex="0" role="button" aria-label="Próximo: ${nextSaber.titulo}">
+            <div class="next-saber-card" tabindex="0" role="button" data-next-saber="${nextSaber.id}" aria-label="Próximo: ${nextSaber.titulo}">
                 <div class="next-saber-icon">${CAT_EMOJIS[nextSaber.categoria_id] || '📖'}</div>
                 <div class="next-saber-info">
                     <div class="next-saber-label">Próximo ${dados.categorias.find(c => c.id === nextSaber.categoria_id)?.nome || 'Saber'}</div>
@@ -943,8 +937,8 @@ async function abrirSaber(id) {
     }
 
     html += `<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--cor-borda);display:flex;gap:0.5rem;flex-wrap:wrap">
-        <button class="btn-share" onclick="compartilharSaber('${saber.id}')" aria-label="Compartilhar">📤 Compartilhar</button>
-        <button class="btn-share" onclick="toggleFavorito('${saber.id}', event); this.textContent = isFavorito('${saber.id}') ? '❤️ Favoritado' : '🤍 Favoritar'" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
+        <button class="btn-share" data-compartilhar="${saber.id}" aria-label="Compartilhar">📤 Compartilhar</button>
+        <button class="btn-share btn-fav-modal" data-fav-id="${saber.id}" aria-label="Favoritar">${isFavorito(saber.id) ? '❤️ Favoritado' : '🤍 Favoritar'}</button>
     </div>`;
 
     $(document.getElementById('modalContent'), html);
@@ -1061,11 +1055,11 @@ function toggleLogin() {
     $(div, `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
             <h3 style="margin:0">🔐 Admin</h3>
-            <button onclick="this.parentElement.parentElement.style.display='none'" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">✕</button>
+            <button data-action="close-login" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.3rem 0.6rem;border-radius:4px;cursor:pointer">✕</button>
         </div>
         ${isAutenticado() ? `
             <p style="color:var(--cor-ciencia);margin-bottom:0.8rem">✅ Conectado como administrador</p>
-            <button onclick="logout()" class="pilar-btn active" style="background:#f85149;color:#fff;border:none;padding:0.5rem 1rem;border-radius:var(--radius);cursor:pointer;width:100%">Sair</button>
+            <button data-action="logout" class="pilar-btn active" style="background:#f85149;color:#fff;border:none;padding:0.5rem 1rem;border-radius:var(--radius);cursor:pointer;width:100%">Sair</button>
         ` : `
             <form id="formLogin" style="display:grid;gap:0.8rem">
                 <input type="password" id="inputSenha" class="busca-input" placeholder="Senha de administrador" required autofocus>
@@ -1155,26 +1149,32 @@ function criarAdminPanel() {
             <h3 style="margin:0">📝 Admin — Adicionar Saber</h3>
             <div style="display:flex;gap:0.5rem">
                 <span style="font-size:0.8rem;color:var(--cor-ciencia)">✅ Admin</span>
-                <button onclick="logout()" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer;font-size:0.8rem">Sair</button>
-                <button onclick="this.parentElement.parentElement.parentElement.style.display='none'" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer">✕</button>
+                <button data-action="logout" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer;font-size:0.8rem">Sair</button>
+                <button data-action="close-admin" style="background:none;border:1px solid var(--cor-borda);color:var(--cor-texto-sec);padding:0.2rem 0.5rem;border-radius:4px;cursor:pointer">✕</button>
             </div>
         </div>
         <form id="formSaber" style="display:grid;gap:0.8rem">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem">
+                <label for="inputTitulo" class="sr-only">Título do saber</label>
                 <input type="text" id="inputTitulo" class="busca-input" placeholder="Título" required>
+                <label for="inputCategoria" class="sr-only">Categoria</label>
                 <select id="inputCategoria" class="busca-input" required>
                     <option value="">Categoria</option>
                     ${catOptions}
                 </select>
             </div>
+            <label for="inputDescricao" class="sr-only">Descrição</label>
             <textarea id="inputDescricao" class="busca-input" placeholder="Descrição" rows="2" required></textarea>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem">
+                <label for="inputNivel" class="sr-only">Nível</label>
                 <select id="inputNivel" class="busca-input">
                     <option value="iniciante">Iniciante</option>
                     <option value="intermediario">Intermediário</option>
                     <option value="avancado">Avançado</option>
                 </select>
+                <label for="inputFonte" class="sr-only">Fonte</label>
                 <input type="text" id="inputFonte" class="busca-input" placeholder="Fonte">
+                <label for="inputTags" class="sr-only">Tags</label>
                 <input type="text" id="inputTags" class="busca-input" placeholder="Tags (separadas por vírgula)">
             </div>
             <button type="submit" class="pilar-btn active" style="background:var(--cor-destaque);color:#fff;border:none;padding:0.6rem 1rem;border-radius:var(--radius);cursor:pointer;font-size:0.9rem">
@@ -1234,6 +1234,95 @@ function criarAdminPanel() {
     });
 }
 
+// =============================================
+// Event Delegation (clicks)
+// =============================================
+
+document.addEventListener('click', function (e) {
+  const card = e.target.closest('[data-saber-id]');
+  if (card) {
+    const id = card.dataset.saberId;
+    if (e.target.closest('.card-fav')) {
+      const btn = e.target.closest('.card-fav');
+      toggleFavorito(id, e);
+      btn.textContent = isFavorito(id) ? '❤️' : '🤍';
+      btn.classList.toggle('active', isFavorito(id));
+      return;
+    }
+    abrirSaber(id);
+    return;
+  }
+
+  const midia = e.target.closest('[data-midia-tipo]');
+  if (midia) {
+    abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
+    return;
+  }
+
+  const next = e.target.closest('[data-next-saber]');
+  if (next) {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+    return;
+  }
+
+  const share = e.target.closest('[data-compartilhar]');
+  if (share) {
+    compartilharSaber(share.dataset.compartilhar);
+    return;
+  }
+
+  const favModal = e.target.closest('[data-fav-id]');
+  if (favModal) {
+    const id = favModal.dataset.favId;
+    toggleFavorito(id, e);
+    favModal.textContent = isFavorito(id) ? '❤️ Favoritado' : '🤍 Favoritar';
+    return;
+  }
+
+  const relac = e.target.closest('.tag-relacionado');
+  if (relac) {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(relac.dataset.saberId), 300);
+    return;
+  }
+
+  const action = e.target.closest('[data-action]');
+  if (action) {
+    const a = action.dataset.action;
+    if (a === 'logout') { logout(); return; }
+    if (a === 'close-login') {
+      const c = document.getElementById('loginContainer');
+      if (c) c.style.display = 'none';
+      return;
+    }
+    if (a === 'close-admin') {
+      const c = document.getElementById('adminContainer');
+      if (c) c.style.display = 'none';
+      return;
+    }
+  }
+});
+
+document.addEventListener('keydown', function (e) {
+  const card = e.target.closest('[data-saber-id]');
+  if (card && e.key === 'Enter') {
+    if (e.target.closest('.card-fav')) return;
+    abrirSaber(card.dataset.saberId);
+    return;
+  }
+  const midia = e.target.closest('[data-midia-tipo]');
+  if (midia && e.key === 'Enter') {
+    abrirMidia(midia.dataset.midiaTipo, midia.dataset.midiaId);
+    return;
+  }
+  const next = e.target.closest('[data-next-saber]');
+  if (next && e.key === 'Enter') {
+    fecharModalBtn();
+    setTimeout(() => abrirSaber(next.dataset.nextSaber), 300);
+  }
+});
+
 // Botão Admin no header
 document.addEventListener('DOMContentLoaded', async () => {
     const header = document.querySelector('.header-actions');
@@ -1264,12 +1353,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 });
 // =============================================
-// Exportar funções para window (onclick handlers)
+// Exportar funções para window (legado — inline onclick)
 // =============================================
 window.abrirSaber = abrirSaber;
 window.fecharModal = fecharModal;
 window.filtrarCategoria = filtrarCategoria;
 window.toggleFavorito = toggleFavorito;
+window.compartilharSaber = compartilharSaber;
 window.toggleBusca = toggleBusca;
 window.buscarSaberes = buscarSaberes;
 window.saberAleatorio = saberAleatorio;

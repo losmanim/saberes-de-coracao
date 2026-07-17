@@ -119,7 +119,7 @@ const Player = {
         const bar = document.getElementById('playerBar');
 
         audio.onerror = () => {
-            alert('Arquivo não encontrado: ' + src);
+            if (typeof mostrarToast === 'function') mostrarToast('❌ Arquivo não encontrado', 'erro');
             this.close();
         };
 
@@ -189,7 +189,7 @@ const Player = {
         document.getElementById('playerTimeCurrent').textContent = '0:00';
 
         audio.onerror = () => {
-            alert('Arquivo não encontrado: ' + src);
+            if (typeof mostrarToast === 'function') mostrarToast('❌ Arquivo não encontrado', 'erro');
         };
         audio.src = src;
         audio.load();

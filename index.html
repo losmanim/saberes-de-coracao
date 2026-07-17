@@ -20,10 +20,13 @@
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Saberes de Coração">
     <meta property="og:locale" content="pt_BR">
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Saberes de Coração">
     <meta name="twitter:description" content="Plataforma de saberes ancestrais — conhecimento direto e experiencial da natureza divina">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
+    <meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%230d1117'/%3E%3Ctext x='600' y='315' text-anchor='middle' dominant-baseline='middle' font-size='80'%3E🕉️ Saberes de Coração%3C/text%3E%3C/svg%3E">
+    <meta name="twitter:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%230d1117'/%3E%3Ctext x='600' y='315' text-anchor='middle' dominant-baseline='middle' font-size='80'%3E🕉️ Saberes de Coração%3C/text%3E%3C/svg%3E">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕉️</text></svg>">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAdxJREFUWEftlrFKA0EQhr+5RBQ7CxEbCwXRwhewsbDwESxsBAsfwcZHsLCzE7GwsbCwsBBERBALCxEUFAvBT2S5wx3Z2+S4SxILSfa22Zn5/5ndmV3CMAxR4I8C/yzgTwX+VYD/KsC/CvCvAqwEwO12w+FwgE6nA7ZtF3adUgrD4RA6nQ7Ytl1YX1UVbm5uYDabQbvdhna7XUhv2zYMBgMYj8fQbrf/FEBVFQaDAUwmE2i1WtBsNiEcDofRaBSSJKHT6UAcx7ws9HodkiTh9uFwCGEYcr3f70MURTwfjUZcG41GnC+KIq7FccznWZbxPIoizvM8Q5qmPB8Oh1w3DINrSikYjUYwGo1gOBy+p6B1GMcxJEmCpmnyebvdxmfm52FxHMM0TWEymUCj0YBms8m0o9EIXqOIYds2eJ7Hc4ZhgG3bv4bxPA+yLINWq/UpBc1mE6bTKViWxf2EELBtG6ZpmB8A7rFjWZZyHk3T5H4YI6ZpQpIkYNs293Ndlyl0XYdSSo7HNE2YzWasbNs2C1/X9cW6pmncN45j7qvXP32/XC4hz3NI01Q/TdN0jYLP93Ecg23bu+F93+c4VFUFQRAwFKM3DIN9EEUBnucxhW3bMJlM+FnTNH4HVFUFQRDAer1mCnu9Hnie9/Md6D/+Y6I48AdfBf4qAP9VgH8V4F8F+KsA/wP+9BLjACk04AAAAABJRU5ErkJggg==">
     
     <!-- Structured Data for SEO -->
     <script type="application/ld+json">
@@ -68,6 +71,7 @@
 </head>
 
 <body>
+    <a href="#main-content" class="sr-only skip-link" style="position:absolute;top:-100px;left:8px;padding:8px 16px;background:var(--cor-card);color:var(--cor-texto);border:1px solid var(--cor-destaque);border-radius:var(--radius);z-index:99999;transition:top 0.2s">Pular para o conteúdo principal</a>
     <div class="reading-progress" id="readingProgress" aria-hidden="true">
         <div class="reading-progress-bar" id="readingProgressBar"></div> 
     </div>
@@ -86,7 +90,7 @@
             </div>
         </div>
     </header>
-    <main class="main" role="main">
+    <main class="main" role="main" id="main-content">
         <section class="hero" aria-label="Introdução">
             <div class="hero-orbs" aria-hidden="true">
                 <div class="orb"></div>
@@ -222,9 +226,9 @@
             <div class="footer-col">
                 <h4>Navegar</h4>
                 <ul>
-                    <li><a href="index.html">🏠 Início</a></li>
-                    <li><a href="biblioteca.html">📚 Biblioteca</a></li>
-                    <li><a href="apocrifos.html">📜 Apócrifos</a></li>
+                    <li><a href="index.html" aria-label="Ir para o início">🏠 Início</a></li>
+                    <li><a href="biblioteca.html" aria-label="Ir para a biblioteca">📚 Biblioteca</a></li>
+                    <li><a href="apocrifos.html" aria-label="Ir para os apócrifos">📜 Apócrifos</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -252,7 +256,7 @@
             </div>
         </div>
     </footer>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js" defer></script>
     <script src="js/player.js" defer></script>
     <script src="js/content.js" defer></script>
     <script src="js/app.js" defer></script>

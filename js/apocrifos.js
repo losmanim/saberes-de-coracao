@@ -53,7 +53,7 @@ async function carregarDados() {
   }
   
   if (!dados || !dados.saberes) {
-    console.error('Dados não carregados pelo app.js');
+    try { mostrarToast('Erro ao carregar dados', 'erro'); } catch(e) {}
     container.innerHTML = window.DOMPurify ? DOMPurify.sanitize(`
       <div class="empty-state">
         <div class="empty-state-icon">⚠️</div>
@@ -242,7 +242,7 @@ function compartilharTexto(id) {
   if (navigator.share) {
     navigator.share({ title: 'Texto Apocrifo', url }).catch(() => {});
   } else {
-    navigator.clipboard.writeText(url).then(() => alert('Link copiado!'));
+    navigator.clipboard.writeText(url).then(() => { if (typeof mostrarToast === 'function') mostrarToast('✅ Link copiado!', 'sucesso'); });
   }
 }
 

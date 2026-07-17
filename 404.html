@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Página Não Encontrada | O Caminho</title>
+    <title>404 - Página Não Encontrada | Saberes de Coração</title>
     <meta name="description" content="A página que você procura não existe.">
     <meta property="og:title" content="404 — Saberes de Coração">
     <meta property="og:description" content="A página que você procura não existe no Saberes de Coração.">
@@ -11,7 +11,6 @@
     <meta property="og:site_name" content="Saberes de Coração">
     <meta property="og:locale" content="pt_BR">
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         .error-container {
             min-height: 100vh;
@@ -28,7 +27,7 @@
             color: var(--cor-destaque);
             line-height: 1;
             margin-bottom: 20px;
-            text-shadow: 0 0 30px var(--sombra);
+            text-shadow: 0 0 30px rgba(88, 166, 255, 0.3);
         }
         .error-title {
             font-size: 2rem;
@@ -54,15 +53,15 @@
             border-radius: 30px;
             text-decoration: none;
             font-weight: 500;
-            transition: var(--transicao);
+            transition: all 0.2s ease;
         }
         .error-btn-primary {
             background: var(--cor-destaque);
-            color: var(--cor-texto-escuro);
+            color: #fff;
         }
         .error-btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--sombra);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         .error-btn-secondary {
             border: 2px solid var(--cor-borda);
@@ -82,14 +81,15 @@
         </p>
         <div class="error-actions">
             <a href="index.html" class="error-btn error-btn-primary">
-                <i class="bi bi-house"></i> Voltar ao Início
+                🏠 Voltar ao Início
             </a>
-            <a href="index.html#conhecimento" class="error-btn error-btn-secondary">
-                <i class="bi bi-book"></i> Explorar Conhecimento
+            <a href="biblioteca.html" class="error-btn error-btn-secondary">
+                📚 Explorar Biblioteca
             </a>
         </div>
     </div>
     <script>
+        if (localStorage.getItem('tema') === 'claro') document.body.classList.add('modo-claro');
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(() => {});

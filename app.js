@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 import jwt from 'jsonwebtoken';
@@ -83,6 +84,7 @@ app.use(helmet({
     policy: 'strict-origin-when-cross-origin'
   }
 }));
+app.use(cookieParser());
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -90,6 +92,16 @@ app.use(cors({
 }));
 app.use(compression());
 app.use(express.json({ limit: '5mb' }));
+app.use('/api/', apiLimiter);
+app.use('/api/', csrfProtection);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  message: { erro: 'Muitas requisições. Tente novamente em 15 minutos.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -121,13 +133,23 @@ function gerarToken(payload = {}) {
   return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 }
 
+function csrfProtection(req, res, next) {
+  if (['POST', 'PUT', 'DELETE'].includes(req.method)) {
+    const origin = req.headers['origin'] || req.headers['referer'] || '';
+    const allowed = process.env.CORS_ORIGIN || 'https://saberes-de-coracao.onrender.com';
+    if (!origin.startsWith(allowed.replace(/\/$/, ''))) {
+      return res.status(403).json({ erro: 'Requisição rejeitada por segurança.' });
+    }
+  }
+  next();
+}
+
 function autenticar(req, res, next) {
-  const header = req.headers['authorization'];
-  if (!header) {
+  const token = req.cookies?.token || req.headers['authorization']?.replace('Bearer ', '');
+  if (!token) {
     return res.status(401).json({ erro: 'Token não fornecido.' });
   }
   try {
-    const token = header.replace('Bearer ', '');
     req.usuario = jwt.verify(token, JWT_SECRET);
     next();
   } catch (err) {
@@ -158,6 +180,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     try {
       const session = await Appwrite.criarSessao(req.body.email, senha);
       const token = gerarToken({ admin: true, appwrite: true, sessionId: session.$id });
+      res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 });
       return res.json({ token, admin: true, appwrite: true });
     } catch (e) {
       return res.status(401).json({ erro: 'Credenciais inválidas' });
@@ -167,6 +190,7 @@ app.post('/api/login', loginLimiter, async (req, res) => {
     return res.status(401).json({ erro: 'Senha incorreta' });
   }
   const token = gerarToken({ admin: true, appwrite: false });
+  res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict', maxAge: 24 * 60 * 60 * 1000 });
   res.json({ token, admin: true, appwrite: false });
 });
 
@@ -174,6 +198,7 @@ app.post('/api/logout', async (req, res) => {
   if (USE_APPWRITE) {
     try { await Appwrite.deletarSessao(); } catch {}
   }
+  res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'strict' });
   res.json({ ok: true });
 });
 
