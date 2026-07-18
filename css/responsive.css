@@ -1,0 +1,66 @@
+@media (max-width: 768px) {
+    .footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+
+    .contato-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .header-content { flex-wrap: wrap; }
+
+    .cards-grid { grid-template-columns: 1fr; }
+    .midia-grid { grid-template-columns: 1fr; }
+
+    .modal { padding: 1rem; margin: 0.5rem; }
+
+    .hero h1 { font-size: 1.4rem; }
+    .hero-stats { gap: 1rem; }
+    .pilar-btn { font-size: 0.8rem; padding: 0.4rem 0.7rem; }
+
+    .nav-tabs { gap: 0.2rem; }
+    .nav-tab { font-size: 0.75rem; padding: 0.4rem 0.7rem; }
+    .accordion-header { padding: 0.8rem 1rem; font-size: 0.9rem; }
+    .content table { font-size: 0.8rem; }
+    .content th,
+    .content td { padding: 6px 8px; }
+
+    .player-track-info {
+        min-width: 80px;
+        max-width: 120px;
+    }
+
+    .player-volume-wrap { display: none; }
+
+    .player-seek { gap: 0.25rem; }
+
+    .player-time {
+        font-size: 0.65rem;
+        min-width: 26px;
+    }
+
+    .player-bar {
+        gap: 0.4rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .player-track-name { font-size: 0.72rem; }
+}
+
+@media (max-width: 480px) {
+    .atalhos-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 1600px) {
+    .main { max-width: 1400px; }
+    .cards-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+    .hero h1 { font-size: 2.4rem; }
+}

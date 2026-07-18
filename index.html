@@ -153,7 +153,7 @@
             </a>
         </nav>
         <div class="busca-container" id="buscaContainer" style="display: none;" role="search">
-            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar saberes por título, descrição ou tag..." oninput="buscarSaberes(this.value)" aria-label="Buscar saberes">
+            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar saberes por título, descrição ou tag..." aria-label="Buscar saberes">
             <div class="busca-info" id="buscaInfo" aria-live="polite"></div>
         </div>
         <div class="cards-grid" id="cardsGrid" role="list" aria-label="Lista de saberes">
@@ -177,7 +177,7 @@
         </div>
     </main>
     <!-- Leitor imersivo (tela cheia) -->
-    <div class="reader-overlay" id="readerOverlay">
+    <div class="reader-overlay" id="readerOverlay" role="dialog" aria-modal="true" aria-label="Leitor de conteúdo">
         <div class="reader-header">
             <div class="reader-header-left">
                 <button class="reader-back-btn" id="readerBackBtn" aria-label="Voltar">←</button>
@@ -197,7 +197,7 @@
     </div>
 
     <!-- Modal padrão (mídia, admin etc) -->
-    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" aria-describedby="modalContent">
         <div class="modal">
             <div class="modal-header">
                 <h2 class="modal-titulo" id="modalTitulo"></h2>
@@ -278,6 +278,7 @@
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js" defer></script>
+    <script src="js/utils.js" defer></script>
     <script src="js/player.js" defer></script>
     <script src="js/content.js" defer></script>
     <script src="js/app.js" defer></script>

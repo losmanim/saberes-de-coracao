@@ -104,6 +104,22 @@ const Player = {
         return dados.midia.videos || [];
     },
 
+    _updateMediaSession() {
+        if (!('mediaSession' in navigator) || !this.currentItem) return;
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: this.currentItem.titulo,
+            artist: 'Saberes de Coração',
+            album: 'Saberes de Coração',
+            artwork: [
+                { src: '/icons/icon.svg', sizes: '512x512', type: 'image/svg+xml' },
+            ],
+        });
+        navigator.mediaSession.setActionHandler('play', () => this.togglePlay());
+        navigator.mediaSession.setActionHandler('pause', () => this.togglePlay());
+        navigator.mediaSession.setActionHandler('previoustrack', () => this.prev());
+        navigator.mediaSession.setActionHandler('nexttrack', () => this.next());
+    },
+
     open(tipo, id) {
         const list = this.buildList(tipo);
         const index = list.findIndex(m => m.id === id);
@@ -136,6 +152,7 @@ const Player = {
         audio.volume = vol !== null ? parseFloat(vol) : 1;
         document.getElementById('playerVolumeSlider').value = audio.volume;
 
+        this._updateMediaSession();
         audio.play().catch(() => {
             this.isPlaying = false;
             this.updatePlayBtn();
@@ -185,6 +202,7 @@ const Player = {
         };
         audio.src = src;
         audio.load();
+        this._updateMediaSession();
         audio.play().catch(() => {
             this.isPlaying = false;
             this.updatePlayBtn();

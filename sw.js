@@ -95,13 +95,14 @@ self.addEventListener('fetch', (event) => {
 });
 
 async function cacheFirst(request, cacheName) {
+  if (request.method !== 'GET') return fetch(request).catch(() => new Response('Offline', { status: 503 }));
+
   const cached = await caches.match(request);
   if (cached) return cached;
   try {
     const response = await fetch(request);
     if (response.ok) {
       const copy = response.clone();
-      // Ignorar requisições chrome-extension e outros protocolos não-HTTP(S)
       if (request.url.startsWith('http://') || request.url.startsWith('https://')) {
         caches.open(cacheName || CACHE).then((cache) => cache.put(request, copy)).catch(() => {});
       }
@@ -113,6 +114,8 @@ async function cacheFirst(request, cacheName) {
 }
 
 async function networkFirst(request, cacheName) {
+  if (request.method !== 'GET') return fetch(request).catch(() => new Response('Offline', { status: 503 }));
+
   try {
     const response = await fetch(request);
     if (response.ok) {

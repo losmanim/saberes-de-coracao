@@ -17,6 +17,7 @@ import winston from 'winston';
 
 import * as Appwrite from './src/lib/appwrite.js';
 import { enviarEmailContato } from './src/lib/emailjs.js';
+import { loginSchema, criacaoSaberSchema, atualizacaoSaberSchema, contatoSchema, validar } from './src/schemas.js';
 
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -183,7 +184,7 @@ function salvarDadosJSON(dados) {
 // Auth Routes
 // =====================
 
-app.post('/api/login', loginLimiter, async (req, res) => {
+app.post('/api/login', loginLimiter, validar(loginSchema), async (req, res) => {
   const { senha } = req.body;
   if (USE_APPWRITE && process.env.APPWRITE_PROJECT_ID && req.body.email) {
     try {
@@ -299,12 +300,9 @@ app.get('/api/saberes/:id', async (req, res) => {
   }
 });
 
-app.post('/api/saberes', autenticar, async (req, res) => {
+app.post('/api/saberes', autenticar, validar(criacaoSaberSchema), async (req, res) => {
   try {
     const { titulo, descricao, categoria_id, nivel, tags, fonte, conteudo } = req.body;
-    if (!titulo || !descricao) {
-      return res.status(400).json({ erro: 'titulo e descricao são obrigatórios' });
-    }
 
     if (USE_APPWRITE) {
       const slug = titulo.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -337,7 +335,7 @@ app.post('/api/saberes', autenticar, async (req, res) => {
   }
 });
 
-app.put('/api/saberes/:id', autenticar, async (req, res) => {
+app.put('/api/saberes/:id', autenticar, validar(atualizacaoSaberSchema), async (req, res) => {
   try {
     if (USE_APPWRITE) {
       const atualizado = await Appwrite.atualizarSaber(req.params.id, req.body);
@@ -448,12 +446,9 @@ app.get('/api/dados', async (req, res) => {
 // Contato (EmailJS)
 // =====================
 
-app.post('/api/contato', contatoLimiter, async (req, res) => {
+app.post('/api/contato', contatoLimiter, validar(contatoSchema), async (req, res) => {
   try {
     const { nome, email, assunto, mensagem } = req.body;
-    if (!nome || !email || !mensagem) {
-      return res.status(400).json({ erro: 'nome, email e mensagem são obrigatórios' });
-    }
 
     // Sempre salva no banco (Appwrite ou JSON)
     const contatoData = { nome, email, assunto: assunto || '', mensagem };

@@ -28,6 +28,14 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => abrirAccordionPorId(id), 500);
     }
   });
+
+  const buscaInput = document.getElementById('buscaInput');
+  if (buscaInput) {
+    const debouncedBusca = Utils.debounce(function() {
+      buscarTextos(this.value);
+    }, 250);
+    buscaInput.addEventListener('input', debouncedBusca);
+  }
 });
 
 function abrirAccordionPorId(id) {

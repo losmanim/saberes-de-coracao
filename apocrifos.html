@@ -63,7 +63,7 @@
         </section>
 
         <div class="busca-container" id="buscaContainer" style="display:none">
-            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar por título, descrição ou tag..." oninput="buscarTextos(this.value)">
+            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar por título, descrição ou tag...">
             <div class="busca-info" id="buscaInfo"></div>
         </div>
 
@@ -77,11 +77,11 @@
         </div>
     </main>
 
-    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)">
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModal(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitulo" aria-describedby="modalContent">
         <div class="modal">
             <div class="modal-header">
                 <h2 class="modal-titulo" id="modalTitulo"></h2>
-                <button class="modal-close" onclick="fecharModalBtn()">✕</button>
+                <button class="modal-close" onclick="fecharModalBtn()" aria-label="Fechar">✕</button>
             </div>
             <div class="modal-content" id="modalContent"></div>
         </div>
@@ -154,6 +154,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.4/purify.min.js" defer></script>
     <script>if (localStorage.getItem('tema') === 'claro') document.body.classList.add('modo-claro');</script>
+    <script src="js/utils.js" defer></script>
     <script src="js/player.js" defer></script>
     <script src="js/content.js" defer></script>
     <script src="js/app.js" defer></script>

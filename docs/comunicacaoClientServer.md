@@ -1,198 +1,200 @@
-## Resumo Detalhado: Saberes de Coração — Site 3.0
+# Comunicação Cliente-Servidor — Saberes de Coração v4.0
 
----
+## Stack Tecnológico
 
-### 1. Framework / Stack de Frontend
+| Camada | Tecnologia |
+|--------|-----------|
+| **Frontend** | HTML5 Semântico + CSS3 Variables + Vanilla JS (ES6+) |
+| **Backend** | Node.js + Express 5 (API REST) |
+| **Dados** | JSON estático (fallback) + Appwrite Database (produção) |
+| **Email** | EmailJS |
+| **Mídia** | Cloudinary |
+| **Deploy** | Render |
+| **PWA** | Service Worker + Manifest |
+| **Auth** | JWT (cookie httpOnly + localStorage) |
 
-**Não há framework JavaScript moderno.** O frontend é **HTML/CSS/JavaScript puro ("Vanilla")**, tudo contido em único arquivo:
+## Arquitetura de Frontend
 
-- **`index.html`** (1031 linhas) — Página principal com todo o CSS inline e JavaScript inline.
-- **`biblioteca.html`** — Página "Biblioteca" com conteúdo estático em accordions.
-- **`404.html`** — Página de erro 404.
+O frontend é **multi-página** (não SPA), com cada página em seu próprio HTML:
 
-Não há `package.json`, nem bundlers (Webpack, Vite), nem frameworks SPA (React, Vue, Svelte). O site foi projetado para funcionar **100% estaticamente** — basta abrir `index.html` no navegador.
+| Página | Arquivo | Função |
+|--------|---------|--------|
+| Início | `index.html` (295 linhas) | Grid de cards, leitor imersivo, paginação |
+| Biblioteca | `biblioteca.html` (300 linhas) | Seções por categoria com accordions dinâmicos |
+| Apócrifos | `apocrifos.html` (171 linhas) | Textos apócrifos com filtros e busca |
+| 404 | `404.html` | Página de erro |
 
----
+### Assets Compartilhados
 
-### 2. Comunicação Cliente-Servidor
+| Arquivo | Função |
+|---------|--------|
+| `js/utils.js` | Funções utilitárias compartilhadas: `$()`, `normalizarSaber()`, `mostrarToast()`, `tratarErro()`, `debounce()` |
+| `js/content.js` | `contentHandlers` — 30+ funções que convertem campos do JSON em HTML |
+| `js/player.js` | Player de áudio/vídeo flutuante com suporte a Media Session API |
+| `js/app.js` | Core do index.html: carregamento, cache, renderização, busca, favoritos, autenticação, CRUD |
+| `js/biblioteca.js` | ES Module — lógica da página de biblioteca |
+| `js/apocrifos.js` | Lógica da página de apócrifos |
+| `js/features.js` | Formulário de contato + modal de autenticação |
+| `css/style.css` | Design system: variáveis, temas, componentes, animações (2.714 linhas) |
+| `sw.js` | Service Worker com cache-first e network-first |
 
-Existem **dois modos** de operação, que coexistem no projeto:
+## Comunicação Frontend ↔ Backend
 
-#### Modo A (Padrão / Preferido): Arquivo JSON estático
-- **Sem requisição de servidor.** O frontend carrega todos os dados de único arquivo JSON via `fetch()`.
-- A página principal (`index.html`, linha 702) faz:
-  ```javascript
-  const response = await fetch('database/dados-unificados.json');
-  dados = await response.json();
-  ```
-- **Não é uma API REST.** É simplesmente baixar um arquivo JSON estático do disco.
-- O JSON contém **todos os dados do site**: categorias, saberes, práticas, referências, mídia.
-
-#### Modo B (Opcional): API REST em PHP + MySQL
-- Há um backend PHP completo para quando um servidor com MySQL está disponível.
-- Não há `fetch()` do frontend para estas APIs — elas existem como camada de dados alternativa. O código do frontend (`index.html`) **não faz chamadas para estas APIs**; ele só carrega o JSON estático.
-- Os scripts PHP parecem ser para administração/desenvolvimento, não para o site em produção.
-
----
-
-### 3. Onde os Endpoints da API são Definidos
-
-Os endpoints da API estão em PHP, localizados em:
+### Fluxo de Dados
 
 ```
-php/
-  config.php           — Singleton Database (MySQLi) + funções auxiliares (response(), getJsonInput())
-  config_mysqli.php    — Clone/Duplicata de config.php (mesmo código)
-  api/
-    categorias.php     — GET /php/api/categorias.php
-    saberes.php        — GET|POST|PUT|DELETE /php/api/saberes.php?action=slug&slug=X&action=categoria&categoria_id=X
-    praticas.php       — GET|POST|PUT|DELETE /php/api/praticas.php?action=saber&saber_id=X&action=tipo&tipo=X
+                       Fonte de Dados
+                      ┌──────────────┐
+                      │ Appwrite DB  │ (produção)
+                      │  (opcional)  │
+                      └──────┬───────┘
+                             │
+                    ┌────────▼────────┐
+                    │  Express API    │
+                    │  (app.js)       │
+                    └──┬──────────┬───┘
+                       │          │
+              ┌────────▼──┐  ┌────▼────────┐
+              │ /api/*    │  │ JSON local  │
+              │ endpoints │  │ (fallback)  │
+              └─────┬─────┘  └──────┬──────┘
+                    │               │
+              ┌─────▼───────────────▼──────┐
+              │    Navegador (fetch)       │
+              │    + localStorage (cache)  │
+              └────────────────────────────┘
 ```
 
-**Rotas da API REST:**
+### Endpoints da API REST
 
-| Método | Endpoint | Parâmetros | Descrição |
-|--------|----------|-----------|-----------|
-| GET | `categorias.php` | — | Listar todas as categorias |
-| GET | `saberes.php` | — | Listar saberes ativos (com join em categorias) |
-| GET | `saberes.php?action=slug&slug=X` | slug | Buscar saber por slug |
-| GET | `saberes.php?action=categoria&categoria_id=X` | categoria_id | Filtrar saberes por categoria |
-| POST | `saberes.php` | JSON body | Criar novo saber |
-| PUT | `saberes.php` | JSON body | Atualizar saber |
-| DELETE | `saberes.php` | JSON body | Excluir saber |
-| GET | `praticas.php` | — | Listar práticas (com join em saberes) |
-| GET | `praticas.php?action=saber&saber_id=X` | saber_id | Práticas por saber |
-| GET | `praticas.php?action=tipo&tipo=X` | tipo | Práticas por tipo |
-| POST | `praticas.php` | JSON body | Criar prática |
-| PUT | `praticas.php` | JSON body | Atualizar prática |
-| DELETE | `praticas.php` | JSON body | Excluir prática |
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/api/login` | — | Login admin (rate limited: 10/15min) |
+| POST | `/api/logout` | — | Logout |
+| GET | `/api/verificar` | JWT | Verificar token |
+| GET | `/api/categorias` | — | Listar categorias |
+| GET | `/api/saberes` | — | Listar saberes (paginado: page+limit) |
+| GET | `/api/saberes/:id` | — | Buscar saber por ID |
+| POST | `/api/saberes` | JWT | Criar saber (validado com Zod) |
+| PUT | `/api/saberes/:id` | JWT | Atualizar saber (validado com Zod) |
+| DELETE | `/api/saberes/:id` | JWT | Remover saber |
+| GET | `/api/saberes/:id/conteudo` | — | Conteúdo completo (lazy load) |
+| GET | `/api/midia` | — | Listar mídia |
+| GET | `/api/dados` | — | Todos dados (lite ou full) |
+| POST | `/api/contato` | — | Enviar contato (rate limited: 5/h) |
+| GET | `/api/midia-config` | — | Configuração de base URL da mídia |
+| GET | `/api/health` | — | Health check |
 
----
+### Validação de Entrada
 
-### 4. Como o Frontend Busca Dados do Backend
+Todas as rotas POST/PUT usam **Zod** para validação de schema:
 
-**No modo de produção (padrão):** Nenhuma chamada de rede para um servidor de aplicação. O único `fetch()` é:
+| Schema | Campos |
+|--------|--------|
+| `loginSchema` | `email` (email, opcional), `senha` (string, obrigatória) |
+| `criacaoSaberSchema` | `titulo` (1-200 chars), `descricao` (1-2000), `categoria_id`, `nivel` (enum), `tags` (array), `fonte`, `conteudo` |
+| `atualizacaoSaberSchema` | Mesmo que criação, mas todos opcionais |
+| `contatoSchema` | `nome` (1-200), `email` (email válido), `assunto` (0-500), `mensagem` (1-5000) |
+
+### Cache no Cliente
+
+O frontend implementa cache em duas camadas:
+
+1. **localStorage**: Dados completos em `saberes_cache` com versão em `saberes_cache_versao`
+2. **Service Worker**: Cache-first para assets estáticos, network-first para API
 
 ```javascript
-// index.html, linha 702
-const response = await fetch('database/dados-unificados.json');
-dados = await response.json();
+// Estratégia de carregamento (js/app.js)
+carregarDados() {
+  1. Tenta carregar do localStorage (cache)
+  2. Se existir, renderiza imediatamente
+  3. Fetch de /api/dados em paralelo
+  4. Se versão diferente, atualiza cache e re-renderiza
+  5. Se fetch falhar, usa cache existente
+  6. Se não houver cache, tenta fallback: /data/dados-unificados.json
+}
 ```
 
-A partir daí, todos os dados (16 saberes, 3 práticas, 10 áudios, 4 vídeos) estão disponíveis no objeto `dados` em memória. A filtragem, busca e renderização são feitas inteiramente no lado do cliente com JavaScript puro:
+## Dados
 
-- **Filtro por categoria:** `dados.saberes.filter(s => s.categoria_id === parseInt(cat))`
-- **Busca por texto:** `dados.saberes.filter(s => s.titulo.includes(termo) || s.descricao.includes(termo) || s.tags.some(...))`
-- **Renderização:** Template strings de HTML inseridas com `innerHTML`
+### Fonte Principal: `data/dados-unificados.json`
 
-O PHP backend (API REST + MySQL) existe como uma camada opcional — provavelmente usada se/quando o proprietário quiser gerenciar dados através de um CMS ou dashboard, mas o site em si não depende disso.
+- **93+ saberes** em 6 categorias
+- Estrutura hierárquica com suporte a lazy loading de conteúdo
+- Textos apócrifos integrais incluídos (apócrifos da Biblioteca de Nag Hammadi)
 
----
-
-### 5. Autenticação/Autorização
-
-**Não há autenticação ou autorização.** O projeto:
-- Não tem login de usuário
-- Não tem sessões
-- Não tem JWT/tokens
-- Não tem controle de acesso baseado em função (RBAC)
-- Não tem cookies de autenticação
-
-A tabela `progresso` no schema SQL sugere que um recurso de acompanhamento de progresso do usuário foi planejado, mas não há implementação de autenticação para suportá-lo. O schema SQL não inclui uma tabela `usuarios`.
-
----
-
-### 6. Principais Modelos de Dados
-
-#### Banco de Dados MySQL (definido em `database/schema.sql`):
-
-| Tabela | Campos Principais |
-|--------|------------------|
-| **categorias** | `id`, `nome`, `descricao`, `cor`, `icone`, `created_at`, `updated_at` |
-| **saberes** | `id`, `titulo`, `slug` (UNIQUE), `categoria_id` (FK), `descricao`, `conteudo` (MEDIUMTEXT), `tags` (JSON), `fonte`, `nivel` (ENUM: iniciante|intermediario|avancado), `duracao_minutos`, `ativo`, `created_at`, `updated_at` |
-| **praticas** | `id`, `saber_id` (FK), `titulo`, `tipo` (ENUM: respiracao|meditacao|contemplacao|chakra|outro), `instrucoes`, `duracao_minutos`, `frequencia` (ENUM: diaria|semanal|sob-demanda) |
-| **progresso** | `id`, `saber_id` (FK), `status` (ENUM: nao-iniciado|em-progresso|concluido), `nota`, `concluido_em` |
-| **diarios** | `id`, `data` (UNIQUE), `reflexao`, `sentimento`, `nivel_energia` (1-10), `observacoes` |
-| **conexoes** | `id`, `saber_de_id` (FK), `saber_para_id` (FK), `tipo_conexao` (ENUM: requisito|complementar|continuacao|relacionado), UNIQUE(saber_de_id, saber_para_id) |
-
-#### Modelo JSON (arquivo `database/dados-unificados.json`):
-
-O JSON é a **fonte única de verdade** usada pelo site. Estrutura:
+### Estrutura do JSON
 
 ```json
 {
-  "meta": { "versao", "atualizado", "descricao" },
+  "meta": { "versao", "atualizado", "total_apocrifos" },
   "categorias": [ { "id", "nome", "slug", "descricao", "cor", "icone" } ],
-  "saberes": [ {
-    "id", "categoria_id", "titulo", "slug", "descricao", "nivel",
-    "duracao", "tags", "fonte", "licenca",
-    "conteudo": { "definicao", "citacoes", "conceitos", "analogia",
-                  "insight", "principios", "mundos", "textos",
-                  "aplicacoes", "fatores", "mecanismos" },
+  "saberes": [{
+    "id", "categoria_id", "titulo", "slug", "descricao",
+    "nivel", "duracao", "tags", "fonte", "licenca",
+    "conteudo": { /* definicao, insight, citacoes, conceitos, ... */ },
     "praticas": [ { "titulo", "instrucoes", "duracao", "frequencia" } ],
     "conexoes": [ "id-outro-saber" ]
-  } ],
-  "praticas": [ { "id", "nome", "saberes": [], "instrucoes", "duracao", "frequencia" } ],
-  "referencias": { "obras": [], "links": [] },
+  }],
   "midia": {
-    "audios": [ { "id", "titulo", "categoria", "tags", "arquivo", "saberes_relacionados" } ],
-    "videos": [ { "id", "titulo", "categoria", "tags", "arquivo", "saberes_relacionados" } ]
+    "audios": [...],
+    "videos": [...]
   }
 }
 ```
 
-O JSON contém: **5 categorias** (Espírito, Práticas, Ciência, Jornada, Vida Verdadeira), **16 saberes**, **3 práticas**, **10 áudios**, **4 vídeos**.
+## Segurança
 
----
+- **JWT**: Tokens com expiração (24h), assinados com `JWT_SECRET`
+- **Rate Limiting**: 200 req/15min na API geral, 10/15min no login, 5/h no contato
+- **CSRF**: Verificação de Origin/Referer em métodos POST/PUT/DELETE
+- **Helmet**: Headers de segurança (HSTS, frameguard, referrerPolicy)
+- **CORS**: Configurável via `CORS_ORIGIN`
+- **Validação Zod**: Schemas estritos para todas as entradas de usuário
+- **Cookies httpOnly**: Token JWT também enviado como cookie seguro
 
-### 7. Arquivos Chave e Suas Funções
+## Service Worker (`sw.js`)
 
-| Arquivo | Função |
-|---------|--------|
-| `index.html` | Página principal e único JS/CSS; todo o frontend em um arquivo |
-| `biblioteca.html` | Página "Biblioteca" estática com accordions para leitura aprofundada |
-| `404.html` | Página de erro 404 |
-| `database/dados-unificados.json` | **Fonte única de dados** — todos os conteúdos do site |
-| `database/schema.sql` | Schema do banco MySQL (tabelas, índices, views) |
-| `php/config.php` | Classe Database (singleton MySQLi) + helpers `response()` e `getJsonInput()` |
-| `php/config_mysqli.php` | Duplicata de config.php |
-| `php/api/categorias.php` | API REST: CRUD de categorias (só GET implementado) |
-| `php/api/saberes.php` | API REST: CRUD completo de saberes |
-| `php/api/praticas.php` | API REST: CRUD completo de práticas |
-| `import-data.php` | Script CLI para importar JSON para MySQL |
-| `import-data-mysqli.php` | Script de import alternativo |
-| `import-data-mysqli-v2.php` | Script de import alternativo v2 |
-| `midia/audios/` | Arquivos de áudio (links simbólicos para `/home/lzntn/Público/audios-lz/`) |
-| `midia/videos/` | Arquivos de vídeo (links simbólicos para `/home/lzntn/Público/videos-lz/`) |
-| `sitemap.xml` | Sitemap para SEO |
+| Estratégia | Aplicação |
+|-----------|-----------|
+| **Cache First** | Assets estáticos (CSS, JS, fontes, imagens), Cloudinary, Appwrite CDN |
+| **Network First** | API calls (`/api/*`), navegação, fallback para cache |
+| **Network Only** | Rotas admin (login, logout) |
 
----
+## Ambiente de Desenvolvimento
 
-### Resumo da Arquitetura
-
-```
-                   Modo Produção (Padrão)
-                   ======================
-  Navegador  ---fetch()--->  database/dados-unificados.json  (arquivo JSON estático)
-     |                            |
-     |  JavaScript puro           |
-     |  - Filtra localmente       |
-     |  - Busca localmente        |
-     |  - Renderiza com innerHTML |
-     v                            |
-  DOM atualizado                  |
-
-                   Modo Servidor (Opcional)
-                   =========================
-  Cliente HTTP  --->  php/api/*.php  --->  MySQL (saberes_de_coracao)
-                      (REST API, JSON responses)
+```bash
+npm run dev     # Servidor com --watch (reinicia automático)
+npm start       # Servidor em produção
+npm test        # Vitest (testes unitários + integração)
+npm run migrate # Migrar JSON → Appwrite
 ```
 
-**Principais conclusões:**
+## Migração do Projeto
 
-1. **Não há framework frontend** — é HTML/CSS/JS puro.
-2. **Não há framework backend** — PHP vanilla com MySQLi.
-3. **Comunicação cliente-servidor**: O modo padrão não requer servidor (fetch de JSON estático). O backend PHP é opcional.
-4. **Sem autenticação**: Site completamente público.
-5. **Arquivo único**: `index.html` contém todo o CSS e JS do site principal.
-6. **Dados centralizados**: `database/dados-unificados.json` é a fonte de dados definitiva.
+### v3.0 → v4.0 (Arquitetura Atual)
+
+| Componente | v3.0 (Legado) | v4.0 (Atual) |
+|-----------|---------------|--------------|
+| Backend | PHP + MySQL | Node.js + Express 5 |
+| Dados | MySQL + JSON | JSON (fallback) + Appwrite |
+| Frontend | HTML único (1031 linhas) | HTML modular + JS modular |
+| Auth | Nenhuma | JWT + cookies |
+| Cache | Nenhum | localStorage + Service Worker |
+| Validação | Nenhuma | Zod (backend) |
+| PWA | Nenhum | Manifest + Service Worker |
+| Email | Nenhum | EmailJS |
+| Mídia | Local | Cloudinary |
+
+## Contagem de Arquivos
+
+| Categoria | Arquivos | Linhas |
+|-----------|----------|--------|
+| Frontend JS | 7 | ~2.800 |
+| CSS | 1 | 2.714 |
+| Backend | 1 app.js + 3 libs | ~750 |
+| Dados JSON | 1 | 4.508 |
+| Scripts | 4 | ~613 |
+| Testes | 2 | ~286 |
+| Documentação | 6 | ~3.400 |
+| **Total** | **~25** | **~15.000** |
