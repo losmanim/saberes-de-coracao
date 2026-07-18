@@ -84,11 +84,24 @@ export async function listarCategorias() {
   return result.documents;
 }
 
+function formatarMidia(doc) {
+  return {
+    id: doc.$id,
+    $id: doc.$id,
+    titulo: doc.titulo || '',
+    tipo: doc.tipo || 'audio',
+    arquivo: doc.arquivo || '',
+    tags: doc.tags || [],
+    saberes_relacionados: doc.saberes_relacionados || [],
+  };
+}
+
 export async function listarMidia() {
   const db = getDB(getClient(true));
   const result = await db.listDocuments(DB_ID(), COL_MIDIA(), [Query.limit(100)]);
-  const audios = result.documents.filter(m => m.tipo === 'audio');
-  const videos = result.documents.filter(m => m.tipo === 'video');
+  const formatada = result.documents.map(formatarMidia);
+  const audios = formatada.filter(m => m.tipo === 'audio');
+  const videos = formatada.filter(m => m.tipo === 'video');
   return { audios, videos };
 }
 
