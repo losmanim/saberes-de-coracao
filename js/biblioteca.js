@@ -1,5 +1,3 @@
-import { $, CAT_EMOJIS, CAT_BADGE, CAT_NOME, normalizarSaber, debounce, aplicarTema } from './utils.js';
-
 const NAV_MAP = { gnose: 1, praticas: 2, ciencia: 3, jornada: 4, vida: 5, apocrifos: 6 };
 let dados = null;
 
@@ -72,9 +70,9 @@ function renderizarSecao(categoriaId) {
   const secao = document.getElementById('sec-' + Object.keys(NAV_MAP).find(k => NAV_MAP[k] === categoriaId));
   if (!secao || !dados) return;
 
-  const saberes = dados.saberes.filter(s => Number(s.categoria_id) === categoriaId).map(normalizarSaber);
+  const saberes = dados.saberes.filter(s => Number(s.categoria_id) === categoriaId).map(window.Utils.normalizarSaber);
   if (!saberes.length) {
-    $(secao, '<div class="empty-state" style="padding:2rem;text-align:center"><p>Nenhum saber nesta categoria.</p></div>');
+    window.Utils.$(secao, '<div class="empty-state" style="padding:2rem;text-align:center"><p>Nenhum saber nesta categoria.</p></div>');
     return;
   }
 
@@ -82,11 +80,11 @@ function renderizarSecao(categoriaId) {
   saberes.forEach(saber => {
     html += `<div class="accordion">
       <button class="accordion-header" onclick="window.toggleAccordion(this)" aria-expanded="false">
-        <span>${CAT_EMOJIS[saber.categoria_id] || '📖'} ${saber.titulo}</span>
+        <span>${window.Utils.CAT_EMOJIS[saber.categoria_id] || '📖'} ${saber.titulo}</span>
         <span class="accordion-arrow">▼</span>
       </button>
       <div class="accordion-content"><div class="content">
-        <span class="badge ${CAT_BADGE[saber.categoria_id] || ''}">${CAT_NOME[saber.categoria_id] || ''}</span>
+        <span class="badge ${window.Utils.CAT_BADGE[saber.categoria_id] || ''}">${window.Utils.CAT_NOME[saber.categoria_id] || ''}</span>
         ${saber.tags.map(t => `<span class="tag">#${t}</span>`).join(' ')}
         <p style="margin-top:0.8rem;color:var(--cor-texto-sec)"><em>${saber.descricao}</em></p>
         ${saber.fonte ? `<p style="font-size:0.85rem;color:var(--cor-texto-sec)">📖 ${saber.fonte} | ⏱️ ${saber.duracao || '-'} min | 🏷️ ${saber.nivel || '-'}</p>` : ''}
@@ -97,14 +95,14 @@ function renderizarSecao(categoriaId) {
     </div>`;
   });
 
-  $(secao, html);
+  window.Utils.$(secao, html);
 }
 
 function renderizarTodasSecoes() {
   Object.values(NAV_MAP).forEach(catId => renderizarSecao(catId));
 }
 
-const buscarNaBiblioteca = debounce(function (termo) {
+const buscarNaBiblioteca = window.Utils.debounce(function (termo) {
   const info = document.getElementById('buscaInfo');
   if (!termo.trim()) {
     info.textContent = '';
@@ -126,7 +124,7 @@ const buscarNaBiblioteca = debounce(function (termo) {
 }, 250);
 
 document.addEventListener('DOMContentLoaded', async () => {
-  aplicarTema();
+  window.Utils.aplicarTema();
   await carregarDados();
   if (dados) renderizarTodasSecoes();
 

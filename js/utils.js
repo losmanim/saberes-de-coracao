@@ -1,13 +1,13 @@
-export const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
-export const CAT_BADGE = {1: 'badge-espirito', 2: 'badge-pratica', 3: 'badge-ciencia', 4: 'badge-jornada', 5: 'badge-vida', 6: 'badge-apocrifo'};
-export const CAT_NOME = {1: 'ESPÍRITO', 2: 'PRÁTICA', 3: 'CIÊNCIA', 4: 'JORNADA', 5: 'VIDA VERDADEIRA', 6: 'APÓCRIFOS'};
+const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
+const CAT_BADGE = {1: 'badge-espirito', 2: 'badge-pratica', 3: 'badge-ciencia', 4: 'badge-jornada', 5: 'badge-vida', 6: 'badge-apocrifo'};
+const CAT_NOME = {1: 'ESPÍRITO', 2: 'PRÁTICA', 3: 'CIÊNCIA', 4: 'JORNADA', 5: 'VIDA VERDADEIRA', 6: 'APÓCRIFOS'};
 
-export function $(el, html) {
+function $(el, html) {
   el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(html) : html;
   return el;
 }
 
-export function normalizarSaber(saber) {
+function normalizarSaber(saber) {
   return {
     ...saber,
     categoria_id: Number(saber.categoria_id),
@@ -18,7 +18,7 @@ export function normalizarSaber(saber) {
   };
 }
 
-export function mostrarToast(mensagem, tipo) {
+function mostrarToast(mensagem, tipo) {
   const container = document.getElementById('toastContainer') || (() => {
     const c = document.createElement('div');
     c.id = 'toastContainer';
@@ -36,7 +36,7 @@ export function mostrarToast(mensagem, tipo) {
   setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
 }
 
-export function tratarErro(erro, contexto = 'Operação') {
+function tratarErro(erro, contexto = 'Operação') {
   console.error(`[${contexto}] Erro:`, erro);
   let mensagem = 'Ocorreu um erro inesperado.';
   if (erro instanceof TypeError) mensagem = 'Erro de processamento de dados.';
@@ -51,7 +51,7 @@ export function tratarErro(erro, contexto = 'Operação') {
   return mensagem;
 }
 
-export function debounce(fn, delay = 300) {
+function debounce(fn, delay = 300) {
   let timer;
   return function (...args) {
     clearTimeout(timer);
@@ -59,16 +59,13 @@ export function debounce(fn, delay = 300) {
   };
 }
 
-export function toggleTema() {
+function toggleTema() {
   document.body.classList.toggle('modo-claro');
   localStorage.setItem('tema', document.body.classList.contains('modo-claro') ? 'claro' : 'escuro');
 }
 
-export function aplicarTema() {
+function aplicarTema() {
   if (localStorage.getItem('tema') === 'claro') document.body.classList.add('modo-claro');
 }
 
-// Backward compatibility for non-module scripts
-if (typeof window !== 'undefined') {
-  window.Utils = { CAT_EMOJIS, CAT_BADGE, CAT_NOME, $, normalizarSaber, mostrarToast, tratarErro, debounce, toggleTema, aplicarTema };
-}
+window.Utils = { CAT_EMOJIS, CAT_BADGE, CAT_NOME, $, normalizarSaber, mostrarToast, tratarErro, debounce, toggleTema, aplicarTema };
