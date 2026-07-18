@@ -162,22 +162,25 @@ async function abrirTextoCompleto(id) {
   if (!texto) return;
   document.getElementById('modalTitulo').textContent = texto.titulo;
   const faceis = apocrifos_fontScale;
-  let html = '<div class="texto-toolbar">'
+  var baseHtml = '<div class="texto-toolbar">'
     + '<button class="btn-icon" data-action="ajustar-fonte" data-delta="-10" title="Diminuir fonte">A-</button>'
     + '<button class="btn-icon" data-action="ajustar-fonte" data-delta="10" title="Aumentar fonte">A+</button>'
     + '<button class="btn-icon" data-action="ajustar-fonte" data-delta="0" title="Resetar fonte">A</button>'
     + '<button class="btn-icon" data-action="imprimir" title="Imprimir">🖨️</button>'
     + '</div>';
   if (texto.descricao) {
-    html += '<p class="descricao-modal"><strong>' + texto.descricao + '</strong></p>';
+    baseHtml += '<p class="descricao-modal"><strong>' + texto.descricao + '</strong></p>';
   }
-  html += '<div id="apocrifoLoading" style="text-align:center;padding:2rem"><div class="loading-spinner"></div><p style="color:var(--cor-texto-sec);margin-top:0.5rem">Carregando texto...</p></div>';
+  var html = baseHtml + '<div id="apocrifoLoading" style="text-align:center;padding:2rem"><div class="loading-spinner"></div><p style="color:var(--cor-texto-sec);margin-top:0.5rem">Carregando texto...</p></div>';
   window.Utils.$(document.getElementById('modalContent'), html);
   abrirModal();
   salvarProgressoLeitura(id);
   try {
     if (!texto.conteudo || !texto.conteudo.texto_integral) {
-      const res = await fetch('/api/saberes/' + id + '/conteudo');
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch('/api/saberes/' + id + '/conteudo', { signal: controller.signal });
+      clearTimeout(timeout);
       if (res.ok) {
         const data = await res.json();
         texto.conteudo = data.conteudo;
@@ -185,22 +188,20 @@ async function abrirTextoCompleto(id) {
     }
   } catch (e) {}
   const conteudo = texto.conteudo || {};
-  const loadingEl = document.getElementById('apocrifoLoading');
-  if (loadingEl) loadingEl.remove();
   if (conteudo.texto_integral) {
-    html += '<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:' + faceis + '%">';
+    baseHtml += '<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:' + faceis + '%">';
     var linhas = conteudo.texto_integral.split('\n');
     var buffer = [];
     function flushBuffer() {
       if (!buffer.length) return;
       var primeira = buffer[0];
       if (/^cap[ií]tulo\s/i.test(primeira)) {
-        html += '<h3>' + buffer.join('<br>') + '</h3>';
+        baseHtml += '<h3>' + buffer.join('<br>') + '</h3>';
       } else if (primeira.length < 60 && primeira === primeira.toUpperCase() && primeira.length > 3) {
-        html += '<h4>' + primeira + '</h4>';
-        if (buffer.length > 1) html += '<p>' + buffer.slice(1).join('<br>') + '</p>';
+        baseHtml += '<h4>' + primeira + '</h4>';
+        if (buffer.length > 1) baseHtml += '<p>' + buffer.slice(1).join('<br>') + '</p>';
       } else {
-        html += '<p>' + buffer.join('<br>') + '</p>';
+        baseHtml += '<p>' + buffer.join('<br>') + '</p>';
       }
       buffer = [];
     }
@@ -210,13 +211,13 @@ async function abrirTextoCompleto(id) {
       flushBuffer();
     }
     flushBuffer();
-    html += '</div>';
+    baseHtml += '</div>';
   }
   if (Array.isArray(texto.tags) && texto.tags.length > 0) {
-    html += '<div class="card-tags" style="margin-top:1.5rem;border-top:1px solid var(--cor-borda);padding-top:1rem">'
+    baseHtml += '<div class="card-tags" style="margin-top:1.5rem;border-top:1px solid var(--cor-borda);padding-top:1rem">'
       + texto.tags.map(t => '<span class="tag">#' + t + '</span>').join('') + '</div>';
   }
-  window.Utils.$(document.getElementById('modalContent'), html);
+  window.Utils.$(document.getElementById('modalContent'), baseHtml);
 }
 
 function ajustarFonte(delta) {

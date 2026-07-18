@@ -1439,7 +1439,6 @@ body.player-active .toast-container { bottom: 130px; }
     background: var(--cor-destaque);
     color: #fff;
     border: none;
-    flex: 1;
     min-width: 150px;
 }
 
