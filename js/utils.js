@@ -1,3 +1,6 @@
+(function () {
+'use strict';
+
 const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
 const CAT_BADGE = {1: 'badge-espirito', 2: 'badge-pratica', 3: 'badge-ciencia', 4: 'badge-jornada', 5: 'badge-vida', 6: 'badge-apocrifo'};
 const CAT_NOME = {1: 'ESPÍRITO', 2: 'PRÁTICA', 3: 'CIÊNCIA', 4: 'JORNADA', 5: 'VIDA VERDADEIRA', 6: 'APÓCRIFOS'};
@@ -69,3 +72,4 @@ function aplicarTema() {
 }
 
 window.Utils = { CAT_EMOJIS, CAT_BADGE, CAT_NOME, $, normalizarSaber, mostrarToast, tratarErro, debounce, toggleTema, aplicarTema };
+})();

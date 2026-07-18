@@ -1,5 +1,5 @@
-const CACHE = 'saberes-v3';
-const CACHE_DYNAMIC = 'saberes-dinamico-v3';
+const CACHE = 'saberes-v4';
+const CACHE_DYNAMIC = 'saberes-dinamico-v4';
 
 const PRECACHE = [
   '/',
@@ -8,6 +8,7 @@ const PRECACHE = [
   '/apocrifos.html',
   '/404.html',
   '/css/style.css',
+  '/js/utils.js',
   '/js/app.js',
   '/js/features.js',
   '/data/dados-unificados.json',

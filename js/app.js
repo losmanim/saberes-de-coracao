@@ -744,6 +744,12 @@ function filtrarCategoria(cat) {
 // Renderização de Mídia
 // =============================================
 
+function normalizarTags(item) {
+    if (Array.isArray(item.tags)) return item.tags;
+    if (typeof item.tags === 'string') return item.tags.split(',').map(t => t.trim()).filter(Boolean);
+    return [];
+}
+
 function renderizarMidia() {
     const grid = document.getElementById('cardsGrid');
     grid.className = 'midia-grid';
@@ -757,7 +763,7 @@ function renderizarMidia() {
                 <div class="midia-icon">🎧</div>
                 <div class="midia-titulo">${a.titulo}</div>
                 <div class="midia-tags">
-                    ${a.tags.map(t => `<span class="midia-tag">#${t}</span>`).join('')}
+                    ${normalizarTags(a).map(t => `<span class="midia-tag">#${t}</span>`).join('')}
                 </div>
             </div>
         `).join('');
@@ -770,7 +776,7 @@ function renderizarMidia() {
                 <div class="midia-icon">🎬</div>
                 <div class="midia-titulo">${v.titulo}</div>
                 <div class="midia-tags">
-                    ${v.tags.map(t => `<span class="midia-tag">#${t}</span>`).join('')}
+                    ${normalizarTags(v).map(t => `<span class="midia-tag">#${t}</span>`).join('')}
                 </div>
             </div>
         `).join('');
