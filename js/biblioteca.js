@@ -9,18 +9,7 @@ window.mostrarSecao = function (id, el) {
   if (el) el.classList.add('active');
 };
 
-window.toggleAccordion = function (header) {
-  const content = header.nextElementSibling;
-  const isActive = header.classList.contains('active');
-  header.classList.toggle('active');
-  content.classList.toggle('active');
-  header.setAttribute('aria-expanded', !isActive);
-};
-
-window.toggleTema = function () {
-  document.body.classList.toggle('modo-claro');
-  localStorage.setItem('tema', document.body.classList.contains('modo-claro') ? 'claro' : 'escuro');
-};
+window.toggleAccordion = window.Utils.toggleAccordion;
 
 async function carregarDados() {
   try {

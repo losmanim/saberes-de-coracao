@@ -1,15 +1,10 @@
-// =============================================
-// Sanitização XSS
-// =============================================
-
-function $(el, htmlContent) {
-  el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
-  return el;
-}
-
-// =============================================
-// Constantes
-// =============================================
+const $ = window.Utils.$;
+const CAT_EMOJIS = window.Utils.CAT_EMOJIS;
+const normalizarSaber = window.Utils.normalizarSaber;
+const normalizarTags = window.Utils.normalizarTags;
+const mostrarToast = window.Utils.mostrarToast;
+const tratarErro = window.Utils.tratarErro;
+const toggleTema = window.Utils.toggleTema;
 
 const DADOS_CACHE_KEY = 'saberes_cache';
 const DADOS_CACHE_VERSAO_KEY = 'saberes_cache_versao';
@@ -17,28 +12,6 @@ const FAVORITOS_KEY = 'saberes_favoritos';
 const SABER_DIA_KEY = 'saberes_saber_dia';
 const CONTINUE_KEY = 'saberes_continue';
 const ABERTOS_KEY = 'saberes_abertos';
-
-const CAT_EMOJIS = {1: '🜂', 2: '🧠', 3: '🔬', 4: '🧭', 5: '∞', 6: '📜'};
-
-// =============================================
-// Normalização de Dados (Appwrite compatibility)
-// =============================================
-
-function normalizarSaber(saber) {
-    return {
-        ...saber,
-        categoria_id: Number(saber.categoria_id),
-        tags: Array.isArray(saber.tags) ? saber.tags : 
-              typeof saber.tags === 'string' ? saber.tags.split(',').map(t => t.trim()) : 
-              [],
-        praticas: Array.isArray(saber.praticas) ? saber.praticas : [],
-        conexoes: Array.isArray(saber.conexoes) ? saber.conexoes : [],
-    };
-}
-
-// =============================================
-// Estado Global
-// =============================================
 
 let dados = null;
 let categoriaAtual = 'all';
@@ -216,57 +189,6 @@ function marcarSaberAberto(id) {
         abertos.push(id);
         localStorage.setItem(ABERTOS_KEY, JSON.stringify(abertos));
     }
-}
-
-// =============================================
-// Error Handler Global
-// =============================================
-
-function tratarErro(erro, contexto = 'Operação') {
-    console.error(`[${contexto}] Erro:`, erro);
-    
-    let mensagem = 'Ocorreu um erro inesperado.';
-    
-    if (erro instanceof TypeError) {
-        mensagem = 'Erro de processamento de dados.';
-    } else if (erro instanceof SyntaxError) {
-        mensagem = 'Erro ao interpretar os dados recebidos.';
-    } else if (erro.message) {
-        if (erro.message.includes('fetch')) {
-            mensagem = 'Erro de conexão. Verifique sua internet.';
-        } else if (erro.message.includes('HTTP 4')) {
-            mensagem = 'Recurso não encontrado ou dados inválidos.';
-        } else if (erro.message.includes('HTTP 5')) {
-            mensagem = 'Erro no servidor. Tente novamente mais tarde.';
-        } else {
-            mensagem = erro.message;
-        }
-    }
-    
-    mostrarToast(`❌ ${mensagem}`, 'erro');
-    return mensagem;
-}
-
-// =============================================
-// Toast Notifications
-// =============================================
-
-function mostrarToast(mensagem, tipo) {
-    const container = document.getElementById('toastContainer') || (() => {
-        const c = document.createElement('div');
-        c.id = 'toastContainer';
-        c.className = 'toast-container';
-        document.body.appendChild(c);
-        return c;
-    })();
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.setAttribute('role', 'status');
-    if (tipo === 'sucesso') toast.style.color = '#7ee787';
-    else if (tipo === 'erro') toast.style.color = '#f85149';
-    toast.textContent = mensagem;
-    container.appendChild(toast);
-    setTimeout(() => { if (toast.parentNode) toast.remove(); }, 3000);
 }
 
 // =============================================
@@ -744,12 +666,6 @@ function filtrarCategoria(cat) {
 // Renderização de Mídia
 // =============================================
 
-function normalizarTags(item) {
-    if (Array.isArray(item.tags)) return item.tags;
-    if (typeof item.tags === 'string') return item.tags.split(',').map(t => t.trim()).filter(Boolean);
-    return [];
-}
-
 function renderizarMidia() {
     const grid = document.getElementById('cardsGrid');
     grid.className = 'midia-grid';
@@ -802,25 +718,15 @@ function abrirMidia(tipo, id) {
     const item = lista ? lista.find(m => m.id === id) : null;
     if (!item) return;
 
-    // Verifica se o arquivo já é uma URL completa (Cloudinary)
-    let src;
-    if (item.arquivo.startsWith('http')) {
-        src = item.arquivo;
-    } else {
-        const baseDir = window.midiaBaseUrl;
-        const partes = item.arquivo.split('/');
-        const arquivoCod = partes.map(encodeURIComponent).join('/');
-        src = baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
-    }
-
     document.getElementById('modalTitulo').textContent = item.titulo;
 
     let html = '';
 
     if (tipo === 'video') {
+        const src = window.Utils.buildMidiaUrl(item, tipo);
         html += `
             <div class="player-container" style="margin-bottom:1rem">
-                <video controls style="width:100%;max-height:70vh;border-radius:var(--radius);background:#000">
+                <video id="playerVideo" controls autoplay style="width:100%;max-height:70vh;border-radius:var(--radius);background:#000">
                     <source src="${src}" type="video/${src.endsWith('.mkv') ? 'x-matroska' : 'mp4'}">
                     Seu navegador não suporta vídeo.
                 </video>
@@ -963,12 +869,7 @@ async function abrirSaber(id) {
             }
         }
 
-        if (Array.isArray(saber.praticas) && saber.praticas.length > 0) {
-            html += `<h3>🧘 Práticas</h3>`;
-            saber.praticas.forEach(p => {
-                html += `<div class="pratica-box"><h4>${p.titulo}</h4><p>${p.instrucoes.replace(/\n/g, '<br>')}</p><p style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>⏱️ ${p.duracao} min | 🔄 ${p.frequencia}</em></p></div>`;
-            });
-        }
+        html += window.Utils.renderizarPraticas(saber.praticas);
 
         if (Array.isArray(saber.conexoes) && saber.conexoes.length > 0) {
             const conectados = saber.conexoes.map(cid => {
@@ -1112,12 +1013,6 @@ function toggleBusca() {
     if (!isVisible) {
         document.getElementById('buscaInput').focus();
     }
-}
-
-function toggleTema() {
-    document.body.classList.toggle('modo-claro');
-    const tema = document.body.classList.contains('modo-claro') ? 'claro' : 'escuro';
-    localStorage.setItem('tema', tema);
 }
 
 function saberAleatorio() {

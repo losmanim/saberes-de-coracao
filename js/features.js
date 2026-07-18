@@ -1,10 +1,7 @@
 (function () {
   'use strict';
 
-  function $(el, htmlContent) {
-    el.innerHTML = window.DOMPurify ? DOMPurify.sanitize(htmlContent) : htmlContent;
-    return el;
-  }
+  const $ = window.Utils.$;
 
   // =============================================
   // Contato (EmailJS + Appwrite Database)

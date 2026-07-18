@@ -21,6 +21,26 @@ function normalizarSaber(saber) {
   };
 }
 
+function normalizarTags(item) {
+  if (Array.isArray(item.tags)) return item.tags;
+  if (typeof item.tags === 'string') return item.tags.split(',').map(t => t.trim()).filter(Boolean);
+  return [];
+}
+
+function buildMidiaUrl(item, tipo) {
+  if (item.arquivo.startsWith('http')) {
+    try {
+      return new URL(item.arquivo).toString();
+    } catch {
+      return encodeURI(item.arquivo);
+    }
+  }
+  const baseDir = window.midiaBaseUrl || '';
+  const partes = item.arquivo.split('/');
+  const arquivoCod = partes.map(encodeURIComponent).join('/');
+  return baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+}
+
 function mostrarToast(mensagem, tipo) {
   const container = document.getElementById('toastContainer') || (() => {
     const c = document.createElement('div');
@@ -71,5 +91,31 @@ function aplicarTema() {
   if (localStorage.getItem('tema') === 'claro') document.body.classList.add('modo-claro');
 }
 
-window.Utils = { CAT_EMOJIS, CAT_BADGE, CAT_NOME, $, normalizarSaber, mostrarToast, tratarErro, debounce, toggleTema, aplicarTema };
+function toggleAccordion(header) {
+  const content = header.nextElementSibling;
+  const isActive = header.classList.contains('active');
+  header.classList.toggle('active');
+  content.classList.toggle('active');
+  if (!isActive) setTimeout(() => content.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function renderizarPraticas(praticas) {
+  if (!Array.isArray(praticas) || !praticas.length) return '';
+  let html = '<h3>🧘 Práticas</h3>';
+  praticas.forEach(p => {
+    html += `<div class="pratica-box"><h4>${p.titulo}</h4><p>${p.instrucoes.replace(/\n/g, '<br>')}</p>`;
+    if (p.duracao || p.frequencia) {
+      html += `<p style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>⏱️ ${p.duracao || '-'} min | 🔄 ${p.frequencia || '-'}</em></p>`;
+    }
+    html += '</div>';
+  });
+  return html;
+}
+
+window.Utils = {
+  CAT_EMOJIS, CAT_BADGE, CAT_NOME,
+  $, normalizarSaber, normalizarTags, buildMidiaUrl,
+  mostrarToast, tratarErro, debounce, toggleTema, aplicarTema,
+  toggleAccordion, renderizarPraticas,
+};
 })();

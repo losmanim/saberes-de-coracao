@@ -22,6 +22,7 @@ let apocrifos_categoria = 'all';
 let apocrifos_fontScale = 100;
 
 document.addEventListener('DOMContentLoaded', () => {
+  carregarFonteSalva();
   carregarApocrifos().then(() => {
     if (location.hash) {
       const id = location.hash.replace('#', '');
@@ -122,13 +123,7 @@ function renderizarTextos(textos) {
   container.innerHTML = html;
 }
 
-function toggleAccordion(header) {
-  const content = header.nextElementSibling;
-  const isActive = header.classList.contains('active');
-  header.classList.toggle('active');
-  content.classList.toggle('active');
-  if (!isActive) setTimeout(() => content.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-}
+const toggleAccordion = window.Utils.toggleAccordion;
 
 function filtrarCategoria(cat) {
   apocrifos_categoria = cat;
@@ -179,11 +174,18 @@ function abrirTextoCompleto(id) {
   }
   if (conteudo.texto_integral) {
     html += '<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:' + faceis + '%">';
-    html += conteudo.texto_integral.split('\n').filter(p => p.trim()).map(p => {
-      const trimmed = p.trim();
-      if (/^cap[ií]tulo\s/i.test(trimmed)) return '<h3>' + trimmed + '</h3>';
-      if (trimmed.length < 60 && trimmed === trimmed.toUpperCase() && trimmed.length > 3) return '<h4>' + trimmed + '</h4>';
-      return '<p>' + trimmed + '</p>';
+    html += conteudo.texto_integral.split(/\n{2,}/).map(bloco => {
+      bloco = bloco.trim();
+      if (!bloco) return '';
+      const linhas = bloco.split('\n').map(l => l.trim()).filter(Boolean);
+      const primeira = linhas[0];
+      if (/^cap[ií]tulo\s/i.test(primeira)) {
+        return '<h3>' + linhas.join('<br>') + '</h3>';
+      }
+      if (primeira.length < 60 && primeira === primeira.toUpperCase() && primeira.length > 3) {
+        return '<h4>' + primeira + '</h4>' + (linhas.slice(1).length ? '<p>' + linhas.slice(1).join('<br>') + '</p>' : '');
+      }
+      return '<p>' + linhas.join('<br>') + '</p>';
     }).join('');
     html += '</div>';
   }
@@ -191,7 +193,7 @@ function abrirTextoCompleto(id) {
     html += '<div class="card-tags" style="margin-top:1.5rem;border-top:1px solid var(--cor-borda);padding-top:1rem">'
       + texto.tags.map(t => '<span class="tag">#' + t + '</span>').join('') + '</div>';
   }
-  document.getElementById('modalContent').innerHTML = html;
+  window.Utils.$(document.getElementById('modalContent'), html);
   abrirModal();
   salvarProgressoLeitura(id);
 }
@@ -200,6 +202,14 @@ function ajustarFonte(delta) {
   apocrifos_fontScale = delta === 0 ? 100 : Math.max(60, Math.min(200, apocrifos_fontScale + delta));
   const el = document.getElementById('textoIntegral');
   if (el) el.style.fontSize = apocrifos_fontScale + '%';
+  try { localStorage.setItem('apocrifos_fonte', apocrifos_fontScale); } catch (e) {}
+}
+
+function carregarFonteSalva() {
+  try {
+    const salva = parseInt(localStorage.getItem('apocrifos_fonte'), 10);
+    if (salva >= 60 && salva <= 200) apocrifos_fontScale = salva;
+  } catch (e) {}
 }
 
 function salvarProgressoLeitura(id) {

@@ -5,11 +5,7 @@ const Player = {
     isPlaying: false,
 
     _buildSrc(item, tipo) {
-        if (item.arquivo.startsWith('http')) return item.arquivo;
-        const baseDir = window.midiaBaseUrl;
-        const partes = item.arquivo.split('/');
-        const arquivoCod = partes.map(encodeURIComponent).join('/');
-        return baseDir + '/' + (tipo === 'audio' ? 'audios' : 'videos') + '/' + arquivoCod;
+        return window.Utils.buildMidiaUrl(item, tipo);
     },
 
     init() {
