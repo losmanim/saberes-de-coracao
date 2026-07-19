@@ -46,8 +46,9 @@ function saberDoDia() {
     }
 
     if (!escolha) {
-        const idx = Math.floor(Math.random() * dados.saberes.length);
-        escolha = dados.saberes[idx];
+        const saberesPrincipais = dados.saberes.filter(s => s.categoria_id !== 6);
+        const idx = Math.floor(Math.random() * saberesPrincipais.length);
+        escolha = saberesPrincipais[idx];
         citacaoUsar = extrairCitacaoImpactante(escolha);
         localStorage.setItem(SABER_DIA_KEY, JSON.stringify({ data: hoje, id: escolha.id, citacao: citacaoUsar }));
     }
@@ -282,7 +283,7 @@ function mudarPagina(delta) {
 function obterSaberesFiltrados() {
     if (!dados || !dados.saberes) return [];
     todosSaberes = dados.saberes.map(normalizarSaber);
-    if (categoriaAtual === 'all') return todosSaberes;
+    if (categoriaAtual === 'all') return todosSaberes.filter(s => s.categoria_id !== 6);
     if (categoriaAtual === 'fav') {
         const favs = getFavoritos();
         return todosSaberes.filter(s => favs.includes(s.id));
@@ -549,7 +550,7 @@ function animarContagem(el, alvo) {
 
 function atualizarEstatisticas() {
     if (!dados) return;
-    const nSaberes = dados.saberes ? dados.saberes.length : 0;
+    const nSaberes = dados.saberes ? dados.saberes.filter(s => s.categoria_id !== 6).length : 0;
     const nPraticas = dados.praticas ? dados.praticas.length : 0;
     const nMidia = (dados.midia ? (dados.midia.audios ? dados.midia.audios.length : 0) : 0) +
         (dados.midia ? (dados.midia.videos ? dados.midia.videos.length : 0) : 0);
@@ -778,7 +779,7 @@ async function abrirSaber(id) {
 
         // Atualiza navegação
         const saberesDoContexto = categoriaAtual === 'all'
-            ? dados.saberes
+            ? dados.saberes.filter(s => s.categoria_id !== 6)
             : dados.saberes.filter(s => String(s.categoria_id) === categoriaAtual);
         const saberIdx = saberesDoContexto.findIndex(s => s.id === id);
         const prevSaber = saberIdx > 0 ? saberesDoContexto[saberIdx - 1] : null;
@@ -983,8 +984,10 @@ function toggleBusca() {
 
 function saberAleatorio() {
     if (!dados || !dados.saberes || dados.saberes.length === 0) return;
-    const idx = Math.floor(Math.random() * dados.saberes.length);
-    abrirSaber(dados.saberes[idx].id);
+    const saberesPrincipais = dados.saberes.filter(s => s.categoria_id !== 6);
+    if (saberesPrincipais.length === 0) return;
+    const idx = Math.floor(Math.random() * saberesPrincipais.length);
+    abrirSaber(saberesPrincipais[idx].id);
 }
 
 // =============================================

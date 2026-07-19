@@ -93,6 +93,15 @@ function renderizarBotoesCategoria() {
   nav.innerHTML = html;
 }
 
+function renderizarConteudoApocrifo(texto) {
+  if (!texto.conteudo) return '';
+  let html = '';
+  for (const [key, val] of Object.entries(texto.conteudo)) {
+    if (window.contentHandlers?.[key]) html += window.contentHandlers[key](val);
+  }
+  return html;
+}
+
 function renderizarTextos(textos) {
   const container = document.getElementById('apocrifosContainer');
   if (!textos || textos.length === 0) {
@@ -111,8 +120,9 @@ function renderizarTextos(textos) {
       + '<div class="accordion-content">'
       + '<div class="content">'
       + '<p><strong>' + (texto.preview || texto.descricao || '') + '</strong></p>'
+      + renderizarConteudoApocrifo(texto)
       + '<div class="flex-wrap" style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap">'
-      + '<button class="pilar-btn active btn-ler" data-saber-id="' + texto.id + '" data-action="abrir-texto">📖 Ler texto completo</button>'
+      + '<button class="pilar-btn active btn-ler" data-saber-id="' + texto.id + '" data-action="abrir-texto">📖 Ler em tela cheia</button>'
       + '<button class="pilar-btn" data-saber-id="' + texto.id + '" data-action="compartilhar-texto">🔗 Compartilhar</button>'
       + '</div>'
       + '<div class="card-tags">'
