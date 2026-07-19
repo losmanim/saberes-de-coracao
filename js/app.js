@@ -14,13 +14,8 @@ const CONTINUE_KEY = 'saberes_continue';
 const ABERTOS_KEY = 'saberes_abertos';
 
 let dados = null;
-let categoriaAtual = 'all';
 let ultimoElementoFocado = null;
 let continueSaberId = null;
-let paginaAtual = 1;
-let itensPorPagina = 24;
-let totalPaginas = 1;
-let todosSaberes = [];
 
 // =============================================
 // Saber do Dia
@@ -120,20 +115,6 @@ function toggleFavorito(id, event) {
         btn.textContent = isFavorito(id) ? '❤️' : '🤍';
     });
 
-    if (categoriaAtual === 'fav' && !isFavorito(id)) {
-        const btn2 = document.querySelector(`.card-fav[data-id="${id}"]`);
-        if (btn2) {
-            const card = btn2.closest('.card');
-            if (card) {
-                card.remove();
-                const grid = document.getElementById('cardsGrid');
-                const remaining = grid.querySelectorAll('.card, .empty-state');
-                if (remaining.length === 0) {
-                    $(grid, '<div class="empty-state"><div class="empty-state-icon">💔</div><p>Nenhum favorito ainda</p><p style="font-size:0.8rem;color:var(--cor-texto-sec);margin-top:0.5rem">Clique no 🤍 nos cards para adicionar</p></div>');
-                }
-            }
-        }
-    }
 }
 
 // =============================================
@@ -226,61 +207,7 @@ function compartilharSaber(id) {
 // Paginação
 // =============================================
 
-function atualizarPaginacao() {
-    const pagination = document.getElementById('pagination');
-    const prevBtn = document.getElementById('prevPage');
-    const nextBtn = document.getElementById('nextPage');
-    const paginationInfo = document.getElementById('paginationInfo');
 
-    if (!pagination) return;
-
-    const saberesFiltrados = obterSaberesFiltrados();
-    totalPaginas = Math.ceil(saberesFiltrados.length / itensPorPagina);
-
-    if (totalPaginas <= 1) {
-        pagination.hidden = true;
-        return;
-    }
-
-    pagination.hidden = false;
-    prevBtn.disabled = paginaAtual === 1;
-    nextBtn.disabled = paginaAtual === totalPaginas;
-    paginationInfo.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
-}
-
-function mudarPagina(delta) {
-    const saberesFiltrados = obterSaberesFiltrados();
-    totalPaginas = Math.ceil(saberesFiltrados.length / itensPorPagina);
-    
-    const novaPagina = paginaAtual + delta;
-    if (novaPagina < 1 || novaPagina > totalPaginas) return;
-
-    paginaAtual = novaPagina;
-    const inicio = (paginaAtual - 1) * itensPorPagina;
-    const fim = inicio + itensPorPagina;
-    const saberesPagina = saberesFiltrados.slice(inicio, fim);
-
-    renderizarSaberes(saberesPagina);
-    atualizarPaginacao();
-    
-    // Scroll para o topo da grid
-    document.getElementById('cardsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function obterSaberesFiltrados() {
-    if (!dados || !dados.saberes) return [];
-    
-    todosSaberes = dados.saberes.map(normalizarSaber);
-
-    if (categoriaAtual === 'all') {
-        return todosSaberes;
-    } else if (categoriaAtual === 'fav') {
-        const favs = getFavoritos();
-        return todosSaberes.filter(s => favs.includes(s.id));
-    } else {
-        return todosSaberes.filter(s => String(s.categoria_id) === categoriaAtual);
-    }
-}
 
 // =============================================
 // Atalhos do Teclado
@@ -483,32 +410,18 @@ async function carregarDados() {
             if (dados && dados.saberes) dados.saberes = dados.saberes.map(normalizarSaber);
             salvarDadosCache(novosDados);
             atualizarEstatisticas();
-            // Buscar grid novamente após carregar dados
             const gridAtualizado = document.getElementById('cardsGrid');
             if (gridAtualizado) {
                 console.log('Dados carregados:', dados.saberes?.length, 'saberes');
-                // Aplicar paginação
-                const saberesFiltrados = obterSaberesFiltrados();
-                const inicio = (paginaAtual - 1) * itensPorPagina;
-                const fim = inicio + itensPorPagina;
-                const saberesPagina = saberesFiltrados.slice(inicio, fim);
-                renderizarSaberes(saberesPagina);
-                atualizarPaginacao();
+                renderizarSaberes(dados.saberes);
             }
             saberDoDia();
         } else {
             console.log('Dados em cache estão atualizados');
-            // Buscar grid novamente para cache atualizado
             const gridAtualizado = document.getElementById('cardsGrid');
             if (gridAtualizado) {
                 console.log('Renderizando do cache:', dados.saberes?.length, 'saberes');
-                // Aplicar paginação mesmo do cache
-                const saberesFiltrados = obterSaberesFiltrados();
-                const inicio = (paginaAtual - 1) * itensPorPagina;
-                const fim = inicio + itensPorPagina;
-                const saberesPagina = saberesFiltrados.slice(inicio, fim);
-                renderizarSaberes(saberesPagina);
-                atualizarPaginacao();
+                renderizarSaberes(dados.saberes);
             }
         }
     } catch (e) {
@@ -525,17 +438,10 @@ async function carregarDados() {
                 if (dados && dados.saberes) dados.saberes = dados.saberes.map(normalizarSaber);
                 salvarDadosCache(dados);
                 atualizarEstatisticas();
-                // Buscar grid novamente no fallback
                 const gridFallback = document.getElementById('cardsGrid');
                 if (gridFallback) {
                     console.log('Dados carregados via fallback:', dados.saberes?.length, 'saberes');
-                    // Aplicar paginação no fallback
-                    const saberesFiltrados = obterSaberesFiltrados();
-                    const inicio = (paginaAtual - 1) * itensPorPagina;
-                    const fim = inicio + itensPorPagina;
-                    const saberesPagina = saberesFiltrados.slice(inicio, fim);
-                    renderizarSaberes(saberesPagina);
-                    atualizarPaginacao();
+                    renderizarSaberes(dados.saberes);
                 }
                 saberDoDia();
                 mostrarToast('✅ Dados carregados via fallback', 'sucesso');
@@ -632,84 +538,6 @@ function esconderSkeleton() {
 }
 
 // =============================================
-// Filtragem por Categoria
-// =============================================
-
-function filtrarCategoria(cat) {
-    categoriaAtual = cat;
-    paginaAtual = 1; // Resetar para página 1 ao mudar categoria
-
-    document.querySelectorAll('.pilar-btn').forEach(btn => {
-        btn.classList.remove('active');
-        btn.setAttribute('aria-pressed', 'false');
-        if (btn.dataset.cat === cat) {
-            btn.classList.add('active');
-            btn.setAttribute('aria-pressed', 'true');
-        }
-    });
-
-    if (cat === 'midia') {
-        renderizarMidia();
-        return;
-    }
-
-    const saberesFiltrados = obterSaberesFiltrados();
-    const inicio = (paginaAtual - 1) * itensPorPagina;
-    const fim = inicio + itensPorPagina;
-    const saberesPagina = saberesFiltrados.slice(inicio, fim);
-    
-    renderizarSaberes(saberesPagina);
-    atualizarPaginacao();
-}
-
-// =============================================
-// Renderização de Mídia
-// =============================================
-
-function renderizarMidia() {
-    const grid = document.getElementById('cardsGrid');
-    grid.className = 'midia-grid';
-
-    let html = '';
-
-    if (dados.midia && dados.midia.audios && dados.midia.audios.length > 0) {
-        html += '<h3 class="midia-section-title">🎵 Áudios (' + dados.midia.audios.length + ')</h3>';
-        html += dados.midia.audios.map(a => `
-            <div class="midia-card" tabindex="0" role="button" data-midia-tipo="audio" data-midia-id="${a.id}" aria-label="Áudio: ${a.titulo}">
-                <div class="midia-icon">🎧</div>
-                <div class="midia-titulo">${a.titulo}</div>
-                <div class="midia-tags">
-                    ${normalizarTags(a).map(t => `<span class="midia-tag">#${t}</span>`).join('')}
-                </div>
-            </div>
-        `).join('');
-    }
-
-    if (dados.midia && dados.midia.videos && dados.midia.videos.length > 0) {
-        html += '<h3 class="midia-section-title" style="margin-top:1rem">🎬 Vídeos (' + dados.midia.videos.length + ')</h3>';
-        html += dados.midia.videos.map(v => `
-            <div class="midia-card" tabindex="0" role="button" data-midia-tipo="video" data-midia-id="${v.id}" aria-label="Vídeo: ${v.titulo}">
-                <div class="midia-icon">🎬</div>
-                <div class="midia-titulo">${v.titulo}</div>
-                <div class="midia-tags">
-                    ${normalizarTags(v).map(t => `<span class="midia-tag">#${t}</span>`).join('')}
-                </div>
-            </div>
-        `).join('');
-    }
-
-    if (!html) {
-        html = '<div class="empty-state"><div class="empty-state-icon">🎵</div><p>Nenhuma multimídia disponível</p></div>';
-    }
-
-    document.getElementById('modalTitulo').textContent = '🎵 Multimídia';
-    $(document.getElementById('modalContent'), html);
-    abrirModal();
-    esconderSkeleton();
-    aplicarReveal();
-}
-
-// =============================================
 // Abertura de Mídia (Modal)
 // =============================================
 
@@ -761,7 +589,7 @@ function buscarSaberes(termo) {
     const info = document.getElementById('buscaInfo');
     if (!termo.trim()) {
         info.textContent = '';
-        filtrarCategoria(categoriaAtual);
+        if (dados && dados.saberes) renderizarSaberes(dados.saberes);
         return;
     }
 
@@ -771,10 +599,6 @@ function buscarSaberes(termo) {
         s.descricao.toLowerCase().includes(t) ||
         s.tags.some(tag => tag.toLowerCase().includes(t))
     );
-
-    if (categoriaAtual !== 'all') {
-        filtrados = filtrados.filter(s => s.categoria_id === parseInt(categoriaAtual));
-    }
 
     info.textContent = filtrados.length + ' resultado' + (filtrados.length !== 1 ? 's' : '') + ' encontrado' + (filtrados.length !== 1 ? 's' : '');
     renderizarSaberes(filtrados);
@@ -811,9 +635,7 @@ async function abrirSaber(id) {
         readerTitulo.textContent = saber.titulo;
 
         // Atualiza navegação
-        const saberesDoContexto = categoriaAtual === 'all'
-            ? dados.saberes
-            : dados.saberes.filter(s => String(s.categoria_id) === categoriaAtual);
+        const saberesDoContexto = dados.saberes;
         const saberIdx = saberesDoContexto.findIndex(s => s.id === id);
         const prevSaber = saberIdx > 0 ? saberesDoContexto[saberIdx - 1] : null;
         const nextSaber = saberIdx !== -1
@@ -1379,7 +1201,6 @@ window.fecharLeitor = fecharLeitor;
 window.navegarSaber = navegarSaber;
 window.fecharModal = fecharModal;
 window.fecharModalBtn = fecharModalBtn;
-window.filtrarCategoria = filtrarCategoria;
 window.toggleFavorito = toggleFavorito;
 window.compartilharSaber = compartilharSaber;
 window.toggleBusca = toggleBusca;
@@ -1387,7 +1208,6 @@ window.buscarSaberes = buscarSaberes;
 window.saberAleatorio = saberAleatorio;
 window.toggleTema = toggleTema;
 window.mostrarAtalhos = mostrarAtalhos;
-window.mudarPagina = mudarPagina;
 window.fecharContinue = fecharContinue;
 window.toggleLogin = toggleLogin;
 window.toggleAdmin = toggleAdmin;
