@@ -178,7 +178,7 @@ async function abrirTextoCompleto(id) {
   try {
     if (!texto.conteudo || !texto.conteudo.texto_integral) {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 15000);
       const res = await fetch('/api/saberes/' + id + '/conteudo', { signal: controller.signal });
       clearTimeout(timeout);
       if (res.ok) {
@@ -186,9 +186,13 @@ async function abrirTextoCompleto(id) {
         texto.conteudo = data.conteudo;
       }
     }
-  } catch (e) {}
+  } catch (e) {
+    texto.conteudo = texto.conteudo || {};
+  }
   const conteudo = texto.conteudo || {};
-  if (conteudo.texto_integral) {
+  if (!conteudo.texto_integral) {
+    baseHtml += '<div class="empty-state" style="padding:2rem"><p>Conteúdo não disponível no momento.</p><button class="pilar-btn active" data-action="abrir-texto" data-saber-id="' + id + '" style="margin-top:1rem">🔄 Tentar novamente</button></div>';
+  } else {
     baseHtml += '<hr style="border-color:var(--cor-borda);margin:1.5rem 0"><div class="texto-integral" id="textoIntegral" style="font-size:' + faceis + '%">';
     var linhas = conteudo.texto_integral.split('\n');
     var buffer = [];

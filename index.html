@@ -122,8 +122,38 @@
                 </div>
             </div>
         </section>
+        <nav class="pilares" id="pilaresNav" aria-label="Filtrar por pilar">
+            <button class="pilar-btn active" data-cat="all" onclick="filtrarCategoria('all')" aria-pressed="true">
+                🌟 Todos
+            </button>
+            <button class="pilar-btn" data-cat="4" onclick="filtrarCategoria('4')" aria-pressed="false">
+                🧭 Jornada
+            </button>
+            <button class="pilar-btn" data-cat="5" onclick="filtrarCategoria('5')" aria-pressed="false">
+                ∞ Vida Verdadeira
+            </button>
+            <button class="pilar-btn" data-cat="1" onclick="filtrarCategoria('1')" aria-pressed="false">
+                🜂 Espírito
+            </button>
+            <button class="pilar-btn" data-cat="3" onclick="filtrarCategoria('3')" aria-pressed="false">
+                🔬 Ciência
+            </button>
+            <button class="pilar-btn" data-cat="2" onclick="filtrarCategoria('2')" aria-pressed="false">
+                🧠 Práticas
+            </button>
+            <span class="pilar-sep"></span>
+            <button class="pilar-btn" data-cat="fav" onclick="filtrarCategoria('fav')" aria-pressed="false" id="btnFav">
+                ❤️ Favoritos
+            </button>
+            <button class="pilar-btn pilar-link" data-cat="midia" onclick="filtrarCategoria('midia')" aria-pressed="false">
+                🎵 Multimídia
+            </button>
+            <a href="apocrifos.html" class="pilar-btn pilar-link" style="text-decoration:none">
+                📜 Apócrifos
+            </a>
+        </nav>
         <div class="busca-container" id="buscaContainer" style="display: none;" role="search">
-            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar saberes..." aria-label="Buscar saberes">
+            <input type="text" class="busca-input" id="buscaInput" placeholder="Buscar saberes por título, descrição ou tag..." aria-label="Buscar saberes">
             <div class="busca-info" id="buscaInfo" aria-live="polite"></div>
         </div>
         <div class="cards-grid" id="cardsGrid" role="list" aria-label="Lista de saberes">
@@ -135,6 +165,15 @@
                 <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
                 <div class="skeleton-card"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-tags"><span class="skeleton-tag"></span><span class="skeleton-tag"></span><span class="skeleton-tag"></span></div></div>
             </div>
+            <div class="loading" id="loadingFallback" style="display:none">
+                <div class="loading-spinner" aria-hidden="true"></div>
+                <p>Carregando saberes...</p>
+            </div>
+        </div>
+        <div class="pagination" id="pagination" hidden>
+            <button class="pagination-btn" id="prevPage" onclick="mudarPagina(-1)" aria-label="Página anterior">← Anterior</button>
+            <span class="pagination-info" id="paginationInfo">Página 1 de 1</span>
+            <button class="pagination-btn" id="nextPage" onclick="mudarPagina(1)" aria-label="Próxima página">Próxima →</button>
         </div>
     </main>
     <!-- Leitor imersivo (tela cheia) -->
