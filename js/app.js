@@ -283,7 +283,7 @@ function mudarPagina(delta) {
 function obterSaberesFiltrados() {
     if (!dados || !dados.saberes) return [];
     todosSaberes = dados.saberes.map(normalizarSaber);
-    if (categoriaAtual === 'all') return todosSaberes.filter(s => s.categoria_id !== 6);
+    if (categoriaAtual === 'all') return todosSaberes.filter(s => s.categoria_id === 6);
     if (categoriaAtual === 'fav') {
         const favs = getFavoritos();
         return todosSaberes.filter(s => favs.includes(s.id));
