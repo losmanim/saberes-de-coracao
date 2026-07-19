@@ -425,7 +425,14 @@ app.get('/api/dados', async (req, res) => {
       return res.json({
         meta: { versao: '4.0-appwrite', atualizado: new Date().toISOString() },
         categorias: categorias.map(c => ({ id: parseInt(c.ordem) || c.$id, nome: c.nome, slug: c.slug, descricao: c.descricao, cor: c.cor, icone: c.icone })),
-        saberes: lite ? saberes.map(s => ({ ...s, conteudo: undefined })) : saberes,
+        saberes: lite ? saberes.map(s => {
+          let preview = '';
+          try {
+            const c = typeof s.conteudo === 'string' ? JSON.parse(s.conteudo) : (s.conteudo || {});
+            preview = (c.texto_integral || '').slice(0, 150).replace(/\n+/g, ' ');
+          } catch (e) {}
+          return { ...s, conteudo: undefined, preview };
+        }) : saberes,
         midia: midiaList,
       });
     }
@@ -433,7 +440,11 @@ app.get('/api/dados', async (req, res) => {
     const dados = await lerDadosJSON();
     const dadosLite = {
       ...dados,
-      saberes: lite ? dados.saberes.map(s => ({ ...s, conteudo: undefined })) : dados.saberes,
+      saberes: lite ? dados.saberes.map(s => ({
+        ...s,
+        conteudo: undefined,
+        preview: (s.conteudo?.texto_integral || '').slice(0, 150).replace(/\n+/g, ' '),
+      })) : dados.saberes,
     };
     res.json(dadosLite);
   } catch (erro) {

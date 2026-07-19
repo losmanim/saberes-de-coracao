@@ -610,13 +610,13 @@ function renderizarSaberes(saberes) {
                     <span class="card-titulo"><span class="cat-icon">${catIcon}</span>${s.titulo}</span>
                     <span class="card-nivel ${s.nivel}">${s.nivel}</span>
                 </div>
-                <p class="card-desc">${s.descricao}</p>
+                <p class="card-desc">${s.preview || s.descricao}</p>
                 <div class="card-meta">
                     <span>⏱️ ${s.duracao} min</span>
                     <span>📖 ${s.fonte}</span>
                 </div>
                 <div class="card-tags">
-                    ${s.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                    ${s.tags.slice(0, 4).map(tag => `<span class="tag">#${tag}</span>`).join('')}
                 </div>
             </div>`;
     }).join('');

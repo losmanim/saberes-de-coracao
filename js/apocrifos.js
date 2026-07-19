@@ -110,7 +110,7 @@ function renderizarTextos(textos) {
       + '</span></button>'
       + '<div class="accordion-content">'
       + '<div class="content">'
-      + '<p><strong>' + (texto.descricao || '') + '</strong></p>'
+      + '<p><strong>' + (texto.preview || texto.descricao || '') + '</strong></p>'
       + '<div class="flex-wrap" style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap">'
       + '<button class="pilar-btn active btn-ler" data-saber-id="' + texto.id + '" data-action="abrir-texto">📖 Ler texto completo</button>'
       + '<button class="pilar-btn" data-saber-id="' + texto.id + '" data-action="compartilhar-texto">🔗 Compartilhar</button>'
