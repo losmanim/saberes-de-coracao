@@ -9,8 +9,15 @@ const PRECACHE = [
   '/404.html',
   '/css/style.css',
   '/js/utils.js',
-  '/js/app.js',
+  '/js/constants.js',
+  '/js/state.js',
+  '/js/data.js',
+  '/js/reader.js',
+  '/js/ui.js',
+  '/js/admin.js',
   '/js/features.js',
+  '/js/content.js',
+  '/js/player.js',
   '/data/dados-unificados.json',
   '/sitemap.xml',
   '/manifest.json',
@@ -95,6 +102,16 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(networkFirst(request, CACHE_DYNAMIC));
 });
 
+const MAX_DYNAMIC_CACHE = 80;
+
+async function limitCacheSize(cacheName) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+  if (keys.length > MAX_DYNAMIC_CACHE) {
+    await cache.delete(keys[0]);
+  }
+}
+
 async function cacheFirst(request, cacheName) {
   if (request.method !== 'GET') return fetch(request).catch(() => new Response('Offline', { status: 503 }));
 
@@ -105,7 +122,10 @@ async function cacheFirst(request, cacheName) {
     if (response.ok) {
       const copy = response.clone();
       if (request.url.startsWith('http://') || request.url.startsWith('https://')) {
-        caches.open(cacheName || CACHE).then((cache) => cache.put(request, copy)).catch(() => {});
+        caches.open(cacheName || CACHE).then((cache) => {
+          cache.put(request, copy);
+          limitCacheSize(cacheName || CACHE);
+        }).catch(() => {});
       }
     }
     return response;
@@ -121,7 +141,10 @@ async function networkFirst(request, cacheName) {
     const response = await fetch(request);
     if (response.ok) {
       const copy = response.clone();
-      caches.open(cacheName || CACHE).then((cache) => cache.put(request, copy));
+      caches.open(cacheName || CACHE).then((cache) => {
+        cache.put(request, copy);
+        limitCacheSize(cacheName || CACHE);
+      });
     }
     return response;
   } catch {

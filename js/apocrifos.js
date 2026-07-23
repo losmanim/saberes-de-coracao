@@ -32,10 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const buscaInput = document.getElementById('buscaInput');
   if (buscaInput) {
-    const debouncedBusca = Utils.debounce(function() {
+    buscaInput.addEventListener('input', Utils.debounce(function() {
       buscarTextos(this.value);
-    }, 250);
-    buscaInput.addEventListener('input', debouncedBusca);
+    }, 250));
   }
 });
 
@@ -46,21 +45,27 @@ function abrirAccordionPorId(id) {
   setTimeout(() => { if (!header.classList.contains('active')) header.click(); }, 300);
 }
 
+function getDados() {
+  return window.dados || (typeof dados !== 'undefined' ? dados : null);
+}
+
 async function carregarApocrifos() {
   const container = document.getElementById('apocrifosContainer');
-  if (!dados) {
+  let dadosLocal = getDados();
+  if (!dadosLocal) {
     const maxWait = 10000;
     const startTime = Date.now();
-    while (!dados && Date.now() - startTime < maxWait) {
+    while (!getDados() && Date.now() - startTime < maxWait) {
       await new Promise(r => setTimeout(r, 100));
     }
+    dadosLocal = getDados();
   }
-  if (!dados || !dados.saberes) {
+  if (!dadosLocal || !dadosLocal.saberes) {
     try { mostrarToast('Erro ao carregar dados', 'erro'); } catch (e) {}
     window.Utils.$(container, '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Erro ao carregar dados.</p><p class="texto-aux">Dados não disponíveis<br><small>Tente recarregar a página.</small></p><button data-action="reload" class="pilar-btn" style="margin-top:1rem">🔄 Recarregar</button></div>');
     return;
   }
-  apocrifos_textos = dados.saberes.map(window.Utils.normalizarSaber).filter(s => s.categoria_id === 6);
+  apocrifos_textos = dadosLocal.saberes.map(window.Utils.normalizarSaber).filter(s => s.categoria_id === window.Const.CAT_APOCRIFOS);
   atualizarStats();
   renderizarBotoesCategoria();
   renderizarTextos(apocrifos_textos);
@@ -93,15 +98,6 @@ function renderizarBotoesCategoria() {
   nav.innerHTML = html;
 }
 
-function renderizarConteudoApocrifo(texto) {
-  if (!texto.conteudo) return '';
-  let html = '';
-  for (const [key, val] of Object.entries(texto.conteudo)) {
-    if (window.contentHandlers?.[key]) html += window.contentHandlers[key](val);
-  }
-  return html;
-}
-
 function renderizarTextos(textos) {
   const container = document.getElementById('apocrifosContainer');
   if (!textos || textos.length === 0) {
@@ -120,7 +116,7 @@ function renderizarTextos(textos) {
       + '<div class="accordion-content">'
       + '<div class="content">'
       + '<p><strong>' + (texto.preview || texto.descricao || '') + '</strong></p>'
-      + renderizarConteudoApocrifo(texto)
+      + window.Utils.renderizarConteudo(texto.conteudo)
       + '<div class="flex-wrap" style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap">'
       + '<button class="pilar-btn active btn-ler" data-saber-id="' + texto.id + '" data-action="abrir-texto">📖 Ler em tela cheia</button>'
       + '<button class="pilar-btn" data-saber-id="' + texto.id + '" data-action="compartilhar-texto">🔗 Compartilhar</button>'
@@ -257,12 +253,8 @@ function salvarProgressoLeitura(id) {
 }
 
 function compartilharTexto(id) {
-  const url = window.location.origin + '/apocrifos.html#' + id;
-  if (navigator.share) {
-    navigator.share({ title: 'Texto Apocrifo', url }).catch(() => {});
-  } else {
-    navigator.clipboard.writeText(url).then(() => { if (typeof mostrarToast === 'function') mostrarToast('✅ Link copiado!', 'sucesso'); });
-  }
+  const texto = apocrifos_textos.find(t => t.id === id);
+  if (texto) window.Utils.compartilharConteudo(texto.titulo, texto.descricao);
 }
 
 document.addEventListener('click', function (e) {

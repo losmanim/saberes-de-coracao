@@ -1,4 +1,3 @@
-const NAV_MAP = { gnose: 1, praticas: 2, ciencia: 3, jornada: 4, vida: 5, apocrifos: 6 };
 let dados = null;
 
 window.mostrarSecao = function (id, el) {
@@ -26,40 +25,9 @@ async function carregarDados() {
   console.error('Falha ao carregar dados');
 }
 
-function renderizarConteudo(saber) {
-  if (!saber.conteudo) return '';
-  let html = '';
-  for (const [key, val] of Object.entries(saber.conteudo)) {
-    if (window.contentHandlers?.[key]) html += window.contentHandlers[key](val);
-  }
-  return html;
-}
-
-function renderizarPraticas(praticas) {
-  if (!praticas?.length) return '';
-  let html = '<h3>🧘 Práticas</h3>';
-  praticas.forEach(p => {
-    html += `<div class="pratica-box"><h4>${p.titulo}</h4><p>${p.instrucoes.replace(/\n/g, '<br>')}</p>`;
-    if (p.duracao || p.frequencia) {
-      html += `<p style="margin-top:0.5rem;font-size:0.85rem;color:var(--cor-texto-sec)"><em>⏱️ ${p.duracao || '-'} min | 🔄 ${p.frequencia || '-'}</em></p>`;
-    }
-    html += '</div>';
-  });
-  return html;
-}
-
-function renderizarConexoes(saber) {
-  if (!saber.conexoes?.length || !dados) return '';
-  return '<h3>🔗 Conexões</h3><div>' +
-    saber.conexoes.map(cid => {
-      const s = dados.saberes.find(x => x.id === cid);
-      return s ? `<span class="tag tag-relacionado" style="cursor:pointer">${s.titulo}</span>` : '';
-    }).filter(Boolean).join(' ') +
-  '</div>';
-}
-
 function renderizarSecao(categoriaId) {
-  const secao = document.getElementById('sec-' + Object.keys(NAV_MAP).find(k => NAV_MAP[k] === categoriaId));
+  const catKey = Object.keys(window.Const.CATEGORIA_IDS).find(k => window.Const.CATEGORIA_IDS[k] === categoriaId);
+  const secao = document.getElementById('sec-' + catKey);
   if (!secao || !dados) return;
 
   const saberes = dados.saberes.filter(s => Number(s.categoria_id) === categoriaId).map(window.Utils.normalizarSaber);
@@ -80,9 +48,9 @@ function renderizarSecao(categoriaId) {
         ${saber.tags.map(t => `<span class="tag">#${t}</span>`).join(' ')}
         <p style="margin-top:0.8rem;color:var(--cor-texto-sec)"><em>${saber.descricao}</em></p>
         ${saber.fonte ? `<p style="font-size:0.85rem;color:var(--cor-texto-sec)">📖 ${saber.fonte} | ⏱️ ${saber.duracao || '-'} min | 🏷️ ${saber.nivel || '-'}</p>` : ''}
-        ${renderizarConteudo(saber)}
-        ${renderizarPraticas(saber.praticas)}
-        ${renderizarConexoes(saber)}
+        ${window.Utils.renderizarConteudo(saber.conteudo)}
+        ${window.Utils.renderizarPraticas(saber.praticas)}
+        ${window.Utils.renderizarConexoes(saber.conexoes, dados.saberes)}
       </div></div>
     </div>`;
   });
@@ -91,7 +59,7 @@ function renderizarSecao(categoriaId) {
 }
 
 function renderizarTodasSecoes() {
-  Object.values(NAV_MAP).forEach(catId => renderizarSecao(catId));
+  Object.values(window.Const.CATEGORIA_IDS).forEach(catId => renderizarSecao(catId));
 }
 
 const buscarNaBiblioteca = window.Utils.debounce(function (termo) {

@@ -29,11 +29,8 @@ function normalizarTags(item) {
 
 function buildMidiaUrl(item, tipo) {
   if (item.arquivo.startsWith('http')) {
-    try {
-      return new URL(item.arquivo).toString();
-    } catch {
-      return encodeURI(item.arquivo);
-    }
+    try { return new URL(item.arquivo).toString(); }
+    catch { return encodeURI(item.arquivo); }
   }
   const baseDir = window.midiaBaseUrl || '';
   const partes = item.arquivo.split('/');
@@ -96,6 +93,7 @@ function toggleAccordion(header) {
   const isActive = header.classList.contains('active');
   header.classList.toggle('active');
   content.classList.toggle('active');
+  header.setAttribute('aria-expanded', !isActive);
   if (!isActive) setTimeout(() => content.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
 }
 
@@ -112,13 +110,72 @@ function renderizarPraticas(praticas) {
   return html;
 }
 
+function renderizarConteudo(conteudo) {
+  if (!conteudo) return '';
+  let html = '';
+  for (const [key, val] of Object.entries(conteudo)) {
+    const handler = window.contentHandlers?.[key];
+    if (handler) html += handler(val);
+  }
+  return html;
+}
+
+function renderizarConexoes(conexoes, saberes) {
+  if (!Array.isArray(conexoes) || !conexoes.length || !saberes) return '';
+  const conectados = conexoes.map(cid => {
+    const s = saberes.find(x => x.id === cid);
+    return s ? `<span class="tag tag-relacionado" data-saber-id="${s.id}" style="cursor:pointer">${s.titulo}</span>` : '';
+  }).filter(Boolean).join(' ');
+  if (!conectados) return '';
+  return `<h3>🔗 Conexões</h3><div>${conectados}</div>`;
+}
+
+function compartilharConteudo(titulo, descricao) {
+  const url = window.location.origin + window.location.pathname;
+  const texto = `📖 ${titulo}\n\n${descricao}\n\nFonte: Saberes de Coração\n${url}`;
+  if (navigator.share) {
+    navigator.share({ title, text: descricao, url }).catch(() => {});
+  } else if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(texto).then(() => {
+      if (typeof mostrarToast === 'function') mostrarToast('✅ Link copiado!', 'sucesso');
+    }).catch(() => {});
+  } else {
+    const temp = document.createElement('textarea');
+    temp.value = texto;
+    document.body.appendChild(temp);
+    temp.select();
+    try { document.execCommand('copy'); mostrarToast('✅ Link copiado!', 'sucesso'); } catch {}
+    document.body.removeChild(temp);
+  }
+}
+
+function extrairCitacaoImpactante(saber) {
+  if (!saber.conteudo) return saber.descricao;
+  if (Array.isArray(saber.conteudo.citacoes) && saber.conteudo.citacoes.length > 0) {
+    const citacoes = saber.conteudo.citacoes.filter(c => c.length > 20 && c.length < 300);
+    if (citacoes.length > 0) return citacoes[Math.floor(Math.random() * citacoes.length)];
+  }
+  if (saber.conteudo.insight) {
+    const insight = saber.conteudo.insight;
+    if (insight.length < 250) return insight;
+    const frases = insight.split(/[.!?]+/).filter(f => f.trim().length > 20 && f.trim().length < 200);
+    if (frases.length > 0) return frases[Math.floor(Math.random() * frases.length)].trim() + '.';
+    return insight.substring(0, 200).trim() + '...';
+  }
+  return saber.descricao;
+}
+
 window.toggleTema = toggleTema;
 window.aplicarTema = aplicarTema;
+window.extrairCitacaoImpactante = extrairCitacaoImpactante;
+window.toggleAccordion = toggleAccordion;
+window.compartilharConteudo = compartilharConteudo;
 
 window.Utils = {
   CAT_EMOJIS, CAT_BADGE, CAT_NOME,
   $, normalizarSaber, normalizarTags, buildMidiaUrl,
   mostrarToast, tratarErro, debounce, toggleTema, aplicarTema,
-  toggleAccordion, renderizarPraticas,
+  toggleAccordion, renderizarPraticas, renderizarConteudo,
+  renderizarConexoes, compartilharConteudo, extrairCitacaoImpactante,
 };
 })();

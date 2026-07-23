@@ -1,0 +1,25 @@
+@media print {
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+    .header, .footer, .player-bar, #player, .btn-icon,
+    #pagination, .saber-dia-card, #readerOverlay, #modalOverlay,
+    .card-fav, .contato-section, #btnAdmin, #skeletonGrid,
+    .reading-progress, #continueBar, .scroll-top {
+        display: none !important;
+    }
+    .card {
+        break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        background: #fff !important;
+    }
+    .card .card-novo { display: none !important; }
+    a { color: #000 !important; text-decoration: underline; }
+    .main { max-width: 100% !important; padding: 0 !important; }
+    h1, h2, h3, h4 { page-break-after: avoid; }
+    p, li { orphans: 3; widows: 3; }
+}
