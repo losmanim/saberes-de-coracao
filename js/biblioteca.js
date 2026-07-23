@@ -9,7 +9,10 @@ window.mostrarSecao = function (id, el) {
   if (el) el.classList.add('active');
 };
 
-window.toggleAccordion = window.Utils.toggleAccordion;
+if (window.Utils) {
+  window.toggleAccordion = window.Utils.toggleAccordion;
+  window.toggleTema = window.Utils.toggleTema;
+}
 
 async function carregarDados() {
   try {

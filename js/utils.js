@@ -112,6 +112,9 @@ function renderizarPraticas(praticas) {
   return html;
 }
 
+window.toggleTema = toggleTema;
+window.aplicarTema = aplicarTema;
+
 window.Utils = {
   CAT_EMOJIS, CAT_BADGE, CAT_NOME,
   $, normalizarSaber, normalizarTags, buildMidiaUrl,
