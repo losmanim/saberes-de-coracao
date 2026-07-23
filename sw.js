@@ -1,5 +1,5 @@
-const CACHE = 'saberes-v4';
-const CACHE_DYNAMIC = 'saberes-dinamico-v4';
+const CACHE = 'saberes-v5';
+const CACHE_DYNAMIC = 'saberes-dinamico-v5';
 
 const PRECACHE = [
   '/',
